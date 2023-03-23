@@ -111,7 +111,7 @@ class UserInfo {
   int? id;
   String? name;
   String? email;
-  Null? emailVerifiedAt;
+  dynamic emailVerifiedAt;
   String? createdAt;
   String? updatedAt;
   String? userType;

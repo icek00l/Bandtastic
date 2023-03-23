@@ -5,11 +5,13 @@ import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
+import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/selectdayandTraining/selectTrainingDay/selectDayScreen_controller.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
@@ -55,7 +57,7 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                         letterSpacing: 1.0,
                         color: AppColors.secondaryTextColor),
                   ),
-                  SizedBox(height: AppDimensions.forty),
+                  SizedBox(height: AppDimensions.thirty),
                   ListView.builder(
                     itemCount: controller.weekList.length,
                     physics: const NeverScrollableScrollPhysics(),
@@ -95,11 +97,11 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                                           controller.weekList[i].isVisible =
                                               true;
                                         } else {
-                                          if(controller
+                                          if (controller
                                                   .weekList[i].isSelectedWeek ==
                                               false) {
                                             controller.weekList[i].isVisible =
-                                              false;
+                                                false;
                                           }
                                         }
                                       }
@@ -109,26 +111,26 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                                           i++) {
                                         var indexCount;
                                         if (index < 4) {
-                                        
                                           indexCount = index + 2;
-                                          if (i > indexCount ) {
-                                            if((i==5 || i==6 ) && index==0){
+                                          if (i > indexCount) {
+                                            if ((i == 5 || i == 6) &&
+                                                index == 0) {
                                               if (controller.weekList[i]
-                                                    .isSelectedWeek ==
-                                                false) {
-                                              controller.weekList[i].isVisible =
-                                                  false;
-                                            }
-                                            }else if( i==6  && index==1){
+                                                      .isSelectedWeek ==
+                                                  false) {
+                                                controller.weekList[i]
+                                                    .isVisible = false;
+                                              }
+                                            } else if (i == 6 && index == 1) {
                                               if (controller.weekList[i]
-                                                    .isSelectedWeek ==
-                                                false) {
+                                                      .isSelectedWeek ==
+                                                  false) {
+                                                controller.weekList[i]
+                                                    .isVisible = false;
+                                              }
+                                            } else {
                                               controller.weekList[i].isVisible =
-                                                  false;
-                                            }
-                                            }else{
-                                            controller.weekList[i].isVisible =
-                                                true;
+                                                  true;
                                             }
                                           } else {
                                             if (controller.weekList[i]
@@ -156,51 +158,36 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                                       true)
                                   ? Container(
                                       margin: EdgeInsets.symmetric(
-                                          vertical: AppDimensions.nine),
+                                          vertical: AppDimensions.eight),
                                       alignment: Alignment.center,
                                       child: (controller.weekList[index]
                                                   .isSelectedWeek !=
                                               true)
-                                          ? Material(
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: BeveledRectangleBorder(
-                                                  side: BorderSide(
+                                          ? Container(
+                                              alignment: Alignment.center,
+                                              height: AppDimensions.sixty,
+                                              width: AppDimensions.twoSixty,
+                                              decoration: const BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: Svg(AssetsBase
+                                                          .cornerImage),
+                                                      fit: BoxFit.cover)),
+                                              child: Text(
+                                                  controller
+                                                      .weekList[index].name!,
+                                                  style: TextStyle(
                                                       color: AppColors
-                                                          .borderColorTwo,
-                                                      width: AppDimensions.two),
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(
-                                                          AppDimensions.thirty),
-                                                      bottomRight:
-                                                          Radius.circular(
-                                                              AppDimensions
-                                                                  .thirty),
-                                                      bottomLeft: Radius.circular(
-                                                          AppDimensions.thirty),
-                                                      topRight: Radius.circular(
-                                                          AppDimensions.thirty))),
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                height: AppDimensions.fiftyFive,
-                                                width: AppDimensions.twoSixty,
-                                                color: Colors.white,
-                                                child: Text(
-                                                    controller
-                                                        .weekList[index].name!,
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .checkBoxBorderColor,
-                                                        fontSize: AppDimensions
-                                                            .eighteen,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily: AppFonts
-                                                            .plusSansBold)),
-                                              ))
+                                                          .checkBoxBorderColor,
+                                                      fontSize: AppDimensions
+                                                          .eighteen,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontFamily: AppFonts
+                                                          .plusSansBold)),
+                                            )
                                           : Column(children: [
                                               TraininDay("Training day"),
-                                              SelectDay(controller
-                                                  .weekList[index].name!),
+                                              SelectDay(controller, index),
                                             ]),
                                     )
                                   : Container(),
@@ -208,7 +195,7 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                           : controller.weekList[index].isSelectedWeek == true
                               ? Column(children: [
                                   TraininDay("Training day"),
-                                  SelectDay(controller.weekList[index].name!),
+                                  SelectDay(controller, index),
                                 ])
                               : Container();
                     },
@@ -226,7 +213,9 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
               ),
             ),
           )));
-  Widget SelectDay(String name) {
+
+  Widget SelectDay(SelectDayScreenController controller, int index) {
+    var weekList = controller.weekList[index];
     return Container(
       margin:
           EdgeInsets.only(top: AppDimensions.twenty, bottom: AppDimensions.ten),
@@ -234,19 +223,78 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            name,
+            weekList.name!,
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: AppColors.sixTextColor,
                 fontSize: AppDimensions.twentyTwo,
                 fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.plusSansBold),
+                fontFamily: AppFonts.plusSansMedium),
           ),
           SizedBox(width: AppDimensions.twenty),
-          Text(
-            "Edit",
-            style: AppThemeStyle.robotoflex16,
-          )
+          GestureDetector(
+              onTap: () {
+                if (controller.count == 1) {
+                  controller.weekList[index].isSelectedWeek = false;
+                  for (int i = 0; i < controller.weekList.length; i++) {
+                    controller.weekList[i].isVisible = true;
+                    controller.weekList[i].isSelectedWeek = false;
+                  }
+                } else if (controller.count == 2) {
+                  controller.weekList[index].isSelectedWeek = false;
+                  controller.weekList[index].isVisible = true;
+                  controller.update();
+                  var selectedIndex;
+                  for (int i = 0; i < controller.weekList.length; i++) {
+                    if (controller.weekList[i].isSelectedWeek == true)
+                      selectedIndex = i;
+                  }
+
+                  if (selectedIndex >= 4) {
+                    for (int i = 0; i < controller.weekList.length; i++) {
+                      if ((selectedIndex == 4 && (i == 0 || i == 1)) ||
+                          (selectedIndex == 5 && (i == 1 || i == 2)) ||
+                          (selectedIndex == 6 && (i == 2 || i == 3))) {
+                        controller.weekList[i].isVisible = true;
+                      } else if (controller.weekList[i].isSelectedWeek ==
+                          false) {
+                        controller.weekList[i].isVisible = false;
+                      }
+                    }
+                  } else {
+                    for (int i = 0; i < controller.weekList.length; i++) {
+                      var indexCount;
+                      if (selectedIndex < 4) {
+                        indexCount = selectedIndex + 2;
+                        if (i > indexCount) {
+                          if (((i == 5 || i == 6) && selectedIndex == 0) ||
+                              (i == 6 && selectedIndex == 1)) {
+                            if (controller.weekList[i].isSelectedWeek ==
+                                false) {
+                              controller.weekList[i].isVisible = false;
+                            }
+                          } else {
+                            controller.weekList[i].isVisible = true;
+                          }
+                        } else {
+                          if (controller.weekList[i].isSelectedWeek == false) {
+                            controller.weekList[i].isVisible = false;
+                          }
+                        }
+                      } else if (controller.weekList[i].isSelectedWeek ==
+                          false) {
+                        controller.weekList[i].isVisible = false;
+                      }
+                    }
+                  }
+                }
+                if (controller.count > 0) controller.count--;
+                controller.update();
+              },
+              child: Text(
+                "Edit",
+                style: AppThemeStyle.robotoflex16,
+              ))
         ],
       ),
     );

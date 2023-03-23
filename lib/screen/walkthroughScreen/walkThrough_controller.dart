@@ -25,11 +25,8 @@ class WalkThroughController extends GetxController {
     int index, BuildContext context, WalkThroughController controller) {
   return InkWell(
     onTap: () {
-      // if(courrentIndex==contents.length-1){
-      //   AppRouteMaps.goToLoginPage();
-      // }
       controller.pageController.nextPage(
-          duration: const Duration(milliseconds: 100), curve: Curves.bounceIn);
+          duration: const Duration(milliseconds: 1000), curve: Curves.linearToEaseOut);
     },
     child: Container(
       height: AppDimensions.forteen,

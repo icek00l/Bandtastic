@@ -27,6 +27,7 @@ abstract class AppDimensions {
 
   static double twenty = 20;
   static double twentyTwo = 22;
+  static double twenty3 = 23;
   static double twentyFour = 24;
   static double twentyFive = 25;
 
@@ -42,6 +43,7 @@ abstract class AppDimensions {
   static double thirtyeight = 38;
   static double forty = 40;
   static double fortyFive = 45;
+  static double forty7 = 47;
 
   static double fifty = 50;
   static double fiftyFive = 55;
@@ -52,6 +54,7 @@ abstract class AppDimensions {
   static double seventy = 70;
   static double seventy5 = 75;
   static double eightyPx = 80;
+  static double eightyPx5 = 85;
   static double ninty = 90;
 
   static double hunDred = 100;
@@ -64,9 +67,11 @@ abstract class AppDimensions {
   static double onefortythree = 143;
 
   static double oneFifty = 150;
+  static double oneFifty5 = 155;
   static double oneSixty = 160;
   static double oneSixtyOne = 161;
   static double oneseventy = 170;
+  static double one80 = 180;
   static double oneninty = 190;
 
   static double twohunDred = 200;

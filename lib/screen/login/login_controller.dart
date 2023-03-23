@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
 
@@ -19,27 +19,29 @@ class LoginController extends GetxController {
   void socialLoginApi(BuildContext context, getCode) async {
     var res =
         await apiClient.checkUniqueCode(getCode: getCode, isLoading: true);
-
-    if (!res.hasError) {
+    print(res);
+    if (res.hasError) {
       var data = loginFromJson(res.data);
-      if (data != null && data.status == true) {
-        SharedPrefs.setInteger(SharedPrefKeys.isLoggedIn, 1);
+      if (data.status == true) {
+        SharedPrefs.setInteger(SharedPrefKeys.isLoggedIn, 4);
         SharedPrefs.saveStringInPrefs(
             SharedPrefKeys.token, data.result!.token.toString());
         SharedPrefs.saveObject(SharedPrefKeys.userData, (data.result!));
-
         AppRouteMaps.goToDashbaordScreen("");
-      } else if (data.status == false) {
-        AppRouteMaps.goToNameScreenPage();
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(
-              content: Text(
-                  jsonDecode(res.data)['message'] as String? ?? 'Invalid Data'),
-              duration: const Duration(milliseconds: 2000),
-            ))
-            .closed
-            .then((value) {});
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              jsonDecode(res.data)['message'] as String? ?? 'Invalid Data'),
+          duration: const Duration(milliseconds: 500),
+        ));
+      }
+    } else {
+      if (jsonDecode(res.data)['message'] == "The selected code is invalid.") {
+        hasError = true;
+      } else if (jsonDecode(res.data)['message'] == "User Not Found !") {
+        SharedPrefs.setInteger(SharedPrefKeys.isLoggedIn, 1);
+
+        AppRouteMaps.goToNameScreenPage(getCode);
       }
     }
     update();

@@ -115,7 +115,7 @@ class _NameScreenViewState extends State<NameScreenView> {
                           if(value.isNotEmpty) {
                             print(controller.getName);
                             AppRouteMaps.goToEmailScreenPage(
-                                  controller.getName);
+                                  controller.getName,controller.getCode);
                           } 
                         },
 
@@ -125,7 +125,7 @@ class _NameScreenViewState extends State<NameScreenView> {
                             print(controller.getName);
                             if (controller.getName.isNotEmpty) {
                               AppRouteMaps.goToEmailScreenPage(
-                                  controller.getName);
+                                  controller.getName,controller.getCode);
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(

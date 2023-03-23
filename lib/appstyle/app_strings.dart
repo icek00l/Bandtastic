@@ -65,7 +65,7 @@ abstract class AppStrings {
   static String bandsText = 'BANDS'.tr;
   static String anchorText = 'ANCHORS'.tr;
   static String endSessionText = 'End Session'.tr;
-  static String lastSessionText = 'LAST \nSESSION'.tr;
+  static String lastSessionText = 'LAST SESSION'.tr;
   static String letsmashText = 'Let’s Smash it!'.tr;
   static String thisSessionText = 'THIS SESSION'.tr;
   static String cancelText = 'CANCEL'.tr;

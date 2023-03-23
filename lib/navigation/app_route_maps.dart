@@ -15,15 +15,18 @@ abstract class AppRouteMaps {
       Routes.login,
     );
   }
-  static void goToNameScreenPage() {
+  static void goToNameScreenPage(dynamic code) {
     Get.toNamed(
-      Routes.nameView,
+      Routes.nameView,arguments: {
+        "boxCode": code,
+      }
     );
   }
-  static void goToEmailScreenPage(String name) {
+  static void goToEmailScreenPage(String name, dynamic code) {
     Get.toNamed(
       Routes.emailView,arguments: {
         "userName": name,
+        "codeGet": code,
       }
     );
   }

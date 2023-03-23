@@ -8,6 +8,7 @@ class ReviewExerController extends GetxController {
   @override
   void onInit() {
             magicDataList.clear();
+    magicDataList.add(LastSessionPrepData(names: "Notes"));
     magicDataList.add(LastSessionPrepData(names: "BAND", value: "GREEN"));
     magicDataList.add(LastSessionPrepData(names: "BAND POSITION", value: "TWO 2"));
     magicDataList.add(LastSessionPrepData(names: "REPS", value: "11"));

@@ -10,6 +10,8 @@ class ExerciseLogController extends GetxController {
   List<LastSessionPrepData> prepDataList = List.empty(growable: true);
   List<LastSessionPrepData> magicDataList = List.empty(growable: true);
   List<ThisSessionData> thisSesstionList = List.empty(growable: true);
+  List<LastSessionPrepData> addBandList = List.empty(growable: true);
+  int count = 1;
   @override
   void onInit() async {
    
@@ -28,9 +30,15 @@ class ExerciseLogController extends GetxController {
     
     thisSesstionList.clear();
     thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
-    thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    // thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
     thisSesstionList.add(ThisSessionData(names: "REPS"));
     thisSesstionList.add(ThisSessionData(names: "BEYOND FAILURE"));
+    thisSesstionList.add(ThisSessionData(names: "NOTES"));
+    thisSesstionList.add(ThisSessionData(names: "POWER \nINCREASE"));
 
     super.onInit();
   }

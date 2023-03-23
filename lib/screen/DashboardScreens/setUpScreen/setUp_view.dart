@@ -2,7 +2,6 @@
 
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
-import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
@@ -64,7 +63,7 @@ class _SetUpScreenViewState extends State<SetUpScreenView> {
                               Expanded(
                                 child: Container(
                                   margin: EdgeInsets.only(
-                                      left: AppDimensions.twenty),
+                                      left: AppDimensions.twenty3),
                                   child: TextFormField(
                                     controller: controller.nameController,
                                     autofocus: false,
@@ -329,7 +328,6 @@ class _SetUpScreenViewState extends State<SetUpScreenView> {
                           style: TextStyle(
                               decoration: TextDecoration.underline,
                               fontSize: AppDimensions.seventeen,
-                              fontFamily: AppFonts.plusSansBold,
                               fontWeight: FontWeight.bold,
                               color: AppColors.buttonColor),
                         ),

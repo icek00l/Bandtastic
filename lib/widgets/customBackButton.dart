@@ -149,25 +149,29 @@ class CustomWithNewHeader extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: SvgPicture.asset(AssetsBase.backButtonSvg,
-                    height: AppDimensions.twentyFive),
+                    height: AppDimensions.thirty),
               )
             : SvgPicture.asset(AssetsBase.backButtonSvg,
-                height: AppDimensions.twentyFive),
+                height: AppDimensions.thirty),
+
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            SizedBox(height: AppDimensions.ten),
+
             Text(
               getHeadingText,
               style: AppThemeStyle.semiBold13,
             ),
-            Text(
+            SizedBox(height: AppDimensions.three)
+,            Text(
               getSubHeadText,
               style: isStyleChange == false
                   ? AppThemeStyle.extraBold18
                   : TextStyle(
-                      fontSize: AppDimensions.sixTeen,
-                      fontFamily: AppFonts.robotoFlex,
-                      fontWeight: FontWeight.w500,
+                      fontSize: AppDimensions.eighteen,
+                      fontFamily: AppFonts.plusSansRegular,
+                      fontWeight: FontWeight.w800,
                       color: Colors.black),
             ),
           ],

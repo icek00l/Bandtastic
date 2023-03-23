@@ -46,14 +46,31 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
                       margin: EdgeInsets.only(
                           left: AppDimensions.hunDred,
                           top: AppDimensions.twohunDred),
-                      child: Text(
-                        "Super!",
-                        style: TextStyle(
-                            fontSize: AppDimensions.fortyFive,
-                            fontFamily: AppFonts.plusSansRegular,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1.0,
-                            color: Colors.white),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Super",
+                            style: TextStyle(
+                                fontSize: AppDimensions.forty7,
+                                fontFamily: AppFonts.plusSansRegular,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1.5,
+                                color: Colors.white),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: AppDimensions.ten),
+                            child: Text(
+                              "!",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: AppDimensions.forty7,
+                                  fontFamily: AppFonts.notoSerif,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.5,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

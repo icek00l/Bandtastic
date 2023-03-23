@@ -4,7 +4,6 @@ import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
-import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/screen/DashboardScreens/sessionScreen/sessionMultiScreen/editSessionRevieExer/editExercisereview.dart';
 import 'package:bandapp/screen/DashboardScreens/sessionScreen/sessionMultiScreen/exerciseSessionReview/exerciseReview_controller.dart';
@@ -17,10 +16,8 @@ import 'package:get/instance_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ReviewExerView extends StatefulWidget {
-   ReviewExerView({
-    super.key,required this.name,required this.number
-  });
-String name = '', number = '';
+  ReviewExerView({super.key, required this.name, required this.number});
+  String name = '', number = '';
   @override
   State<ReviewExerView> createState() => _ReviewExerViewState();
 }
@@ -52,17 +49,18 @@ class _ReviewExerViewState extends State<ReviewExerView> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(height: AppDimensions.fifTeen),
-               ExerciseNameVideo(getName: widget.name,getNumber: widget.number),
+              ExerciseNameVideo(getName: widget.name, getNumber: widget.number),
               SizedBox(height: AppDimensions.twentyFive),
               LastSessionClass(controller2: controller),
               ButtonCommonArrowClass(
                   isMargin: false,
                   onTap: (p0) {
-                      pushNewScreen(context,
-                      screen:  EditReviewSessionExerView(name: widget.name,number: widget.number,
-                     
-                      ),
-                      withNavBar: true);
+                    pushNewScreen(context,
+                        screen: EditReviewSessionExerView(
+                          name: widget.name,
+                          number: widget.number,
+                        ),
+                        withNavBar: true);
                   },
                   buttonText: AppStrings.editLogText.toUpperCase()),
               SizedBox(height: AppDimensions.thirty),
@@ -73,10 +71,9 @@ class _ReviewExerViewState extends State<ReviewExerView> {
 }
 
 class ExerciseNameVideo extends StatelessWidget {
- ExerciseNameVideo({
-    Key? key, required this.getName, required this.getNumber
-  }) : super(key: key);
-String getName = '', getNumber ='';
+  ExerciseNameVideo({Key? key, required this.getName, required this.getNumber})
+      : super(key: key);
+  String getName = '', getNumber = '';
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -91,7 +88,7 @@ String getName = '', getNumber ='';
                     fontWeight: FontWeight.bold,
                     color: AppColors.buttonColor)),
             SizedBox(width: AppDimensions.ten),
-            Container(
+            SizedBox(
               width: AppDimensions.oneSixty,
               child: Text(getName,
                   style: TextStyle(
@@ -132,69 +129,8 @@ class LastSessionClass extends StatelessWidget {
                 color: AppColors.secondaryTextColor),
           ),
         ),
-        SizedBox(height: AppDimensions.twentyFive),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: AppDimensions.onetwenty,
-              margin: EdgeInsets.only(right: AppDimensions.five),
-              child: Text(
-                AppStrings.notesText.toUpperCase(),
-                textAlign: TextAlign.end,
-                style: AppThemeStyle.robotoMedium13,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: AppDimensions.five),
-              width: AppDimensions.oneThirty,
-              height: AppDimensions.forty,
-              child: TextFormField(
-                // controller: controller.nameController,
-                style: TextStyle(
-                  fontSize: AppDimensions.forteen,
-                  fontWeight: FontWeight.w500,
-                ),
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                      top: AppDimensions.ten,
-                      right: AppDimensions.five,
-                      left: AppDimensions.five,
-                      bottom: AppDimensions.ten),
-                  isDense: true,
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero,
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.zero,
+        SizedBox(height: AppDimensions.thirty),
 
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.zero,
-
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.zero,
-
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                  ),
-
-                  // errorText: controller.nameErrorText,
-                  errorStyle: TextStyle(
-                      color: AppColors.errorColor,
-                      fontSize: AppDimensions.thirteen),
-                ),
-                onChanged: (String value) {},
-              ),
-            ),
-            SvgPicture.asset(AssetsBase.micButtonSvgIcon)
-          ],
-        ),
-        SizedBox(height: AppDimensions.fifTeen),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -206,8 +142,8 @@ class LastSessionClass extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
+                        margin:index == 0 ? EdgeInsets.only(bottom: AppDimensions.ten,right: AppDimensions.twenty): EdgeInsets.only(right: AppDimensions.twenty),
                     width: AppDimensions.oneThirty,
-                    margin: EdgeInsets.only(right: AppDimensions.twenty),
                     child: Text(
                       controller2.magicDataList[index].names.toString(),
                       textAlign: TextAlign.end,
@@ -219,33 +155,91 @@ class LastSessionClass extends StatelessWidget {
                           color: AppColors.thirdTextColor),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
+                  index == 0
+                      ? Container(
+                        margin: EdgeInsets.only(bottom: AppDimensions.ten),
+                        child: Row(
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.only(right: AppDimensions.ten),
+                                width: AppDimensions.oneThirty,
+                                height: AppDimensions.forty,
+                                child: TextFormField(
+                                  // controller: controller.nameController,
+                                  style: TextStyle(
+                                    fontSize: AppDimensions.forteen,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textInputAction: TextInputAction.done,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        top: AppDimensions.ten,
+                                        right: AppDimensions.five,
+                                        left: AppDimensions.five,
+                                        bottom: AppDimensions.ten),
+                                    isDense: true,
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.borderColorThree),
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      borderSide: BorderSide(
+                                          color: AppColors.borderColorThree),
+                                    ),
+                                    focusedErrorBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      borderSide: BorderSide(
+                                          color: AppColors.borderColorThree),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      borderSide: BorderSide(
+                                          color: AppColors.borderColorThree),
+                                    ),
+
+                                    // errorText: controller.nameErrorText,
+                                    errorStyle: TextStyle(
+                                        color: AppColors.errorColor,
+                                        fontSize: AppDimensions.thirteen),
+                                  ),
+                                  onChanged: (String value) {},
+                                ),
+                              ),
+                              SvgPicture.asset(AssetsBase.micButtonSvgIcon)
+                            ],
+                          ),
+                      )
+                      : Container(
+                        padding:index == 1? EdgeInsets.symmetric(
                         vertical: AppDimensions.two,
-                        horizontal: AppDimensions.ten),
-                    decoration: BoxDecoration(
-                        color: index == 1
-                            ? AppColors.greenTextColor
-                            : Colors.white,
-                        border: index == 0 || index == 1
-                            ? Border.all(
-                                color: AppColors.greenTextColor,
-                                width: AppDimensions.two)
-                            : Border.all(color: Colors.white),
-                        borderRadius:
-                            BorderRadius.circular(AppDimensions.four)),
-                    child: Text(
-                      controller2.magicDataList[index].value.toString(),
-                      style: TextStyle(
-                          fontSize: AppDimensions.sixTeen,
-                          fontFamily: AppFonts.robotoMedium,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.0,
-                          color: index == 1
-                              ? Colors.white
-                              : AppColors.textButtonColor),
-                    ),
-                  )
+                        horizontal: AppDimensions.ten): EdgeInsets.symmetric(vertical: AppDimensions.two) ,
+                         
+                          decoration: BoxDecoration(
+                              color: index == 1
+                                  ? AppColors.greenTextColor
+                                  : Colors.white,
+                              border: index == 0 || index == 1
+                                  ? Border.all(
+                                      color: AppColors.greenTextColor,
+                                      width: AppDimensions.two)
+                                  : Border.all(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.circular(AppDimensions.four)),
+                          child: Text(
+                            controller2.magicDataList[index].value.toString(),
+                            style: TextStyle(
+                                fontSize: AppDimensions.sixTeen,
+                                fontFamily: AppFonts.robotoMedium,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.0,
+                                color: index == 1
+                                    ? Colors.white
+                                    : AppColors.textButtonColor),
+                          ),
+                        )
                 ],
               ),
             );

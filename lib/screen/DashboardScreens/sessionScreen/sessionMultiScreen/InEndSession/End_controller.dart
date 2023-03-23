@@ -17,27 +17,27 @@ class EndSessionController extends GetxController {
     endSessionData.add(LastSessionPrepData(names: "Power increase", value: "+17"));
    exerciseVideo.clear();
     exerciseVideo.add(ExerciseVideoList(
-        exerciseName: "Straight leg \ndeadlifts", value: 1));
-    exerciseVideo.add(ExerciseVideoList(exerciseName: "Chest Press", value: 2));
+        exerciseName: "  Straight leg \n  deadlifts", value: 1));
+    exerciseVideo.add(ExerciseVideoList(exerciseName: "  Chest Press", value: 2));
     exerciseVideo
-        .add(ExerciseVideoList(exerciseName: "Wide grip row", value: 3));
+        .add(ExerciseVideoList(exerciseName: "  Wide grip row", value: 3));
     exerciseVideo
-        .add(ExerciseVideoList(exerciseName: "Shoulder press", value: 4));
+        .add(ExerciseVideoList(exerciseName: "  Shoulder press", value: 4));
     exerciseVideo
-        .add(ExerciseVideoList(exerciseName: "Reverse bicep curl", value: 5));
+        .add(ExerciseVideoList(exerciseName: "  Reverse bicep curl", value: 5));
     exerciseVideo.add(ExerciseVideoList(
-        exerciseName: "Overhead \ntricep extension", value: 6));
+        exerciseName: " Overhead \n  tricep extension", value: 6));
 
          extraData.clear();
     extraData.add(ExtraDataList(
-        name: "Band", value: "gr"));
-    extraData.add(ExtraDataList(name: "Position", value: "2"));
+        name: " Band", value: "gr"));
+    extraData.add(ExtraDataList(name: " Position", value: "2"));
     extraData
-        .add(ExtraDataList(name: "Reps", value: "11"));
+        .add(ExtraDataList(name: " Reps", value: "11"));
     extraData
-        .add(ExtraDataList(name: "Beyond failure", value: "3"));
+        .add(ExtraDataList(name: " Beyond \n failure", value: "3"));
     extraData
-        .add(ExtraDataList(name: "Power", value: "+3"));
+        .add(ExtraDataList(name: " Power", value: "+3"));
 
         super.onInit();
  }

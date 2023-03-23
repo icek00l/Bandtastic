@@ -5,13 +5,17 @@ import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
+import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleData/cycleExerData/exerCycle_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleData/showGraph/showGraph_view.dart';
 import 'package:bandapp/utility/custom_UI.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ExerDataView extends StatefulWidget {
   ExerDataView({super.key, required this.name});
@@ -30,7 +34,7 @@ class _ExerDataViewState extends State<ExerDataView> {
             backgroundColor: Colors.white,
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(
-                    AppDimensions.seventy), // here the desired height
+                    AppDimensions.eightyPx), // here the desired height
                 child: AppBar(
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.white,
@@ -38,7 +42,8 @@ class _ExerDataViewState extends State<ExerDataView> {
                   title: CustomWithNewHeader(
                     getHeadingText: "Wk 1 OF 6 | ${widget.name}",
                     getSubHeadText: AppStrings.cycle,
-                    isBackAllow: true,isStyleChange: false,
+                    isBackAllow: true,
+                    isStyleChange: true,
                   ),
                 )),
             body: SingleChildScrollView(
@@ -47,11 +52,11 @@ class _ExerDataViewState extends State<ExerDataView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: AppDimensions.fifTeen),
-                  Text(
-                    AppStrings.thisweekText,
-                    style: AppThemeStyle.heading28Bold,
-                  ),
+                  SizedBox(height: AppDimensions.ten),
+                  // Text(
+                  //   AppStrings.thisweekText,
+                  //   style: AppThemeStyle.heading28Bold,
+                  // ),
                   SizedBox(height: AppDimensions.twenty),
                   UserExerciseDetail(controller2: controller),
                   SizedBox(height: AppDimensions.fifty),
@@ -84,49 +89,23 @@ class UserExerciseDetail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () {},
-                  child: Column(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.zero,
-                          padding: EdgeInsets.symmetric(
-                              vertical: AppDimensions.eight,
-                              horizontal: AppDimensions.forty),
-                          decoration: BoxDecoration(
-                              color: AppColors.buttonColor,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(AppDimensions.four),
-                                  topRight: Radius.circular(AppDimensions.four),
-                                  bottomLeft:
-                                      Radius.circular(AppDimensions.eight),
-                                  bottomRight:
-                                      Radius.circular(AppDimensions.eight))),
-                          alignment: Alignment.center,
-                          child: Text(AppStrings.showGraphText,
-                              style: TextStyle(
-                                  fontSize: AppDimensions.sixTeen,
-                                  fontFamily: AppFonts.plusSansBold,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white))),
-                      ClipPath(
-                        clipper: TriangleClipper(),
-                        child: Container(
-                          margin: EdgeInsets.zero,
-                          color: AppColors.buttonColor,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppDimensions.eightyPx,
-                            vertical: AppDimensions.ten,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  onTap: () {
+                    pushNewScreen(context,
+                        screen: ShowGraphView(
+                            getName: controller2.cycleDataList[index].exerName
+                                .toString()),
+                        withNavBar: true);
+                  },
+                  child: SvgPicture.asset(AssetsBase.showGraphSvg),
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: AppDimensions.ten),
                   child: Row(
                     children: [
-                      Text("Total".toUpperCase(),style: AppThemeStyle.robotovblackflex12bold,),
+                      Text(
+                        "Total".toUpperCase(),
+                        style: AppThemeStyle.robotovblackflex12bold,
+                      ),
                       Container(
                           margin: EdgeInsets.only(left: AppDimensions.ten),
                           width: AppDimensions.sixtyFive,
@@ -194,7 +173,9 @@ class UserExerciseDetail extends StatelessWidget {
                         index == 0
                             ? Text(
                                 "Power",
-                                style: TextStyle(fontSize: AppDimensions.ten),
+                                style: TextStyle(
+                                    fontSize: AppDimensions.ten,
+                                    fontWeight: FontWeight.bold),
                               )
                             : Container(),
                         Text(controller2.weekWiseData[index].power.toString(),
@@ -206,7 +187,7 @@ class UserExerciseDetail extends StatelessWidget {
                   style: TextStyle(
                       fontSize: AppDimensions.forteen,
                       fontFamily: AppFonts.robotoFlex,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w300,
                       color: index == 0 ? Colors.black : AppColors.buttonColor),
                 ),
               ],

@@ -22,7 +22,7 @@ ScrollController scrollControl = ScrollController();
         .add(CycleModel(exerName: "Overhead tricep extension", value: "+12"));
    
 weekWiseData.clear();
-    weekWiseData.add(WeekDataModel(weekDay: "wk1", power: "49",value: "Change" ));
+    weekWiseData.add(WeekDataModel(weekDay: "wk 1", power: "49",value: "Change" ));
     weekWiseData.add(WeekDataModel(weekDay: "2", power: "53",value: "+4" ));
     weekWiseData.add(WeekDataModel(weekDay: "3", power: "55",value: "+1" ));
     weekWiseData.add(WeekDataModel(weekDay: "4", power: "60",value: "+5" ));

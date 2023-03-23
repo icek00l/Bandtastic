@@ -100,91 +100,101 @@ shrinkWrap: true,
                       borderRadius: BorderRadius.circular(AppDimensions.fifty),
                       color: AppColors.buttonColor),
                 ),
+                SizedBox(height: AppDimensions.five)
+,
                 Container(
                   margin: EdgeInsets.only(
                       left: AppDimensions.thirty,
                       right: AppDimensions.thirty,
-                      top: AppDimensions.five),
+                     ),
                   width: AppDimensions.oneSixty,
-                  height: MediaQuery.of(context).size.height / 3,
-                  child: ListView.builder(
-                    itemCount: getBoxdata.length,
-         physics: const BouncingScrollPhysics(),
-shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index1) {
-                      return index1 != 5
-                          ? Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: AppDimensions.five),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: AppDimensions.twelve,
-                                  horizontal: AppDimensions.ten),
-                              decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimensions.four)),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: AppDimensions.eightyPx,
-                                    child: Text(
-                                        getBoxdata[index1].exerName.toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AppThemeStyle.cycleContainer),
-                                  ),
-                                  Text(getBoxdata[index1].value.toString(),
-                                      style: AppThemeStyle.cycleContainer)
-                                ],
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.zero,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppDimensions.twelve,
-                                      horizontal: AppDimensions.ten),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.buttonColor,
-                                      borderRadius: BorderRadius.circular(
-                                          AppDimensions.four)),
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: AppDimensions.eightyPx,
-                                        child: Text(
-                                            getBoxdata[index1]
-                                                .exerName
-                                                .toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                AppThemeStyle.cycleContainer),
-                                      ),
-                                      Text(getBoxdata[index1].value.toString(),
-                                          style: AppThemeStyle.cycleContainer)
-                                    ],
-                                  ),
-                                ),
-                                ClipPath(
-                                  clipper: TriangleClipper(),
-                                  child: Container(
-                                    margin: EdgeInsets.zero,
+                  height: MediaQuery.of(context).size.height / 2.8,
+                  child: GestureDetector(
+                    onTap: () {
+                      pushNewScreen(context,
+                      screen: ExerDataView(
+                       name: weekNames[index].weekName.toString().toUpperCase(),
+                      ),
+                      withNavBar: true);
+                    },
+                    child: ListView.builder(
+                      itemCount: getBoxdata.length,
+                           physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index1) {
+                        return index1 != 5
+                            ? Container(
+                                margin: EdgeInsets.only(
+                                    bottom: AppDimensions.five),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppDimensions.ten,
+                                    horizontal: AppDimensions.ten),
+                                decoration: BoxDecoration(
                                     color: AppColors.buttonColor,
+                                    borderRadius: BorderRadius.circular(
+                                        AppDimensions.four)),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: AppDimensions.hunDred,
+                                      child: Text(
+                                          getBoxdata[index1].exerName.toString().length > 11 ? "${getBoxdata[index1].exerName.toString().substring(0,11)}..." : getBoxdata[index1].exerName.toString(),
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppThemeStyle.cycleContainer),
+                                    ),
+                                    Text(getBoxdata[index1].value.toString(),
+                                        style: AppThemeStyle.cycleContainer)
+                                  ],
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.zero,
                                     padding: EdgeInsets.symmetric(
-                                      vertical: AppDimensions.twenty,
+                                        vertical: AppDimensions.twelve,
+                                        horizontal: AppDimensions.ten),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.buttonColor,
+                                        borderRadius: BorderRadius.circular(
+                                            AppDimensions.four)),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: AppDimensions.hunDred,
+                                          child: Text(
+                                                  getBoxdata[index1].exerName.toString().length > 11 ? "${getBoxdata[index1].exerName.toString().substring(0,11)}..." : getBoxdata[index1].exerName.toString(),
+                                          
+                                              overflow: TextOverflow.ellipsis,
+                                              style:
+                                                  AppThemeStyle.cycleContainer),
+                                        ),
+                                        Text(getBoxdata[index1].value.toString(),
+                                            style: AppThemeStyle.cycleContainer)
+                                      ],
                                     ),
                                   ),
-                                )
-                              ],
-                            );
-                    },
+                                  ClipPath(
+                                    clipper: TriangleClipper(),
+                                    child: Container(
+                                      margin: EdgeInsets.zero,
+                                      color: AppColors.buttonColor,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: AppDimensions.twenty,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                      },
+                    ),
                   ),
                 )
               ],

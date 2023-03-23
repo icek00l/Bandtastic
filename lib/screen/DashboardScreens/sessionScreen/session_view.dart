@@ -184,7 +184,7 @@ class PreparationSheet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Watch the \nfull training \nvideo".toUpperCase(),
+              "Watch the \nfull training".toUpperCase(),
               textAlign: TextAlign.end,
               style: AppThemeStyle.fifteenBoldRoboto,
             ),
@@ -346,7 +346,7 @@ class VideoGridView extends StatelessWidget {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,17 +383,19 @@ class VideoGridView extends StatelessWidget {
                                         bottom: AppDimensions.five),
                                     child: Row(
                                       children: [
-                                        Container(
-                                            color: AppColors.buttonColor,
-                                            width: AppDimensions.fiftyFive,
-                                            child: Text(
-                                              getExtraData[index]
-                                                  .name
-                                                  .toString(),
-                                              textAlign: TextAlign.end,
-                                              style: AppThemeStyle
-                                                  .robotoflex12bold,
-                                            )),
+                                        Expanded(
+                                          child: Text(
+                                            getExtraData[index].name.toString(),
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                backgroundColor:
+                                                    AppColors.buttonColor,
+                                                fontSize: AppDimensions.twelve,
+                                                fontFamily: AppFonts.robotoFlex,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                         index == 0
                                             ? SizedBox(
                                                 width: AppDimensions.five)
@@ -430,15 +432,21 @@ class VideoGridView extends StatelessWidget {
                                                     right: AppDimensions.two),
                                                 margin: EdgeInsets.only(
                                                     left: AppDimensions.five),
-                                                color: AppColors.buttonColor,
                                                 width: AppDimensions.twenty,
+                                                color: AppColors.buttonColor,
                                                 child: Text(
                                                   getExtraData[index]
                                                       .value
                                                       .toString(),
                                                   textAlign: TextAlign.end,
-                                                  style: AppThemeStyle
-                                                      .robotoflex12bold,
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          AppDimensions.twelve,
+                                                      fontFamily:
+                                                          AppFonts.robotoFlex,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                       ],
@@ -449,16 +457,16 @@ class VideoGridView extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        color: AppColors.buttonColor,
-                        margin: EdgeInsets.only(
-                            right: AppDimensions.ten, left: AppDimensions.ten),
-                        alignment: Alignment.bottomRight,
+                        margin: EdgeInsets.only(right: AppDimensions.five),
+                        padding: EdgeInsets.only(
+                            bottom: AppDimensions.two),
                         child: Text(
                           getExerciseGrid[index].exerciseName.toString(),
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: Colors.white,
                               letterSpacing: 0.1,
+                              backgroundColor: AppColors.buttonColor,
                               fontWeight: FontWeight.w600,
                               fontSize: AppDimensions.forteen,
                               fontFamily: AppFonts.robotoFlex),
@@ -475,7 +483,7 @@ class VideoGridView extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(AppDimensions.five, AppDimensions.five,
               AppDimensions.ten, AppDimensions.ten),
           decoration: BoxDecoration(
-            color: AppColors.buttonColor,
+            color: AppColors.backgColorOne,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(AppDimensions.twenty),
                 topRight: Radius.circular(AppDimensions.five),
@@ -511,14 +519,16 @@ class VideoGridView extends StatelessWidget {
                 ],
               ),
               SizedBox(
+                
                 width: AppDimensions.hunDred,
                 child: Text(
-                  "Rotator cuff",
+                  " Rotator cuff",
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: AppDimensions.forteen,
                       fontFamily: AppFonts.robotoFlex,
                       fontWeight: FontWeight.w600,
+                      backgroundColor: AppColors.buttonColor,
                       color: Colors.white),
                 ),
               ),
@@ -539,9 +549,11 @@ class VideoGridView extends StatelessWidget {
         CenterButtonArrowClass(
             onTap: (p0) {
               pushNewScreen(context,
-                  screen:  ReviewExerView(
-                    name: "Chest Press",number: "1",
-                  ), withNavBar: true);
+                  screen: ReviewExerView(
+                    name: "Chest Press",
+                    number: "1",
+                  ),
+                  withNavBar: true);
             },
             buttonText: AppStrings.letsmashText.toUpperCase()),
         SizedBox(height: AppDimensions.twentyFive),
@@ -589,7 +601,12 @@ class DataAddList extends StatelessWidget {
                     child: Text(
                       getExtraData[index].name.toString(),
                       textAlign: TextAlign.end,
-                      style: AppThemeStyle.robotoflex11,
+                      style: TextStyle(
+                          fontSize: AppDimensions.twelve,
+                          fontFamily: AppFonts.robotoFlex,
+                          backgroundColor: AppColors.buttonColor,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     )),
                 SizedBox(width: AppDimensions.ten),
                 index == 0
@@ -598,8 +615,9 @@ class DataAddList extends StatelessWidget {
                         height: AppDimensions.thirteen,
                         width: AppDimensions.sixTeen,
                         decoration: BoxDecoration(
+                         color: AppColors.buttonColor,
                             border: Border.all(
-                                color: Colors.white, width: AppDimensions.one)),
+                                color: AppColors.buttonColor, width: AppDimensions.one)),
                         child: Text(
                           getExtraData[index].value.toString(),
                           style: TextStyle(
@@ -609,9 +627,20 @@ class DataAddList extends StatelessWidget {
                               color: Colors.white),
                         ),
                       )
-                    : Text(
-                        getExtraData[index].value.toString(),
-                        style: AppThemeStyle.robotoflex12bold,
+                    : Container(
+                        alignment: Alignment.centerRight,
+                        height: AppDimensions.thirteen,
+                        width: AppDimensions.sixTeen,
+      color: AppColors.buttonColor,
+
+                        child: Text(
+                          getExtraData[index].value.toString(),
+                          style: TextStyle(
+      fontSize: AppDimensions.twelve,
+      fontFamily: AppFonts.robotoFlex,
+      fontWeight: FontWeight.bold,
+      color: Colors.white),
+                        ),
                       ),
               ],
             ),

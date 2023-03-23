@@ -51,7 +51,7 @@ class _ExerciseLogBandViewState extends State<ExerciseLogBandView> {
               )),
           body: SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
+              margin: EdgeInsets.symmetric(horizontal: AppDimensions.ten),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,15 +87,19 @@ class ExerciseNameVideo extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(number,
-                style: TextStyle(
-                    fontSize: AppDimensions.thirty2,
-                    fontFamily: AppFonts.robotoBold,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.buttonColor)),
-            SizedBox(width: AppDimensions.ten),
             Container(
-              width: AppDimensions.oneSixty,
+              margin: EdgeInsets.only(
+                  left: AppDimensions.five, right: AppDimensions.five),
+              child: Text(number,
+                  style: TextStyle(
+                      fontSize: AppDimensions.thirty2,
+                      fontFamily: AppFonts.robotoBold,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.buttonColor)),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              width: AppDimensions.twoTwenty,
               child: Text(name,
                   style: TextStyle(
                       fontSize: AppDimensions.twentyFour,
@@ -106,11 +110,11 @@ class ExerciseNameVideo extends StatelessWidget {
           ],
         ),
         Container(
-                height: AppDimensions.seventy,
-                width: AppDimensions.hunDred,
-                color: AppColors.gradientColor1,
-                alignment: Alignment.center,
-                child: SvgPicture.asset(AssetsBase.playVideoSvgIcon))
+            height: AppDimensions.seventy,
+            width: AppDimensions.hunDred,
+            color: AppColors.gradientColor1,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(AssetsBase.playVideoSvgIcon))
       ],
     );
   }
@@ -130,14 +134,14 @@ class LastSessionClass extends StatelessWidget {
             AppStrings.lastSessionText,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: AppDimensions.twenty,
-                fontFamily: AppFonts.plusSansBold,
-                fontWeight: FontWeight.w500,
+                fontSize: AppDimensions.sixTeen,
+                fontFamily: AppFonts.plusSansExtraBold,
+                fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
                 color: AppColors.secondaryTextColor),
           ),
         ),
-        SizedBox(height: AppDimensions.twentyFive),
+        SizedBox(height: AppDimensions.thirty),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -163,13 +167,15 @@ class LastSessionClass extends StatelessWidget {
                         : BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                              color: AppColors.borderColor,
+                              color: AppColors.buttonColor,
                             ),
                             borderRadius:
                                 BorderRadius.circular(AppDimensions.zero)),
                     child: Text(
                       AppStrings.prepSet.toUpperCase(),
-                      style: AppThemeStyle.robotoflex13Medium,
+                      style: getControl.selectSet == "Magic Set"
+                          ? AppThemeStyle.robotoflex13Medium
+                          : AppThemeStyle.robotoflexbold,
                     ),
                   ),
                   getControl.selectSet == "Magic Set"
@@ -177,7 +183,7 @@ class LastSessionClass extends StatelessWidget {
                       : Container(
                           height: AppDimensions.six,
                           decoration: BoxDecoration(
-                              color: AppColors.textButtonColor,
+                              color: AppColors.buttonColor,
                               borderRadius: BorderRadius.only(
                                   bottomLeft:
                                       Radius.circular(AppDimensions.six),
@@ -212,13 +218,15 @@ class LastSessionClass extends StatelessWidget {
                         : BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                              color: AppColors.borderColor,
+                              color: AppColors.buttonColor,
                             ),
                             borderRadius:
                                 BorderRadius.circular(AppDimensions.zero)),
                     child: Text(
                       AppStrings.magicSet.toUpperCase(),
-                      style: AppThemeStyle.robotoflex13Medium,
+                      style: getControl.selectSet == "Prep Set"
+                          ? AppThemeStyle.robotoflex13Medium
+                          : AppThemeStyle.robotoflexbold,
                     ),
                   ),
                   getControl.selectSet == "Prep Set"
@@ -226,7 +234,7 @@ class LastSessionClass extends StatelessWidget {
                       : Container(
                           height: AppDimensions.six,
                           decoration: BoxDecoration(
-                              color: AppColors.textButtonColor,
+                              color: AppColors.buttonColor,
                               borderRadius: BorderRadius.only(
                                   bottomLeft:
                                       Radius.circular(AppDimensions.six),
@@ -265,9 +273,11 @@ class LastSessionClass extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: AppDimensions.two,
-                        horizontal: AppDimensions.ten),
+                    padding: index == 0 || index == 1
+                        ? EdgeInsets.symmetric(
+                            vertical: AppDimensions.two,
+                            horizontal: AppDimensions.ten)
+                        : EdgeInsets.symmetric(vertical: AppDimensions.two),
                     decoration: BoxDecoration(
                         color: index == 1
                             ? AppColors.greenTextColor
@@ -317,6 +327,18 @@ class ThisSessionClass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Center(
+          child: Text(
+            AppStrings.thisSessionText,
+            style: TextStyle(
+                fontSize: AppDimensions.sixTeen,
+                fontFamily: AppFonts.plusSansExtraBold,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
+                color: AppColors.secondaryTextColor),
+          ),
+        ),
+        SizedBox(height: AppDimensions.twentyFive),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -342,13 +364,15 @@ class ThisSessionClass extends StatelessWidget {
                         : BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                              color: AppColors.borderColor,
+                              color: AppColors.buttonColor,
                             ),
                             borderRadius:
                                 BorderRadius.circular(AppDimensions.zero)),
                     child: Text(
                       AppStrings.prepSet.toUpperCase(),
-                      style: AppThemeStyle.robotoflex13Medium,
+                      style: exerController.thisSelectSet == "Magic Set"
+                          ? AppThemeStyle.robotoflex13Medium
+                          : AppThemeStyle.robotoflexbold,
                     ),
                   ),
                   exerController.thisSelectSet == "Magic Set"
@@ -356,7 +380,7 @@ class ThisSessionClass extends StatelessWidget {
                       : Container(
                           height: AppDimensions.six,
                           decoration: BoxDecoration(
-                              color: AppColors.textButtonColor,
+                              color: AppColors.buttonColor,
                               borderRadius: BorderRadius.only(
                                   bottomLeft:
                                       Radius.circular(AppDimensions.six),
@@ -391,13 +415,15 @@ class ThisSessionClass extends StatelessWidget {
                         : BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
-                              color: AppColors.borderColor,
+                              color: AppColors.buttonColor,
                             ),
                             borderRadius:
                                 BorderRadius.circular(AppDimensions.zero)),
                     child: Text(
                       AppStrings.magicSet.toUpperCase(),
-                      style: AppThemeStyle.robotoflex13Medium,
+                      style: exerController.thisSelectSet == "Prep Set"
+                          ? AppThemeStyle.robotoflex13Medium
+                          : AppThemeStyle.robotoflexbold,
                     ),
                   ),
                   exerController.thisSelectSet == "Prep Set"
@@ -405,7 +431,7 @@ class ThisSessionClass extends StatelessWidget {
                       : Container(
                           height: AppDimensions.six,
                           decoration: BoxDecoration(
-                              color: AppColors.textButtonColor,
+                              color: AppColors.buttonColor,
                               borderRadius: BorderRadius.only(
                                   bottomLeft:
                                       Radius.circular(AppDimensions.six),
@@ -419,119 +445,6 @@ class ThisSessionClass extends StatelessWidget {
           ],
         ),
         SizedBox(height: AppDimensions.twentyFive),
-        Center(
-          child: Text(
-            AppStrings.thisSessionText,
-            style: TextStyle(
-                fontSize: AppDimensions.sixTeen,
-                fontFamily: AppFonts.plusSansBold,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 2.0,
-                color: AppColors.secondaryTextColor),
-          ),
-        ),
-        SizedBox(height: AppDimensions.twentyFive),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: 80,
-              margin: EdgeInsets.only(
-                  right: AppDimensions.fifTeen, top: AppDimensions.twenty),
-              child: Text("BAND/S",
-                  textAlign: TextAlign.end,
-                  style: AppThemeStyle.robotoMedium13),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "BAND 1",
-                  style: AppThemeStyle.robotoMedium13,
-                ),
-                SizedBox(height: AppDimensions.ten),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: AppDimensions.ten),
-                  height: AppDimensions.forty,
-                  decoration: BoxDecoration(
-                    color: Colors.white38,
-                    border: Border.all(color: AppColors.borderColorThree),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      underline: Container(
-                        height: 0.8,
-                        color: const Color.fromRGBO(185, 191, 214, 1),
-                      ),
-                      style: TextStyle(
-                          fontSize: AppDimensions.sixTeen, color: Colors.black),
-                      icon: Visibility(
-                          visible: true,
-                          child: Icon(Icons.arrow_drop_down,
-                              color: AppColors.borderColorThree,
-                              size: AppDimensions.thirty)),
-                      value: exerController.getValue.isNotEmpty
-                          ? exerController.getValue
-                          : exerController.bandName,
-                      iconEnabledColor: const Color.fromRGBO(76, 73, 73, 0.6),
-                      items: <String>[
-                        'Select one',
-                        'Band 1',
-                        'Band 2',
-                        'Band 3'
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text("$value   "),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        exerController.getValue = value!;
-                        exerController.update();
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: AppDimensions.fifty),
-                  child: Text(
-                    AppStrings.cancelText,
-                    style: AppThemeStyle.robotoMedium13,
-                  ),
-                ),
-                // SizedBox(height: AppDimensions.ten),
-                // SvgPicture.asset(AssetsBase.removeSvgIcon),
-              ],
-            )
-          ],
-        ),
-        SizedBox(height: AppDimensions.eleven),
-        GestureDetector(
-          onTap: () {
-            pushNewScreen(context,
-                screen: const ProgressionList(), withNavBar: true);
-          },
-          child: Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(
-                right: AppDimensions.seventy5,
-                bottom: AppDimensions.ten,
-                top: AppDimensions.ten),
-            child: Text(
-              AppStrings.bandProgList,
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: AppColors.buttonColor,
-                  fontSize: AppDimensions.sixTeen,
-                  fontFamily: AppFonts.robotoFlex,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
         SizedBox(height: AppDimensions.eleven),
         PostionAll(
             thisSessionName: exerController.thisSesstionList,
@@ -559,104 +472,586 @@ class PostionAll extends StatelessWidget {
       itemCount: thisSessionName.length,
       itemBuilder: (context, index) {
         return Container(
-            margin: EdgeInsets.only(bottom: AppDimensions.seventeen),
-            child: Row(
-              children: [
-                Container(
-                  width: 80,
-                  margin: EdgeInsets.only(right: AppDimensions.thirty),
-                  child: Text(thisSessionName[index].names.toString(),
-                      textAlign: TextAlign.end,
-                      style: AppThemeStyle.robotoMedium13),
-                ),
-                index == 0 || index == 1
-                    ? Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: AppDimensions.ten),
-                        height: AppDimensions.forty,
-                        decoration: BoxDecoration(
-                          color: Colors.white38,
-                          border: Border.all(color: AppColors.borderColorThree),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            underline: Container(
-                              height: 0.8,
-                              color: const Color.fromRGBO(185, 191, 214, 1),
-                            ),
-                            style: TextStyle(
-                                fontSize: AppDimensions.sixTeen,
-                                color: Colors.black),
-                            icon: Visibility(
-                                visible: true,
-                                child: Icon(Icons.arrow_drop_down,
-                                    color: AppColors.borderColorThree,
-                                    size: AppDimensions.thirty)),
-                            value: "Select one",
-                            iconEnabledColor:
-                                const Color.fromRGBO(76, 73, 73, 0.6),
-                            items: <String>[
-                              'Select one',
-                              'Band 1',
-                              'Band 2',
-                              'Band 3'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text("$value   "),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              if (index == 0) {
-                                exerController1.getBandPosition = value!;
-                                print(exerController1.getBandPosition);
-                              } else if (index == 1) {
-                                exerController1.getMat = value!;
-                                print(exerController1.getMat);
-                              }
-                              exerController1.update();
-                            },
+            margin: EdgeInsets.only(
+                bottom:
+                    index == 2 ? AppDimensions.zero : AppDimensions.seventeen),
+            child: index == 0
+                ? Padding(
+                    padding: EdgeInsets.only(right: AppDimensions.twenty),
+                    child: Row(
+                      children: [
+                        Expanded(child: Container()),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "BAND 1",
+                                textAlign: TextAlign.end,
+                                style: AppThemeStyle.robotoMedium13,
+                              ),
+                              
+
+                              Text(
+                                exerController1.count == 1
+                                    ? "==========="
+                                    : "===========",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                exerController1.count == 1
+                                    ? "BAND 2"
+                                    : "CANCEL",
+                                textAlign: TextAlign.end,
+                                style: AppThemeStyle.robotoMedium13,
+                              ),
+                            ],
                           ),
+                        ),
+                      ],
+                    ),
+                  )
+                : index == 1
+                    ? Padding(
+                        padding: EdgeInsets.only(right: AppDimensions.twenty),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    right: AppDimensions.thirty),
+                                child: Text("BAND/S",
+                                    textAlign: TextAlign.end,
+                                    style: AppThemeStyle.robotoMedium13),
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: AppDimensions.five),
+                                    height: AppDimensions.forty,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white38,
+                                      border: Border.all(
+                                          color: AppColors.borderColorThree),
+                                    ),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        underline: Container(
+                                          height: 0.8,
+                                          color: const Color.fromRGBO(
+                                              185, 191, 214, 1),
+                                        ),
+                                        style: TextStyle(
+                                            fontSize: AppDimensions.sixTeen,
+                                            color: Colors.black),
+                                        icon: Visibility(
+                                            visible: true,
+                                            child: Icon(Icons.arrow_drop_down,
+                                                color:
+                                                    AppColors.borderColorThree,
+                                                size: AppDimensions.thirty)),
+                                        value:
+                                            exerController1.getValue.isNotEmpty
+                                                ? exerController1.getValue
+                                                : exerController1.bandName,
+                                        iconEnabledColor: const Color.fromRGBO(
+                                            76, 73, 73, 0.6),
+                                        items: <String>[
+                                          'Select one',
+                                          'Band 1',
+                                          'Band 2',
+                                          'Band 3'
+                                        ].map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text("$value   "),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          exerController1.getValue = value!;
+                                          exerController1.update();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: AppDimensions.fifTeen),
+                                  GestureDetector(
+                                      onTap: () {
+                                        if (exerController1.count == 1) {
+                                          exerController1.count++;
+
+                                          exerController1.addBandList.add(
+                                              LastSessionPrepData(
+                                                  names: "BAND",
+                                                  value:
+                                                      "${exerController1.count}"));
+                                          print(
+                                              "${exerController1.addBandList.length}");
+                                          print(exerController1.count);
+                                        } else {
+                                          if (exerController1.count != 1) {
+                                            exerController1.count = 1;
+                                          }
+                                          exerController1.addBandList.clear();
+                                          print(exerController1.count);
+                                        }
+                                        exerController1.update();
+                                      },
+                                      child: SvgPicture.asset(
+                                          exerController1.count == 1
+                                              ? AssetsBase.addButtonSvgIcon
+                                              : AssetsBase.removeSvgIcon)),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       )
-                    : Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: AppDimensions.ten),
-                        height: AppDimensions.forty,
-                        decoration: BoxDecoration(
-                          color: Colors.white38,
-                          border: Border.all(color: AppColors.borderColorThree),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            underline: Container(
-                              height: 0.8,
-                              color: const Color.fromRGBO(185, 191, 214, 1),
-                            ),
-                            style: TextStyle(
-                                fontSize: AppDimensions.sixTeen,
-                                color: Colors.black),
-                            icon: Visibility(
-                                visible: true,
-                                child: Icon(Icons.arrow_drop_down,
-                                    color: AppColors.borderColorThree,
-                                    size: AppDimensions.thirty)),
-                            value: "",
-                            iconEnabledColor:
-                                const Color.fromRGBO(76, 73, 73, 0.6),
-                            items: <String>['', 'Band 1', 'Band 2', 'Band 3']
-                                .map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text("$value   "),
-                              );
-                            }).toList(),
-                            onChanged: (value) {},
-                          ),
-                        ),
-                      ),
-              ],
-            ));
+                    : index == 2
+                        ? exerController1.addBandList.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: exerController1.addBandList.length,
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        right: AppDimensions.twenty,
+                                        bottom: AppDimensions.fifTeen),
+                                    child: Row(
+                                      children: [
+                                        Expanded(child: Container()),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "BAND ${exerController1.addBandList[index].value}",
+                                                    textAlign: TextAlign.end,
+                                                    style: AppThemeStyle
+                                                        .robotoMedium13,
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          AppDimensions.ten),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                AppDimensions
+                                                                    .five),
+                                                    height: AppDimensions.forty,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white38,
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .borderColorThree),
+                                                    ),
+                                                    child:
+                                                        DropdownButtonHideUnderline(
+                                                      child: DropdownButton<
+                                                          String>(
+                                                        underline: Container(
+                                                          height: 0.8,
+                                                          color: const Color
+                                                                  .fromRGBO(
+                                                              185, 191, 214, 1),
+                                                        ),
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                AppDimensions
+                                                                    .sixTeen,
+                                                            color:
+                                                                Colors.black),
+                                                        icon: Visibility(
+                                                            visible: true,
+                                                            child: Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color: AppColors
+                                                                    .borderColorThree,
+                                                                size: AppDimensions
+                                                                    .thirty)),
+                                                        value: exerController1
+                                                                .getValue
+                                                                .isNotEmpty
+                                                            ? exerController1
+                                                                .getValue
+                                                            : exerController1
+                                                                .bandName,
+                                                        iconEnabledColor:
+                                                            const Color
+                                                                    .fromRGBO(
+                                                                76,
+                                                                73,
+                                                                73,
+                                                                0.6),
+                                                        items: <String>[
+                                                          'Select one',
+                                                          'Band 1',
+                                                          'Band 2',
+                                                          'Band 3'
+                                                        ].map((String value) {
+                                                          return DropdownMenuItem<
+                                                              String>(
+                                                            value: value,
+                                                            child: Text(
+                                                                "$value   "),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged: (value) {
+                                                          exerController1
+                                                                  .getValue =
+                                                              value!;
+                                                          exerController1
+                                                              .update();
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                  width: AppDimensions.eighteen),
+                                              GestureDetector(
+                                                  onTap: () {},
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "BAND 3",
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: AppThemeStyle
+                                                            .robotoMedium13,
+                                                      ),
+                                                      SizedBox(
+                                                          height: AppDimensions
+                                                              .ten),
+                                                      SvgPicture.asset(AssetsBase
+                                                          .addButtonSvgIcon),
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : Container()
+                        : index == 3
+                            ? Row(
+                                children: [
+                                  Expanded(child: Container()),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        pushNewScreen(context,
+                                            screen: const ProgressionList(),
+                                            withNavBar: true);
+                                      },
+                                      child: Text(
+                                        AppStrings.bandProgList,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: AppColors.buttonColor,
+                                            fontSize: AppDimensions.sixTeen,
+                                            fontFamily: AppFonts.robotoFlex,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: AppDimensions.twenty)
+                                ],
+                              )
+                            : index == 7
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        right: AppDimensions.twenty),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                right: AppDimensions.thirty),
+                                            child: Text(
+                                                thisSessionName[index]
+                                                    .names
+                                                    .toString(),
+                                                textAlign: TextAlign.end,
+                                                style: AppThemeStyle
+                                                    .robotoMedium13),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: AppDimensions.oneThirty,
+                                                  height: AppDimensions.forty,
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                      fontSize: AppDimensions
+                                                          .forteen,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    textInputAction:
+                                                        TextInputAction.done,
+                                                    decoration:
+                                                        InputDecoration(
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                              top:
+                                                                  AppDimensions
+                                                                      .ten,
+                                                              left:
+                                                                  AppDimensions
+                                                                      .five,
+                                                              bottom:
+                                                                  AppDimensions
+                                                                      .ten),
+                                                      isDense: true,
+                                                      enabledBorder: const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+                                                      focusedBorder: const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+                                                      focusedErrorBorder:
+                                                          const OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: AppColors
+                                                                      .borderColorThree),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero),
+                                                      border: const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+
+                                                      // errorText: controller.nameErrorText,
+                                                      errorStyle: TextStyle(
+                                                          color: AppColors
+                                                              .errorColor,
+                                                          fontSize:
+                                                              AppDimensions
+                                                                  .thirteen),
+                                                    ),
+                                                    onChanged:
+                                                        (String value) {},
+                                                  )),
+                                              SizedBox(
+                                                  width: AppDimensions.fifTeen),
+                                              GestureDetector(
+                                                  onTap: () {},
+                                                  child: SvgPicture.asset(
+                                                      AssetsBase
+                                                          .micButtonSvgIcon)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : index == 8
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            top: AppDimensions.twenty,
+                                            right: AppDimensions.thirty),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    right:
+                                                        AppDimensions.thirty),
+                                                child: Text(
+                                                    thisSessionName[index]
+                                                        .names
+                                                        .toString(),
+                                                    textAlign: TextAlign.end,
+                                                    style: AppThemeStyle
+                                                        .robotoMedium13),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("+3!  🙂",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              AppDimensions
+                                                                  .twenty,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: AppFonts
+                                                              .robotoFlex,
+                                                          color: AppColors
+                                                              .textButtonColor)),
+                                                  Text("TOTAL",
+                                                      style: AppThemeStyle
+                                                          .robotoMedium13),
+                                                  Text("50",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              AppDimensions
+                                                                  .twenty,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: AppFonts
+                                                              .robotoFlex,
+                                                          color: AppColors
+                                                              .textButtonColor)),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                            right: AppDimensions.twenty),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    right:
+                                                        AppDimensions.thirty),
+                                                child: Text(
+                                                    thisSessionName[index]
+                                                        .names
+                                                        .toString(),
+                                                    textAlign: TextAlign.end,
+                                                    style: AppThemeStyle
+                                                        .robotoMedium13),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                AppDimensions
+                                                                    .five),
+                                                    height: AppDimensions.forty,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white38,
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .borderColorThree),
+                                                    ),
+                                                    child:
+                                                        DropdownButtonHideUnderline(
+                                                      child: DropdownButton<
+                                                          String>(
+                                                        underline: Container(
+                                                          height: 0.8,
+                                                          color: const Color
+                                                                  .fromRGBO(
+                                                              185, 191, 214, 1),
+                                                        ),
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                AppDimensions
+                                                                    .sixTeen,
+                                                            color:
+                                                                Colors.black),
+                                                        icon: Visibility(
+                                                            visible: true,
+                                                            child: Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color: AppColors
+                                                                    .borderColorThree,
+                                                                size: AppDimensions
+                                                                    .thirty)),
+                                                        value: exerController1
+                                                                .getValue
+                                                                .isNotEmpty
+                                                            ? exerController1
+                                                                .getValue
+                                                            : index == 4
+                                                                ? exerController1
+                                                                    .bandName
+                                                                : "",
+                                                        iconEnabledColor:
+                                                            const Color
+                                                                    .fromRGBO(
+                                                                76,
+                                                                73,
+                                                                73,
+                                                                0.6),
+                                                        items: <String>[
+                                                          index == 4
+                                                              ? 'Select one'
+                                                              : "",
+                                                          'Band 1',
+                                                          'Band 2',
+                                                          'Band 3'
+                                                        ].map((String value) {
+                                                          return DropdownMenuItem<
+                                                              String>(
+                                                            value: value,
+                                                            child: Text(
+                                                                "$value   "),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged: (value) {
+                                                          exerController1
+                                                                  .getValue =
+                                                              value!;
+                                                          exerController1
+                                                              .update();
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width: AppDimensions.ten),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ));
       },
     );
   }
@@ -669,92 +1064,6 @@ class NotesAndTotal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: 70,
-              margin: EdgeInsets.only(right: AppDimensions.fifTeen, top: AppDimensions.zero),
-              child: Text("NOTES",
-                  textAlign: TextAlign.end,
-                  style: AppThemeStyle.robotoMedium13),
-            ),
-            SizedBox(
-              width: 160,
-              height: AppDimensions.forty,
-              child: TextFormField(
-                // controller: controller.nameController,
-                style: TextStyle(
-                  fontSize: AppDimensions.forteen,
-                  fontWeight: FontWeight.w500,
-                ),
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                      top: AppDimensions.ten,
-                      right: AppDimensions.five,
-                      left: AppDimensions.five,
-                      bottom: AppDimensions.ten),
-                  isDense: true,
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-
-                  ),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-                  ),
-
-                  // errorText: controller.nameErrorText,
-                  errorStyle: TextStyle(
-                      color: AppColors.errorColor,
-                      fontSize: AppDimensions.thirteen),
-                ),
-                onChanged: (String value) {},
-              ),
-            ),
-            SvgPicture.asset(AssetsBase.micButtonSvgIcon)
-          ],
-        ),
-        SizedBox(height: AppDimensions.twenty),
-        Row(
-          children: [
-            Container(
-              width: 100,
-              margin: EdgeInsets.only(
-                  right: AppDimensions.twentyFour, top: AppDimensions.twenty),
-              child: Text("POWER \nINCREASE",
-                  textAlign: TextAlign.end,
-                  style: AppThemeStyle.robotoMedium13),
-            ),
-            Text("+3! :)",
-                style: TextStyle(
-                    fontSize: AppDimensions.twenty,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.robotoFlex,
-                    color: AppColors.textButtonColor)),
-            SizedBox(width: AppDimensions.fifty),
-            Text("TOTAL", style: AppThemeStyle.robotoMedium13),
-            SizedBox(width: AppDimensions.twenty),
-            Text("50",
-                style: TextStyle(
-                    fontSize: AppDimensions.twenty,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.robotoFlex,
-                    color: AppColors.textButtonColor)),
-          ],
-        ),
         SizedBox(height: AppDimensions.fifty),
         CenterButtonArrowClass(onTap: (p0) {}, buttonText: AppStrings.nextUP),
         SizedBox(height: AppDimensions.thirty),

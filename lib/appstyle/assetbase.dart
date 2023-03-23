@@ -11,6 +11,7 @@ abstract class AssetsBase {
  static const String buttonBackAll = 'assets/svg/buttonBack.svg';
  static const String buttonBlack = 'assets/svg/backBlack.svg';
  static const String smallBack = 'assets/svg/smallBack.svg';
+ static const String cornerImage = 'assets/svg/cornerImage.svg';
  
 
  static const String buttonBackWhite = 'assets/svg/buttonBackWhite.svg';
@@ -18,11 +19,13 @@ abstract class AssetsBase {
  
 
  static const String bandasticTextSvg = 'assets/svg/logoText.svg';
+ static const String splashLogoSvg = 'assets/svg/splashLogo.svg';
 
 
  static const String nextButtonSvg = 'assets/svg/frontIconSvg.svg';
  static const String backButtonSvg = 'assets/svg/backIconSvg.svg';
  static const String playCircleSvg = 'assets/svg/playButton.svg';
+ static const String showGraphSvg = 'assets/svg/showGraph.svg';
  
    static const String homeIconSvg = 'assets/svg/homeActiveSvg.svg';
  static const String homeInActiveSvg = 'assets/svg/homeInactiveSvg.svg';

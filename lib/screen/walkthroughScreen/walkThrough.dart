@@ -141,8 +141,8 @@ class _WalkThroughViewState extends State<WalkThroughView> {
                               AppRouteMaps.goToLoginPage();
                             }
                             controller.pageController.nextPage(
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceIn);
+                                duration: const Duration(milliseconds: 1000),
+                                curve: Curves.linearToEaseOut);
                           },
                           child: SvgPicture.asset(AssetsBase.nextButtonSvg)),
                     ],

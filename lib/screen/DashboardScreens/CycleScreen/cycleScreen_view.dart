@@ -78,7 +78,7 @@ class RotatedBoxList extends StatelessWidget {
                     },
                     child:
                         Text("THIS CYCLE", style: AppThemeStyle.bandProgess)),
-                SizedBox(height: AppDimensions.twenty),
+                SizedBox(height: AppDimensions.ten),
                 Container(
                   height: AppDimensions.ten,
                   width: AppDimensions.oneSixty,
@@ -86,81 +86,87 @@ class RotatedBoxList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppDimensions.fifty),
                       color: AppColors.buttonColor),
                 ),
-                Container(
+                SizedBox(height: AppDimensions.five)
+          ,                Container(
                   margin: EdgeInsets.only(
                       left: AppDimensions.thirty,
                       right: AppDimensions.thirty,
-                      top: AppDimensions.five),
+                    ),
                   width: AppDimensions.oneSixty,
-                  height: MediaQuery.of(context).size.height / 3,
-                  child: ListView.builder(
-                    itemCount: getBoxdata.length,
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index1) {
-                      return index1 != 5
-                          ? Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: AppDimensions.five),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: AppDimensions.twelve,
-                                  horizontal: AppDimensions.ten),
-                              decoration: BoxDecoration(
-                                  color: AppColors.buttonColor,
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimensions.four)),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(getBoxdata[index1].exerName.toString(),
-                                      style: AppThemeStyle.cycleContainer),
-                                  Text(getBoxdata[index1].value.toString(),
-                                      style: AppThemeStyle.cycleContainer)
-                                ],
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.zero,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppDimensions.twelve,
-                                      horizontal: AppDimensions.ten),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.buttonColor,
-                                      borderRadius: BorderRadius.circular(
-                                          AppDimensions.four)),
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          getBoxdata[index1]
-                                              .exerName
-                                              .toString(),
-                                          style: AppThemeStyle.cycleContainer),
-                                      Text(getBoxdata[index1].value.toString(),
-                                          style: AppThemeStyle.cycleContainer)
-                                    ],
-                                  ),
-                                ),
-                                ClipPath(
-                                  clipper: TriangleClipper(),
-                                  child: Container(
-                                    margin: EdgeInsets.zero,
+                  height: MediaQuery.of(context).size.height/2.8,
+                  child: GestureDetector(
+                    onTap: () {
+                       pushNewScreen(context,
+                      screen: const WeekDataView(), withNavBar: true);
+                    },
+                    child: ListView.builder(
+                      itemCount: getBoxdata.length,
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index1) {
+                        return index1 != 5
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: AppDimensions.five),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppDimensions.ten,
+                                    horizontal: AppDimensions.ten),
+                                decoration: BoxDecoration(
                                     color: AppColors.buttonColor,
+                                    borderRadius: BorderRadius.circular(
+                                        AppDimensions.four)),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(getBoxdata[index1].exerName.toString(),
+                                        style: AppThemeStyle.cycleContainer),
+                                    Text(getBoxdata[index1].value.toString(),
+                                        style: AppThemeStyle.cycleContainer)
+                                  ],
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.zero,
                                     padding: EdgeInsets.symmetric(
-                                      vertical: AppDimensions.twenty,
+                                        vertical: AppDimensions.thirteen,
+                                        horizontal: AppDimensions.ten),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.buttonColor,
+                                        borderRadius: BorderRadius.circular(
+                                            AppDimensions.four)),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            getBoxdata[index1]
+                                                .exerName
+                                                .toString(),
+                                            style: AppThemeStyle.cycleContainer),
+                                        Text(getBoxdata[index1].value.toString(),
+                                            style: AppThemeStyle.cycleContainer)
+                                      ],
                                     ),
                                   ),
-                                )
-                              ],
-                            );
-                    },
+                                  ClipPath(
+                                    clipper: TriangleClipper(),
+                                    child: Container(
+                                      margin: EdgeInsets.zero,
+                                      color: AppColors.buttonColor,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: AppDimensions.twenty,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                      },
+                    ),
                   ),
                 )
               ],

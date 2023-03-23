@@ -284,7 +284,7 @@ class ProgressBar extends StatelessWidget {
                       fontSize: AppDimensions.sixTeen,
                       fontFamily: AppFonts.robotoFlex,
                       fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
+                      // fontStyle: FontStyle.italic,
                       color: AppColors.thirdTextColor),
                 ),
               ),

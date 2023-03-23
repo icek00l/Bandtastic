@@ -68,19 +68,21 @@ class _LoginViewState extends State<LoginView> {
                             : Container(),
                         controller.hasError ? errorWidgetMsg() : Container(),
                         SizedBox(height: AppDimensions.thirteen),
-                      controller.hasError ?  Container(): Row(
-                          children: [
-                            Text(
-                              AppStrings.notGetText,
-                              style: TextStyle(
-                                  fontSize: AppDimensions.eighteen,
-                                  fontFamily: AppFonts.plusSansMedium,
-                                  fontWeight: FontWeight.w600,
-                                  // letterSpacing: 1.0,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(width: AppDimensions.twentyFive),
-                            GestureDetector(
+                        controller.hasError
+                            ? Container()
+                            : Row(
+                                children: [
+                                  Text(
+                                    AppStrings.notGetText,
+                                    style: TextStyle(
+                                        fontSize: AppDimensions.eighteen,
+                                        fontFamily: AppFonts.plusSansMedium,
+                                        fontWeight: FontWeight.w600,
+                                        // letterSpacing: 1.0,
+                                        color: Colors.black),
+                                  ),
+                                  SizedBox(width: AppDimensions.twentyFive),
+                                  GestureDetector(
                                     onTap: () {
                                       if (controller.otpValue.isEmpty) {
                                         Navigator.push(
@@ -90,15 +92,15 @@ class _LoginViewState extends State<LoginView> {
                                                     const LoginIDrequest()));
                                       } else {
                                         // AppRouteMaps.goToNameScreenPage();
-                                      } 
+                                      }
                                     },
                                     child: Text(
                                       AppStrings.buttonTextCheck,
                                       style: AppThemeStyle.greenTextButton500,
                                     ),
                                   ),
-                          ],
-                        ) ,
+                                ],
+                              ),
                         SizedBox(height: AppDimensions.twenty),
                         Align(
                           alignment: Alignment.center,
@@ -154,21 +156,23 @@ class _LoginViewState extends State<LoginView> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             keyboardType: TextInputType.number,
-                            onCompleted: (value) {
-                              if(value.isNotEmpty) {
-                                AppRouteMaps.goToNameScreenPage();
-                              } else {
-                                controller.hasError = true;
-                                controller.update();
-                              } 
-                            },
+
                             onChanged: (value) {
                               controller.otpValue = value;
                               controller.update();
                             },
+                            onCompleted: (value) {
+                              AppRouteMaps.goToNameScreenPage(value);
+                              // controller.socialLoginApi(context, value);
+                            },
                             onSubmitted: (value) {
-                               if(value.isNotEmpty) {
-                                
+                              if (value.isNotEmpty) {
+                                AppRouteMaps.goToNameScreenPage(value);
+
+                                // controller.socialLoginApi(context, value);
+                              } else {
+                                controller.hasError = true;
+                                controller.update();
                               }
                             },
                           ),

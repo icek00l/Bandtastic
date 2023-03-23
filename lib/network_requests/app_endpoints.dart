@@ -2,6 +2,7 @@
 
 abstract class AppEndpoints {
   static String CODEAUTH = 'code-auth';
+  static String USER_REGIS = 'user-register';
   
   
 }

@@ -29,7 +29,7 @@ class TrainingController extends GetxController {
         // }
         controller.pageController.nextPage(
             duration: const Duration(seconds: 3),
-            curve: Curves.linear);
+            curve: Curves.easeIn);
       },
       child: Container(
         height: AppDimensions.forteen,

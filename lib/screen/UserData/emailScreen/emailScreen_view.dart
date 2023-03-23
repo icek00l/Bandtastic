@@ -132,6 +132,7 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                                     .hasMatch(controller.emailID) &&
                                 controller.isEmailSelect == true) {
                               Get.to(() => const EmailVerifyScreen());
+                            //  controller.userRegisterApi(context, controller.codeBox,controller.name,value);
                             }
                           }
                         },
@@ -172,6 +173,9 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                                     .hasMatch(controller.emailID) &&
                                 controller.isEmailSelect == true) {
                               Get.to(() => const EmailVerifyScreen());
+
+                            //  controller.userRegisterApi(context, controller.codeBox,controller.name,controller.email);
+
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(

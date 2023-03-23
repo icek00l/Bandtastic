@@ -23,7 +23,7 @@ class _SplashViewState extends State<SplashView>  {
       builder: (controller) => Scaffold(
               body: 
               Center(
-            child: SvgPicture.asset(AssetsBase.bandasticTextSvg,height: AppDimensions.forty,)
+            child: SvgPicture.asset(AssetsBase.splashLogoSvg,height: AppDimensions.forty,),
             // Text(
             //   AppStrings.appName,
             //   style: TextStyle(

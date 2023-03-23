@@ -153,6 +153,13 @@ abstract class AppThemeStyle {
     fontFamily: AppFonts.robotoFlex,
     fontWeight: FontWeight.w500,
   );
+  static TextStyle robotoflexbold = TextStyle(
+    fontSize: AppDimensions.thirteen,
+    fontFamily: AppFonts.robotoBold,
+    letterSpacing: 1.0,
+    color: AppColors.buttonColor,
+    fontWeight: FontWeight.bold,
+  );
 
   static TextStyle introDataCommon = TextStyle(
       fontSize: AppDimensions.twentyTwo,

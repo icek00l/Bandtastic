@@ -9,4 +9,6 @@ abstract class AppFonts {
   static String plusSansMedium = 'PlusJakartaSansMedium';
   static String plusSansBold = 'PlusJakartaSansBold';
   static String plusSansExtraBold = 'PlusJakartaSansExtraBold';
+  static String notoSerif = 'NotoSerif';
+  
 }

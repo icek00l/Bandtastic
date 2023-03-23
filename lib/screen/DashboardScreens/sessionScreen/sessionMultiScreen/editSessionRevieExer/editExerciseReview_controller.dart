@@ -11,11 +11,16 @@ class EditReviewSessionController extends GetxController {
 
   @override
   void onInit() async {
-     thisSesstionList.clear();
+       thisSesstionList.clear();
+    thisSesstionList.add(ThisSessionData(names: "NOTES"));
     thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
-    thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
+    // thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
     thisSesstionList.add(ThisSessionData(names: "REPS"));
     thisSesstionList.add(ThisSessionData(names: "BEYOND FAILURE"));
+    thisSesstionList.add(ThisSessionData(names: "POWER \nINCREASE"));
 
     super.onInit();
   }

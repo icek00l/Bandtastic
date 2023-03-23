@@ -67,7 +67,8 @@ class _EndSessionOverviewState extends State<EndSessionOverview> {
                               Container(
                                 width: AppDimensions.oneThirty,
                                 margin: EdgeInsets.only(
-                                    right: AppDimensions.fifTeen,left: AppDimensions.fifTeen),
+                                    right: AppDimensions.fifTeen,
+                                    left: AppDimensions.fifTeen),
                                 child: Text(
                                   controller.endSessionData[index].names
                                       .toString()
@@ -85,77 +86,75 @@ class _EndSessionOverviewState extends State<EndSessionOverview> {
                                 controller.endSessionData[index].value
                                     .toString(),
                                 style: TextStyle(
-                                    fontSize: AppDimensions.sixTeen,
-                                    fontFamily: AppFonts.robotoMedium,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1.0,
-                                    color: AppColors.textButtonColor),
+                                  fontSize: AppDimensions.sixTeen,
+                                  fontFamily: AppFonts.robotoMedium,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.0,
+                                  color: AppColors.textButtonColor,
+                                ),
                               ),
-                             
                             ],
                           ),
-                          
                         );
                       },
                     ),
-                     Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: AppDimensions.oneThirty,
-              margin: EdgeInsets.only(right: AppDimensions.five, top: AppDimensions.zero),
-              child: Text("NOTES",
-                  textAlign: TextAlign.end,
-                  style: AppThemeStyle.robotoMedium13),
-            ),
-            SizedBox(
-              width: AppDimensions.onetwenty,
-              height: AppDimensions.forty,
-              child: TextFormField(
-                // controller: controller.nameController,
-                style: TextStyle(
-                  fontSize: AppDimensions.forteen,
-                  fontWeight: FontWeight.w500,
-                ),
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                      top: AppDimensions.ten,
-                      right: AppDimensions.five,
-                      left: AppDimensions.five,
-                      bottom: AppDimensions.ten),
-                  isDense: true,
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: AppDimensions.oneThirty,
+                          margin: EdgeInsets.only(
+                              right: AppDimensions.five,
+                              top: AppDimensions.zero),
+                          child: Text("NOTES",
+                              textAlign: TextAlign.end,
+                              style: AppThemeStyle.robotoMedium13),
+                        ),
+                        SizedBox(
+                          width: AppDimensions.onetwenty,
+                          height: AppDimensions.forty,
+                          child: TextFormField(
+                            // controller: controller.nameController,
+                            style: TextStyle(
+                              fontSize: AppDimensions.forteen,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: AppDimensions.ten,
+                                  right: AppDimensions.five,
+                                  left: AppDimensions.five,
+                                  bottom: AppDimensions.ten),
+                              isDense: true,
+                              enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.borderColorThree),
+                                  borderRadius: BorderRadius.zero),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.borderColorThree),
+                                  borderRadius: BorderRadius.zero),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.borderColorThree),
+                                  borderRadius: BorderRadius.zero),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.borderColorThree),
+                                  borderRadius: BorderRadius.zero),
 
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-
-                  ),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.borderColorThree),
-                    borderRadius: BorderRadius.zero
-                  ),
-
-                  // errorText: controller.nameErrorText,
-                  errorStyle: TextStyle(
-                      color: AppColors.errorColor,
-                      fontSize: AppDimensions.thirteen),
-                ),
-                onChanged: (String value) {},
-              ),
-            ),
-            SvgPicture.asset(AssetsBase.micButtonSvgIcon)
-          ],
-        ),
+                              // errorText: controller.nameErrorText,
+                              errorStyle: TextStyle(
+                                  color: AppColors.errorColor,
+                                  fontSize: AppDimensions.thirteen),
+                            ),
+                            onChanged: (String value) {},
+                          ),
+                        ),
+                        SvgPicture.asset(AssetsBase.micButtonSvgIcon)
+                      ],
+                    ),
                     SizedBox(height: AppDimensions.twentyFive),
                     VideoGridView(
                         getExerciseGrid: controller.exerciseVideo,
@@ -256,17 +255,19 @@ class VideoGridView extends StatelessWidget {
                                         bottom: AppDimensions.five),
                                     child: Row(
                                       children: [
-                                        Container(
-                                            color: AppColors.buttonColor,
-                                            width: AppDimensions.fiftyFive,
-                                            child: Text(
-                                              getExtraData[index]
-                                                  .name
-                                                  .toString(),
-                                              textAlign: TextAlign.end,
-                                              style: AppThemeStyle
-                                                  .robotoflex12bold,
-                                            )),
+                                        Expanded(
+                                          child: Text(
+                                            getExtraData[index].name.toString(),
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                backgroundColor:
+                                                    AppColors.buttonColor,
+                                                fontSize: AppDimensions.twelve,
+                                                fontFamily: AppFonts.robotoFlex,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                         index == 0
                                             ? SizedBox(
                                                 width: AppDimensions.five)
@@ -303,15 +304,21 @@ class VideoGridView extends StatelessWidget {
                                                     right: AppDimensions.two),
                                                 margin: EdgeInsets.only(
                                                     left: AppDimensions.five),
-                                                color: AppColors.buttonColor,
                                                 width: AppDimensions.twenty,
+                                                color: AppColors.buttonColor,
                                                 child: Text(
                                                   getExtraData[index]
                                                       .value
                                                       .toString(),
                                                   textAlign: TextAlign.end,
-                                                  style: AppThemeStyle
-                                                      .robotoflex12bold,
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          AppDimensions.twelve,
+                                                      fontFamily:
+                                                          AppFonts.robotoFlex,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
                                                 ),
                                               ),
                                       ],
@@ -322,16 +329,18 @@ class VideoGridView extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        color: AppColors.buttonColor,
-                        margin: EdgeInsets.only(
-                            right: AppDimensions.ten, left: AppDimensions.ten),
                         alignment: Alignment.bottomRight,
+                        padding: EdgeInsets.only(
+                            left: AppDimensions.three,
+                            right: AppDimensions.three,
+                            bottom: AppDimensions.two),
                         child: Text(
                           getExerciseGrid[index].exerciseName.toString(),
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: Colors.white,
                               letterSpacing: 0.1,
+                              backgroundColor: AppColors.buttonColor,
                               fontWeight: FontWeight.w600,
                               fontSize: AppDimensions.forteen,
                               fontFamily: AppFonts.robotoFlex),
