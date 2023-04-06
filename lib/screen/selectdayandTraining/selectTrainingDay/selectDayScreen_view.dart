@@ -151,6 +151,7 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                                       }
                                     }
                                   }
+
                                   controller.update();
                                 }
                               },
@@ -203,7 +204,33 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                   controller.count == 2
                       ? ButtonCommonArrowClass(
                           onTap: (p0) {
-                            AppRouteMaps.goToDashbaordScreen("1");
+                            controller.getNameList.clear();
+                            for (int i = 0;
+                                i < controller.weekList.length;
+                                i++) {
+                              if (controller.weekList[i].isSelectedWeek ==
+                                  true) {
+                                print(controller.weekList[i].isSelectedWeek);
+                                print(controller.weekList[i].name);
+                                controller.getNameList
+                                    .add(controller.weekList[i].name);
+
+                                print("first ==>${controller.getNameList}");
+                              }
+                            }
+                            if (controller.getNameList.isNotEmpty) {
+                              controller.getFirstDay = '';
+                              controller.getSecondDay = '';
+                              controller.getFirstDay =
+                                  controller.getNameList[0];
+                              controller.getSecondDay =
+                                  controller.getNameList[1];
+                                  controller.userSelectDayApi(context, controller.getFirstDay, controller.getSecondDay);
+                              print("seco ==>${controller.getFirstDay}");
+                              print("secon ==>${controller.getSecondDay}");
+                            }
+
+                            // AppRouteMaps.goToDashbaordScreen("1");
                           },
                           buttonText: AppStrings.confirmText,
                           isMargin: false)

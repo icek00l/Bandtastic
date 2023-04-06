@@ -8,6 +8,8 @@ import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/UserData/emailScreen/emailScreen_controller.dart';
+import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
+import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -71,8 +73,8 @@ class _EmailVerifyScreenState extends State<EmailVerifyScreen>
               alignment: Alignment.bottomCenter,
               child: MaterialButton(
                 onPressed: () {
-                //  Navigator.pop(context);
-                AppRouteMaps.goToWelcomeScreenPage();
+                  SharedPrefs.saveStringInPrefs(SharedPrefKeys.isLoggedIn, "3");
+                  AppRouteMaps.goToWelcomeScreenPage();
                 },
                 child: Text(
                   AppStrings.reEnteremail,

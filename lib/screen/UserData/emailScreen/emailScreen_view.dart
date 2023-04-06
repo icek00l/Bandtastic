@@ -131,8 +131,7 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                                 RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(controller.emailID) &&
                                 controller.isEmailSelect == true) {
-                              Get.to(() => const EmailVerifyScreen());
-                            //  controller.userRegisterApi(context, controller.codeBox,controller.name,value);
+                             controller.userRegisterApi(context,controller.name,value);
                             }
                           }
                         },
@@ -172,9 +171,8 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                                 RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(controller.emailID) &&
                                 controller.isEmailSelect == true) {
-                              Get.to(() => const EmailVerifyScreen());
 
-                            //  controller.userRegisterApi(context, controller.codeBox,controller.name,controller.email);
+                             controller.userRegisterApi(context,controller.name,controller.email);
 
                             } else {
                               ScaffoldMessenger.of(context)

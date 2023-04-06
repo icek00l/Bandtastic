@@ -96,4 +96,9 @@ static String trainviewText = 'Training Overview'.tr;
   static String emailNotReceive='Haven’t received a message?'.tr;
   static String checkBoxText= 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus'.tr;
   
+
+
+  // network
+  static String status= 'Status'.tr;
+
 }

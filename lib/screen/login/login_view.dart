@@ -110,12 +110,9 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(
-                              left: AppDimensions.ten,
-                              right: AppDimensions.ten,
-                              top: AppDimensions.fifTeen),
+                          margin: EdgeInsets.only(top: AppDimensions.fifTeen),
                           child: PinCodeTextField(
-                            length: 6,
+                            length: 8,
                             appContext: context,
                             autoFocus: true,
 
@@ -138,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                                 borderRadius:
                                     BorderRadius.circular(AppDimensions.twelve),
                                 fieldHeight: AppDimensions.fifty,
-                                fieldWidth: AppDimensions.fifty,
+                                fieldWidth: AppDimensions.forty,
                                 activeFillColor: Colors.white,
                                 inactiveFillColor: Colors.white,
                                 selectedFillColor: Colors.white,
@@ -148,10 +145,7 @@ class _LoginViewState extends State<LoginView> {
                                 borderWidth: 1),
                             animationDuration:
                                 const Duration(milliseconds: 300),
-                            // backgroundColor: Color,
                             enableActiveFill: true,
-                            // errorAnimationController: _controller.errorController,
-                            // controller: _controller.otpEditingController,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -162,14 +156,14 @@ class _LoginViewState extends State<LoginView> {
                               controller.update();
                             },
                             onCompleted: (value) {
-                              AppRouteMaps.goToNameScreenPage(value);
-                              // controller.socialLoginApi(context, value);
+                              // AppRouteMaps.goToNameScreenPage(value);
+                              controller.socialLoginApi(context, value);
                             },
                             onSubmitted: (value) {
                               if (value.isNotEmpty) {
-                                AppRouteMaps.goToNameScreenPage(value);
+                                // AppRouteMaps.goToNameScreenPage(value);
 
-                                // controller.socialLoginApi(context, value);
+                                controller.socialLoginApi(context, value);
                               } else {
                                 controller.hasError = true;
                                 controller.update();

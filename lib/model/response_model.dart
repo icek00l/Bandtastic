@@ -3,10 +3,10 @@ class ResponseModel {
     required this.data,
     required this.hasError,
     this.errorCode,
-    this.status,
+  required  this.status,
   });
   final String data;
-  final String? status;
+  final bool status;
   final bool hasError;
   final int? errorCode;
 }

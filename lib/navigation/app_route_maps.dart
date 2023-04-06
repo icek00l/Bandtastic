@@ -10,23 +10,22 @@ abstract class AppRouteMaps {
       Routes.walkThrough,
     );
   }
-  static void goToLoginPage() {
-    Get.offNamed(
-      Routes.login,
-    );
-  }
-  static void goToNameScreenPage(dynamic code) {
-    Get.toNamed(
-      Routes.nameView,arguments: {
-        "boxCode": code,
+  static void goToLoginPage(bool getBool){
+    Get.offAllNamed(
+      Routes.login,arguments: {
+        "changeBooleanValue": getBool
       }
     );
   }
-  static void goToEmailScreenPage(String name, dynamic code) {
+  static void goToNameScreenPage() {
+    Get.toNamed(
+      Routes.nameView,
+    );
+  }
+  static void goToEmailScreenPage(String name) {
     Get.toNamed(
       Routes.emailView,arguments: {
         "userName": name,
-        "codeGet": code,
       }
     );
   }

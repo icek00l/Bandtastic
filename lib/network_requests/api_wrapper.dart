@@ -7,23 +7,20 @@ import 'package:bandapp/model/response_model.dart';
 import 'package:bandapp/network_requests/enums.dart';
 import 'package:bandapp/utility/Utility.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
-/// API WRAPPER to call all the APIs and handle the error status codes
 class ApiWrapper {
   final String _baseUrl =
-      'https://pedantic-heisenberg.65-1-2-185.plesk.page/api/';
+      'https://bold-maxwell.65-1-2-185.plesk.page/public/api/';
 
-  /// Method to make all the requests inside the app like GET, POST, PUT, Delete
-  Future<ResponseModel> makeRequest(String url, Request request, dynamic data,
+  Future makeRequest(String url, Request request, dynamic data,
       String urlCheck, bool isLoading, Map<String, String>? headers) async {
-    /// To see whether the network is available or not
     if (await Utility.isNetworkAvailable()) {
       switch (request) {
 
-        /// Method to make the Get type request
         case Request.get:
           {
             var uri = _baseUrl + url;
@@ -38,11 +35,10 @@ class ApiWrapper {
               // Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Utility.printILog(uri);
-              return _returnResponse(response);
+              return response;
             } on TimeoutException catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}', hasError: true);
+              return const Response();
             }
           }
         case Request.post:
@@ -65,14 +61,13 @@ class ApiWrapper {
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-                Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              
+              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
               Utility.printILog(uri);
-              return _returnResponse(response);
+              return response;
             } on Exception catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}', hasError: true);
+              return const Response();
             }
           }
         case Request.put:
@@ -91,11 +86,10 @@ class ApiWrapper {
                   .timeout(const Duration(seconds: 60));
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Utility.printILog(uri);
-              return _returnResponse(response);
+              return response;
             } on TimeoutException catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}', hasError: true);
+              return const Response();
             }
           }
         case Request.patch:
@@ -114,13 +108,11 @@ class ApiWrapper {
                   .timeout(const Duration(seconds: 60));
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Utility.printILog(uri);
-              return _returnResponse(response);
+              return response;
             } on TimeoutException catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}',
-                  hasError: true,
-                  errorCode: 1000);
+
+              return const Response();
             }
           }
         case Request.delete:
@@ -141,11 +133,10 @@ class ApiWrapper {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Utility.printILog(uri);
               Utility.printLog(response.body);
-              return _returnResponse(response);
+              return response;
             } on TimeoutException catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}', hasError: true);
+              return const Response();
             }
           }
 
@@ -156,97 +147,6 @@ class ApiWrapper {
             try {
               final response = http.MultipartRequest("POST", Uri.parse(uri));
               response.headers.addAll(headers!);
-              if (url == "register") {
-                if (urlCheck == 'VenueRegister') {
-                  response.fields['user_type'] = data['user_type'];
-                  response.fields['country_code'] = data['country_code'];
-
-                  response.fields['first_name'] = data['first_name'];
-                  response.fields['last_name'] = data['last_name'];
-                  response.fields['user_name'] = data['user_name'];
-                  response.fields['designation'] = data['designation'];
-                  response.fields['website'] = data['website'];
-                  response.fields['phone'] = data['phone'];
-                  response.fields['social_login_id'] = data['social_login_id'];
-
-                  if (data['file_url'] != '') {
-                    response.files.add(await http.MultipartFile.fromPath(
-                        'file_url', data['file_url']));
-                  }
-                } else {
-                  response.fields['user_type'] = data['user_type'];
-                  response.fields['country_code'] = data['country_code'];
-
-                  response.fields['first_name'] = data['first_name'];
-                  response.fields['last_name'] = data['last_name'];
-                  response.fields['user_name'] = data['user_name'];
-                  response.fields['gender'] = data['gender'];
-                  response.fields['phone'] = data['phone'];
-                  response.fields['social_login_id'] = data['social_login_id'];
-                  response.fields['login_type'] = data['login_type'];
-
-                  if (data['file_url'] != '') {
-                    response.files.add(await http.MultipartFile.fromPath(
-                        'file_url', data['file_url']));
-                  }
-                }
-              } else if (url == "edit-customer-profile") {
-                response.fields['first_name'] = data['first_name'];
-                response.fields['last_name'] = data['last_name'];
-                response.fields['user_name'] = data['user_name'];
-                response.fields['age'] = data['age'];
-                response.fields['gender'] = data['gender'];
-                response.fields['phone'] = data['phone'];
-                response.fields['email'] = data['email'];
-                response.fields['my_go_to_round'] = data['my_go_to_round'];
-
-                if (data['file_url'] == '') {
-                  response.fields['image_url'] = data['image_url'];
-                  response.fields['file_url'] = data['file_url'];
-                } else {
-                  response.files.add(await http.MultipartFile.fromPath(
-                      'file_url', data['file_url']));
-                }
-              } else if (url == "create-group") {
-                response.fields['name'] = data['name'];
-                response.fields['user_ids'] = data['user_ids'];
-                if (data['image'] != '') {
-                  response.files.add(await http.MultipartFile.fromPath(
-                      'image', data['image']));
-                }
-              } else if (url == "v2/build-business-profile-with-logo") {
-                response.fields['name_of_bar_or_club'] =
-                    data['name_of_bar_or_club'];
-                response.fields['bar_club_address'] = data['bar_club_address'];
-                response.fields['capacity'] = data['capacity'];
-                response.fields['cover'] = data['cover'];
-                response.fields['wait_time'] = data['wait_time'];
-                response.fields['wristband_available'] =
-                    data['wristband_available'];
-                response.fields['country_code'] = data['country_code'];
-                response.fields['phone'] = data['phone'];
-                response.fields['line_skip_available'] =
-                    data['line_skip_available'];
-
-                if (data['club_logo'] == '') {
-                  response.files.add(await http.MultipartFile.fromPath(
-                      'club_logo', data['club_logo']));
-                }
-              } else if (url == "edit-profile") {
-                response.fields['first_name'] = data['first_name'];
-                response.fields['last_name'] = data['last_name'];
-                response.fields['user_name'] = data['user_name'];
-                response.fields['designation'] = data['designation'];
-                response.fields['website'] = data['website'];
-
-                if (data['file_url'] == '') {
-                  response.fields['image_url'] = data['image_url'];
-                  response.fields['file_url'] = data['file_url'];
-                } else {
-                  response.files.add(await http.MultipartFile.fromPath(
-                      'file_url', data['file_url']));
-                }
-              }
 
               final streamedResponse = await response.send();
               final responseX =
@@ -254,11 +154,10 @@ class ApiWrapper {
               print("response code ${responseX.body}");
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
               Utility.printILog(uri);
-              return _returnResponse(responseX);
+              return responseX;
             } on TimeoutException catch (_) {
               Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              return ResponseModel(
-                  data: '{"message":"Request timed out"}', hasError: true);
+              return const Response();
             }
           }
       }
@@ -266,37 +165,13 @@ class ApiWrapper {
 
     /// If there is no network available then instead of print can show the no internet widget too
     else {
-      return ResponseModel(
-        data:
+      return const Response(
+        statusText:
             '{"message":"No internet, please enable mobile data or wi-fi in your phone settings and try again"}',
-        hasError: true,
-        errorCode: 1000,
       );
     }
   }
 
   /// Method to return the API response based upon the status code of the server
-  ResponseModel _returnResponse(http.Response response) {
-    switch (response.statusCode) {
-      case 200:
-      case 201:
-        return ResponseModel(
-            data: response.body,
-            hasError: false,
-            errorCode: response.statusCode);
-      case 401:
-      case 400:
-      case 406:
-      case 409:
-      case 500:
-      case 522:
-        return ResponseModel(
-            data: response.body,
-            hasError: true,
-            errorCode: response.statusCode);
-
-      default:
-        return ResponseModel(data: response.body, hasError: true, errorCode: 0);
-    }
-  }
+ 
 }

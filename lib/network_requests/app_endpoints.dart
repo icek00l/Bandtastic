@@ -3,6 +3,6 @@
 abstract class AppEndpoints {
   static String CODEAUTH = 'code-auth';
   static String USER_REGIS = 'user-register';
-  
+  static String USER_SELECT_DAY = 'user-selecte-dates';
   
 }

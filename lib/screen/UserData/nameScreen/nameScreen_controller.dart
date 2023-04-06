@@ -10,14 +10,10 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String name='',nameErrorText = '',getName='';
   dynamic getCode;
   bool isNameValid =false;
-  dynamic argumentData = Get.arguments;
 
  @override
   void onInit() {
- if (argumentData != null) {
-      getCode = argumentData["boxCode"];
-      print(argumentData["boxCode"]);
-    }
+ 
 
   super.onInit();
  }

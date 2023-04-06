@@ -4,12 +4,15 @@ import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
+import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
+import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SetUpScreenView extends StatefulWidget {
   const SetUpScreenView({super.key});
@@ -325,6 +328,27 @@ class _SetUpScreenViewState extends State<SetUpScreenView> {
                         alignment: Alignment.center,
                         child: Text(
                           AppStrings.cancelText,
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontSize: AppDimensions.seventeen,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.buttonColor),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: AppDimensions.twenty),
+
+                    GestureDetector(
+                      onTap: () {
+                        print("heloo");
+                        SharedPrefs.clear();
+                        AppRouteMaps.goTowalkthrough();
+
+                      },
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Logout",
                           style: TextStyle(
                               decoration: TextDecoration.underline,
                               fontSize: AppDimensions.seventeen,

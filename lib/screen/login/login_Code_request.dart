@@ -6,16 +6,16 @@ import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
+import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginIDrequest extends StatefulWidget {
   const LoginIDrequest({super.key});
-
 
   @override
   State<LoginIDrequest> createState() => _LoginIDrequestState();
@@ -49,8 +49,7 @@ class _LoginIDrequestState extends State<LoginIDrequest> {
                               },
                               child: Image(
                                 height: AppDimensions.thirty,
-                                image:const Svg(AssetsBase.backButtonSvg),
-                                
+                                image: const Svg(AssetsBase.backButtonSvg),
                               )))
                     ],
                   ),
@@ -74,22 +73,41 @@ class _LoginIDrequestState extends State<LoginIDrequest> {
                         ),
                         SizedBox(height: AppDimensions.ten),
                         SizedBox(height: AppDimensions.five),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "help@bandtasticbodies.com",
-                            style: TextStyle(
-                              fontFamily: AppFonts.robotoFlex,
-                              fontWeight: FontWeight.w500,
-                              fontSize: AppDimensions.eighteen,
-                              color: AppColors.greenTextColor,
+                        GestureDetector(
+                          onTap: () async {
+                            String email =
+                                Uri.encodeComponent("code.support@bandtasticbodies.com");
+                            String subject =
+                                Uri.encodeComponent("Bandtastic help support");
+                            String body = Uri.encodeComponent(
+                                "Hi! I'm Flutter Developer");
+                            Uri mail = Uri.parse(
+                                "mailto:$email?subject=$subject&body=$body");
+                            if (await launchUrl(mail)) {
+                              //email app opened
+                              print("email app opened");
+                            } else {
+                              //email app is not opened
+                              print("email app is not opened");
+                            }
+                          },
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "code.support@bandtasticbodies.com",
+                              style: TextStyle(
+                                fontFamily: AppFonts.robotoFlex,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppDimensions.eighteen,
+                                color: AppColors.greenTextColor,
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(height: AppDimensions.sixty),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            AppRouteMaps.goToLoginPage(true);
                           },
                           child: Container(
                             width: double.infinity,
@@ -105,7 +123,6 @@ class _LoginIDrequestState extends State<LoginIDrequest> {
                             ),
                           ),
                         ),
-                       
                       ],
                     ),
                   )

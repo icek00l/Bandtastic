@@ -116,7 +116,7 @@ class _WalkThroughViewState extends State<WalkThroughView> {
                             left: AppDimensions.ten, right: AppDimensions.ten),
                         child: GestureDetector(
                           onTap: () {
-                            AppRouteMaps.goToLoginPage();
+                            AppRouteMaps.goToLoginPage(false);
                           },
                           child: Text(
                             AppStrings.skip,
@@ -138,7 +138,7 @@ class _WalkThroughViewState extends State<WalkThroughView> {
                           onPressed: () {
                             if (controller.courrentIndex ==
                                 contents.length - 1) {
-                              AppRouteMaps.goToLoginPage();
+                              AppRouteMaps.goToLoginPage(false);
                             }
                             controller.pageController.nextPage(
                                 duration: const Duration(milliseconds: 1000),
