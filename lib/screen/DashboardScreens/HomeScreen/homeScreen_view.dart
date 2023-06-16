@@ -1,15 +1,15 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, file_names
+// ignore_for_file: import_of_legacy_library_into_null_safe, file_names, must_be_immutable
 
+import 'dart:convert';
+import 'dart:math';
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/model/exerciseModel.dart';
-import 'package:bandapp/model/graphModel.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
-import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
@@ -30,52 +30,60 @@ class _HomeScreenViewState extends State<HomeScreenView> {
       : Get.put(HomeScreenController());
 
   @override
-  Widget build(BuildContext context) => GetBuilder<HomeScreenController>(
+  Widget build(BuildContext context) {
+    return GetBuilder<HomeScreenController>(
         builder: (controller) => Scaffold(
-          backgroundColor: Colors.white,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(AppDimensions.seventy), // here the desired height
-              child: AppBar(
-                backgroundColor: Colors.white,
-                elevation: AppDimensions.zero,
-                title:const CustomHeader(),
-              )),
-          body: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: AppDimensions.fifTeen),
-                    WorkoutHeading(exerciseListName: controller.exerciseList),
-                    SizedBox(height: AppDimensions.thirty),
-                    CenterButtonArrowClass(onTap: (p0) {
-                      AppRouteMaps.goToDashbaordScreen("2");
-                    }, buttonText: AppStrings.viewSessionText),
-                    
-                    SizedBox(height: AppDimensions.forty),
-                   const CycleHeading(),
-                    SizedBox(height: AppDimensions.thirty),
-                    ProgressBar(barList: controller.exerciseList),
-                    SizedBox(height: AppDimensions.thirty),
-                    OverallGraph(graphTextList: controller.exerciseList),
-                    SizedBox(height: AppDimensions.fifty),
-                  ]),
-            ),
-          ),
-        ),
+            backgroundColor: Colors.white,
+            appBar: PreferredSize(
+                preferredSize: Size.fromHeight(
+                    AppDimensions.seventy), // here the desired height
+                child: AppBar(
+                  backgroundColor: Colors.white,
+                  elevation: AppDimensions.zero,
+                  title: const CustomHeader(),
+                )),
+            body:
+                controller.isLoading.value
+                    ? SingleChildScrollView(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: AppDimensions.twenty),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: AppDimensions.fifTeen),
+                                WorkoutHeading(
+                                    exerciseListName: controller.exerciseList,
+                                    controller2: controller),
+                                SizedBox(height: AppDimensions.thirty),
+                                CenterButtonArrowClass(
+                                    onTap: (p0) {
+                                      AppRouteMaps.goToDashbaordScreen("2");
+                                    },
+                                    buttonText: AppStrings.viewSessionText),
+                                SizedBox(height: AppDimensions.forty),
+                                CycleHeading(controller3: controller),
+                                SizedBox(height: AppDimensions.thirty),
+                                ProgressBar(controller1: controller),
+                                SizedBox(height: AppDimensions.thirty),
+                                OverallGraph(controller4: controller),
+                                SizedBox(height: AppDimensions.fifty),
+                              ]),
+                        ),
+                      ):Container()
+                   ),
       );
 }
-
+}
 
 // Workout class
 class WorkoutHeading extends StatelessWidget {
-  const WorkoutHeading({
-    Key? key,
-    required this.exerciseListName,
-  }) : super(key: key);
+  WorkoutHeading(
+      {Key? key, required this.exerciseListName, required this.controller2})
+      : super(key: key);
 
   final List<AddExerciseModel> exerciseListName;
+  HomeScreenController controller2;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -83,41 +91,28 @@ class WorkoutHeading extends StatelessWidget {
       children: [
         Text(
           AppStrings.workout,
-        style: AppThemeStyle.heading28Bold,
+          style: AppThemeStyle.heading28Bold,
         ),
         SizedBox(height: AppDimensions.twentyFive),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: AppDimensions.twenty,top: AppDimensions.five),
-              child: Text(
-                "Next session",
-                style: TextStyle(
-                    fontSize: AppDimensions.sixTeen,
-                    fontFamily: AppFonts.robotoFlex,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.5,
-                    color: Colors.black),
-              ),
-            ),
-            Expanded(
-                child: Text(
-              "Wednesday",
-              style: TextStyle(
-                  fontSize: AppDimensions.twentyTwo,
-                  fontFamily: AppFonts.plusSansMedium,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 1.0,
-                  color: Colors.black),
-            )),
-          ],
-        ),
+        
+        Align(
+          alignment: Alignment.center,
+            child: Text(
+          controller2.getSessionDay.isNotEmpty
+              ? controller2.getSessionDay
+              : "",
+          style: TextStyle(
+              fontSize: AppDimensions.twentyTwo,
+              fontFamily: AppFonts.plusSansMedium,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1.0,
+              color: Colors.black),
+        )),
         SizedBox(height: AppDimensions.thirty),
         ListView.builder(
-          physics:const NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: exerciseListName.length,
+          itemCount: controller2.homeDataList.exerciseInfo!.length,
           itemBuilder: (context, index) {
             return Container(
               margin: EdgeInsets.only(bottom: AppDimensions.twenty),
@@ -125,10 +120,16 @@ class WorkoutHeading extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    width: 100,
+                    width: 120,
                     margin: EdgeInsets.only(right: AppDimensions.twenty),
                     child: Text(
-                      exerciseListName[index].bodyName!,
+                      controller2.homeDataList.exerciseInfo == null &&
+                              controller2
+                                      .homeDataList.exerciseInfo![index].name ==
+                                  null
+                          ? ""
+                          : controller2.homeDataList.exerciseInfo![index].name
+                              .toString(),
                       textAlign: TextAlign.end,
                       style: TextStyle(
                           fontSize: AppDimensions.sixTeen,
@@ -140,7 +141,9 @@ class WorkoutHeading extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      exerciseListName[index].exerciseName!,
+                      controller2.homeDataList.exerciseInfo![index]
+                              .exerciseType!.exerciseTypeInfo!.name ??
+                          "",
                       style: TextStyle(
                           fontSize: AppDimensions.eighteen,
                           fontFamily: AppFonts.robotoFlex,
@@ -161,8 +164,8 @@ class WorkoutHeading extends StatelessWidget {
 
 // cycle class
 class CycleHeading extends StatelessWidget {
-  const CycleHeading({super.key});
-
+  CycleHeading({super.key, required this.controller3});
+  HomeScreenController controller3;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -195,7 +198,7 @@ class CycleHeading extends StatelessWidget {
                     ))),
             Expanded(
                 child: Text(
-              "Week 4 of 6",
+              "Week ${controller3.weekNumberstore} of 4",
               style: TextStyle(
                   fontSize: AppDimensions.twentyTwo,
                   fontFamily: AppFonts.plusSansMedium,
@@ -219,6 +222,10 @@ class Common extends StatelessWidget {
   final int barLightList;
   @override
   Widget build(BuildContext context) {
+    var storeValue = 0;
+    if (barLightList > 5) {
+      storeValue = 10;
+    }
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppDimensions.ten),
       height: AppDimensions.thirty,
@@ -226,7 +233,7 @@ class Common extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: barLightList,
+        itemCount: storeValue,
         itemBuilder: (context, index) {
           return Row(
             children: [
@@ -247,18 +254,17 @@ class Common extends StatelessWidget {
 }
 
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({
+  ProgressBar({
     Key? key,
-    required this.barList,
+    required this.controller1,
   }) : super(key: key);
-
-  final List<AddExerciseModel> barList;
+  HomeScreenController controller1;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: barList.length,
+      itemCount: controller1.cycleListData.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.only(bottom: AppDimensions.fifTeen),
@@ -267,7 +273,7 @@ class ProgressBar extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  barList[index].bodyName!,
+                  controller1.cycleListData[index].name!,
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: AppDimensions.sixTeen,
@@ -276,10 +282,12 @@ class ProgressBar extends StatelessWidget {
                       color: AppColors.thirdTextColor),
                 ),
               ),
-              Expanded(child: Common(barLightList: barList[index].value!)),
+              Expanded(
+                  child: Common(
+                      barLightList: controller1.cycleListData[index].power!)),
               Expanded(
                 child: Text(
-                  "+${barList[index].value.toString()}",
+                  "+${controller1.cycleListData[index].power.toString()}",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontSize: AppDimensions.sixTeen,
@@ -298,21 +306,14 @@ class ProgressBar extends StatelessWidget {
 }
 
 // overallGraph
-List<GraphData> data = [
-  GraphData('w1', 18),
-  GraphData('w2', 20),
-  GraphData('w3', 28),
-  GraphData('w4', 30),
-];
 
 class OverallGraph extends StatelessWidget {
-  const OverallGraph({
+  OverallGraph({
     Key? key,
-    required this.graphTextList,
+    required this.controller4,
   }) : super(key: key);
 
-  final List<AddExerciseModel> graphTextList;
-
+  HomeScreenController controller4;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -329,18 +330,21 @@ class OverallGraph extends StatelessWidget {
         ),
         SizedBox(height: AppDimensions.forty),
         ListView.builder(
-          itemCount: graphTextList.length,
+          itemCount: controller4.graphListData.length,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
+            final span = DoubleSpan(-30, 300);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   margin: EdgeInsets.only(
-                      left: AppDimensions.twenty, bottom: AppDimensions.fifTeen,top: AppDimensions.fifty),
+                      left: AppDimensions.twenty,
+                      bottom: AppDimensions.fifTeen,
+                      top: AppDimensions.fifty),
                   child: Text(
-                    graphTextList[index].bodyName!,
+                    controller4.graphListData[index].exercise!,
                     style: TextStyle(
                         fontSize: AppDimensions.sixTeen,
                         fontFamily: AppFonts.plusSansBold,
@@ -349,62 +353,49 @@ class OverallGraph extends StatelessWidget {
                         color: AppColors.secondaryTextColor),
                   ),
                 ),
-              const  SimpleLineChart()
+                AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: LineChart(
+                    lines: [
+                      Line(
+                        data: controller4.graphListData[index].data,
+                        curve: LineCurves.cardinalSpline,
+                        marker: const MarkerOptions(
+                            paint: PaintOptions.fill(
+                          color: AppColors.buttonColor,
+                          strokeCap: StrokeCap.round,
+                        )),
+                        stroke: PaintOptions.stroke(
+                          color: AppColors.buttonColor,
+                          strokeWidth: AppDimensions.three,
+                        ),
+                        xFn: (datum) => datum.name,
+                        yFn: (datum) => datum.value,
+                        xAxis: ChartAxis(
+                            hideTickNotch: true,
+                            opposite: false,
+                            paint: PaintOptions.fill(
+                                color: AppColors.lineGraphColor,
+                                strokeCap: StrokeCap.round,
+                                strokeWidth: AppDimensions.two)),
+                        yAxis: ChartAxis(
+                            opposite: true,
+                            hideTickNotch: true,
+                            span: span,
+                            offset: -5,
+                            paint: PaintOptions.fill(
+                                color: AppColors.lineGraphColor,
+                                strokeCap: StrokeCap.round,
+                                strokeWidth: AppDimensions.two)),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           },
         )
       ],
-    );
-  }
-}
-
-class SimpleLineChart extends StatelessWidget {
-  static const myData = [
-    ["W1", " 18"],
-    ["W2", " 20"],
-    ["W3", " 28"],
-    ["W4", " 30"],
-  ];
-
-  const SimpleLineChart({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 4 / 3,
-      child: LineChart(
-        lines: [
-          Line<List<String>, String, String>(
-            data: myData,
-            curve: LineCurves.cardinalSpline,
-            marker: const MarkerOptions(
-                paint: PaintOptions.fill(
-              color: AppColors.buttonColor,
-              strokeCap: StrokeCap.round,
-            )),
-            stroke: PaintOptions.stroke(
-              color: AppColors.buttonColor,
-              strokeWidth: AppDimensions.three,
-            ),
-            xFn: (datum) => datum[0],
-            yFn: (datum) => datum[1],
-            xAxis: ChartAxis(
-                hideTickNotch: true,
-                paint: PaintOptions.fill(
-                    color: AppColors.lineGraphColor,
-                    strokeCap: StrokeCap.round,
-                    strokeWidth: AppDimensions.two)),
-            yAxis: ChartAxis(
-                opposite: true,
-                hideTickNotch: true,
-                paint: PaintOptions.fill(
-                    color: AppColors.lineGraphColor,
-                    strokeCap: StrokeCap.round,
-                    strokeWidth: AppDimensions.two)),
-          ),
-        ],
-      ),
     );
   }
 }

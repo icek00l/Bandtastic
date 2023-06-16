@@ -151,14 +151,12 @@ class TwoButtonClass extends StatelessWidget {
     required this.isChangeBack,
   }) : super(key: key);
   String firstText;
-  final Function(String) onTap;
+  Function()? onTap;
   bool isChangeBack = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-      },
+      onTap: onTap,
       child: Container(
         height: AppDimensions.sixty,
         width: AppDimensions.oneFifty,

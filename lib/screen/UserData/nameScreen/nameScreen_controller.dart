@@ -11,12 +11,6 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   dynamic getCode;
   bool isNameValid =false;
 
- @override
-  void onInit() {
- 
-
-  super.onInit();
- }
   void checkName(String nameText) {
     if (nameText.isEmpty) {
       isNameValid = false;

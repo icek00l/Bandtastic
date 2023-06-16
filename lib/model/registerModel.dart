@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 RegisterModel registerFromJson(String str) =>
@@ -16,7 +18,7 @@ class RegisterModel {
     status = json['status'];
     message = json['message'];
     result =
-        json['result'] != null ? new Result.fromJson(json['result']) : null;
+        json['result'] != null ? Result.fromJson(json['result']) : null;
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -35,10 +37,10 @@ class Result {
   MailStatus? mailStatus;
   Result({this.data, this.token, this.mailStatus});
   Result.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     token = json['token'];
     mailStatus = json['mail_status'] != null
-        ? new MailStatus.fromJson(json['mail_status'])
+        ? MailStatus.fromJson(json['mail_status'])
         : null;
   }
   Map<String, dynamic> toJson() {

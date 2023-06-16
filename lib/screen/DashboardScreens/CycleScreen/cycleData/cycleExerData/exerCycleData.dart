@@ -11,7 +11,6 @@ import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleData/showGraph/
 import 'package:bandapp/utility/custom_UI.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';

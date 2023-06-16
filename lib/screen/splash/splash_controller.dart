@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/UserData/emailScreen/email_Verify.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';

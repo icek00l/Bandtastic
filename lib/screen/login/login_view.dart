@@ -4,7 +4,6 @@ import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/login/login_Code_request.dart';
 import 'package:bandapp/screen/login/login_controller.dart';
 import 'package:flutter/material.dart';

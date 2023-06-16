@@ -5,6 +5,7 @@ import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
+import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/DashboardScreens/sessionScreen/sessionMultiScreen/editSessionRevieExer/editExercisereview.dart';
 import 'package:bandapp/screen/DashboardScreens/sessionScreen/sessionMultiScreen/exerciseSessionReview/exerciseReview_controller.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
@@ -16,8 +17,12 @@ import 'package:get/instance_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ReviewExerView extends StatefulWidget {
-  ReviewExerView({super.key, required this.name, required this.number});
-  String name = '', number = '';
+  ReviewExerView(
+      {super.key,
+      required this.name,
+      required this.number,
+      required this.getVideoUrl});
+  String name = '', number = '', getVideoUrl = '';
   @override
   State<ReviewExerView> createState() => _ReviewExerViewState();
 }
@@ -27,53 +32,68 @@ class _ReviewExerViewState extends State<ReviewExerView> {
       ? Get.find<ReviewExerController>()
       : Get.put(ReviewExerController());
   @override
-  Widget build(BuildContext context) => GetBuilder<ReviewExerController>(
-        builder: (controller) => Scaffold(
-          backgroundColor: Colors.white,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(
-                  AppDimensions.seventy), // here the desired height
-              child: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                elevation: AppDimensions.zero,
-                title: CustomWithNewHeader(
-                  getHeadingText: "Wk 1 OF 6 | MON",
-                  getSubHeadText: "Session: 15:07",
-                  isBackAllow: true,
-                  isStyleChange: true,
-                ),
-              )),
-          body: Container(
-            margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(height: AppDimensions.fifTeen),
-              ExerciseNameVideo(getName: widget.name, getNumber: widget.number),
-              SizedBox(height: AppDimensions.twentyFive),
-              LastSessionClass(controller2: controller),
-              ButtonCommonArrowClass(
-                  isMargin: false,
-                  onTap: (p0) {
-                    pushNewScreen(context,
-                        screen: EditReviewSessionExerView(
-                          name: widget.name,
-                          number: widget.number,
-                        ),
-                        withNavBar: true);
-                  },
-                  buttonText: AppStrings.editLogText.toUpperCase()),
-              SizedBox(height: AppDimensions.thirty),
-            ]),
-          ),
+  Widget build(BuildContext context) {
+    return GetBuilder<ReviewExerController>(
+      builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(
+                AppDimensions.seventy), // here the desired height
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              elevation: AppDimensions.zero,
+              title: CustomWithoutTraining(
+                navigateBack: () {
+                  Navigator.pop(context, true);
+                  Get.delete<ReviewExerController>();
+                },
+              ),
+            )),
+        body: Container(
+          margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(height: AppDimensions.fifTeen),
+            ExerciseNameVideo(
+                getName: widget.name,
+                getNumber: widget.number,
+                getVideoLink: widget.getVideoUrl),
+            SizedBox(height: AppDimensions.twentyFive),
+            LastSessionClass(controller2: controller),
+            ButtonCommonArrowClass(
+                isMargin: false,
+                onTap: (p0) async {
+                  pushNewScreen(context,
+                          screen: EditReviewSessionExerView(
+                            name: widget.name,
+                            number: widget.number,
+                          ),
+                          withNavBar: true)
+                      .then((value) {
+                    if (value != null) {
+                      controller.getSessionDetailApi(
+                          int.parse(controller.getSessionIdSave));
+                    }
+                  });
+                },
+                buttonText: AppStrings.editLogText.toUpperCase()),
+            SizedBox(height: AppDimensions.thirty),
+          ]),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class ExerciseNameVideo extends StatelessWidget {
-  ExerciseNameVideo({Key? key, required this.getName, required this.getNumber})
+  ExerciseNameVideo(
+      {Key? key,
+      required this.getName,
+      required this.getNumber,
+      required this.getVideoLink})
       : super(key: key);
-  String getName = '', getNumber = '';
+  String getName = '', getNumber = '', getVideoLink = '';
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -99,12 +119,17 @@ class ExerciseNameVideo extends StatelessWidget {
             )
           ],
         ),
-        Container(
-            height: AppDimensions.seventy,
-            width: AppDimensions.hunDred,
-            color: AppColors.gradientColor1,
-            alignment: Alignment.center,
-            child: SvgPicture.asset(AssetsBase.playVideoSvgIcon))
+        GestureDetector(
+          onTap: () {
+            AppRouteMaps.goToTrainVideoScreen(getVideoLink);
+          },
+          child: Container(
+              height: AppDimensions.seventy,
+              width: AppDimensions.hunDred,
+              color: AppColors.gradientColor1,
+              alignment: Alignment.center,
+              child: SvgPicture.asset(AssetsBase.playVideoSvgIcon)),
+        )
       ],
     );
   }
@@ -130,7 +155,6 @@ class LastSessionClass extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppDimensions.thirty),
-
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -142,7 +166,11 @@ class LastSessionClass extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                        margin:index == 0 ? EdgeInsets.only(bottom: AppDimensions.ten,right: AppDimensions.twenty): EdgeInsets.only(right: AppDimensions.twenty),
+                    margin: index == 0
+                        ? EdgeInsets.only(
+                            bottom: AppDimensions.ten,
+                            right: AppDimensions.twenty)
+                        : EdgeInsets.only(right: AppDimensions.twenty),
                     width: AppDimensions.oneThirty,
                     child: Text(
                       controller2.magicDataList[index].names.toString(),
@@ -157,8 +185,8 @@ class LastSessionClass extends StatelessWidget {
                   ),
                   index == 0
                       ? Container(
-                        margin: EdgeInsets.only(bottom: AppDimensions.ten),
-                        child: Row(
+                          margin: EdgeInsets.only(bottom: AppDimensions.ten),
+                          child: Row(
                             children: [
                               Container(
                                 margin:
@@ -166,7 +194,8 @@ class LastSessionClass extends StatelessWidget {
                                 width: AppDimensions.oneThirty,
                                 height: AppDimensions.forty,
                                 child: TextFormField(
-                                  // controller: controller.nameController,
+                                  controller: controller2.notesController,
+                                  readOnly: true,
                                   style: TextStyle(
                                     fontSize: AppDimensions.forteen,
                                     fontWeight: FontWeight.w500,
@@ -189,7 +218,8 @@ class LastSessionClass extends StatelessWidget {
                                       borderSide: BorderSide(
                                           color: AppColors.borderColorThree),
                                     ),
-                                    focusedErrorBorder: const OutlineInputBorder(
+                                    focusedErrorBorder:
+                                        const OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                       borderSide: BorderSide(
                                           color: AppColors.borderColorThree),
@@ -211,12 +241,15 @@ class LastSessionClass extends StatelessWidget {
                               SvgPicture.asset(AssetsBase.micButtonSvgIcon)
                             ],
                           ),
-                      )
+                        )
                       : Container(
-                        padding:index == 1? EdgeInsets.symmetric(
-                        vertical: AppDimensions.two,
-                        horizontal: AppDimensions.ten): EdgeInsets.symmetric(vertical: AppDimensions.two) ,
-                         
+                          padding: index == 1
+                              ? EdgeInsets.symmetric(
+                                  vertical: AppDimensions.two,
+                                  horizontal: AppDimensions.five)
+                              : EdgeInsets.symmetric(
+                                  vertical: AppDimensions.two),
+                                  width: AppDimensions.oneSixty,
                           decoration: BoxDecoration(
                               color: index == 1
                                   ? AppColors.greenTextColor
@@ -228,16 +261,42 @@ class LastSessionClass extends StatelessWidget {
                                   : Border.all(color: Colors.white),
                               borderRadius:
                                   BorderRadius.circular(AppDimensions.four)),
-                          child: Text(
-                            controller2.magicDataList[index].value.toString(),
-                            style: TextStyle(
-                                fontSize: AppDimensions.sixTeen,
-                                fontFamily: AppFonts.robotoMedium,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.0,
-                                color: index == 1
-                                    ? Colors.white
-                                    : AppColors.textButtonColor),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: AppDimensions.hunDred,
+                                child: Text(
+                                  controller2.magicDataList[index].value
+                                      .toString(),
+                                      overflow:controller2.storeAllLastData.length > 1 ? TextOverflow.ellipsis: TextOverflow.visible,
+                                  style: TextStyle(
+                                      fontSize: AppDimensions.sixTeen,
+                                      fontFamily: AppFonts.robotoMedium,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.0,
+                                      color: index == 1
+                                          ? Colors.white
+                                          : AppColors.textButtonColor),
+                                ),
+                              ),
+                              index == 1
+                                  ? SizedBox(width: AppDimensions.ten)
+                                  : Container(),
+                              index == 1 &&
+                                      controller2.storeAllLastData.length > 1
+                                  ? Text(
+                                      "+ ${ controller2.storeAllLastData.length}",
+                                      style: TextStyle(
+                                          fontSize: AppDimensions.sixTeen,
+                                          fontFamily: AppFonts.robotoMedium,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.0,
+                                          color: index == 1
+                                              ? Colors.white
+                                              : AppColors.textButtonColor),
+                                    )
+                                  : Container(),
+                            ],
                           ),
                         )
                 ],

@@ -38,6 +38,7 @@ abstract class AppDimensions {
 
   static double thirty = 30;
   static double thirty2 = 32;
+  static double thirty4 = 34;
   static double thirty6 = 36;
   static double thirtyfive = 35;
   static double thirtyeight = 38;

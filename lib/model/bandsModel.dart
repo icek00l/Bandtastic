@@ -24,13 +24,14 @@ class ExerciseVideoList {
   });
 }
 
+
 class ExtraDataList {
   String? name;
  String? value;
 
   ExtraDataList({
     this.name,
-    this.value,
+    this.value
   });
 }
 
@@ -60,6 +61,23 @@ class IntroDataModel {
   
  
   IntroDataModel({
+    this.names,
+  });
+}
+
+class RepsList {
+   String? names;
+  
+ 
+  RepsList({
+    this.names,
+  });
+}
+class BeyondFailureList {
+   String? names;
+  
+ 
+  BeyondFailureList({
     this.names,
   });
 }

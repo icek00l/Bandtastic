@@ -17,7 +17,7 @@ class CustomBack extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pop(context,true);
           },
           child: SvgPicture.asset(AssetsBase.backButtonSvg,
               height: AppDimensions.twentyFive),
@@ -36,16 +36,15 @@ class CustomBack extends StatelessWidget {
 }
 
 class CustomWithoutTraining extends StatelessWidget {
-  const CustomWithoutTraining({super.key});
+   CustomWithoutTraining({super.key,required this.navigateBack});
+  Function()? navigateBack;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: navigateBack,
           child: SvgPicture.asset(AssetsBase.backButtonSvg,
               height: AppDimensions.twentyFive),
         ),
@@ -83,7 +82,7 @@ class CustomHeaderBack extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context,true);
               },
               child: SvgPicture.asset(AssetsBase.backButtonSvg,
                   height: AppDimensions.twentyFive),
@@ -99,9 +98,11 @@ class CustomHeaderBack extends StatelessWidget {
 
 class CustomWithTextHeader extends StatelessWidget {
   CustomWithTextHeader(
-      {super.key, required this.getHeadingText, required this.isBackAllow});
+      {super.key, required this.getHeadingText, required this.isBackAllow,required this.navigateBack});
   String getHeadingText = '';
   bool isBackAllow = false;
+  Function()? navigateBack;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -109,9 +110,7 @@ class CustomWithTextHeader extends StatelessWidget {
       children: [
         isBackAllow == true
             ? GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                onTap: navigateBack,
                 child: SvgPicture.asset(AssetsBase.backButtonSvg,
                     height: AppDimensions.twentyFive),
               )
@@ -146,7 +145,7 @@ class CustomWithNewHeader extends StatelessWidget {
         isBackAllow == true
             ? GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context,true);
                 },
                 child: SvgPicture.asset(AssetsBase.backButtonSvg,
                     height: AppDimensions.thirty),
@@ -170,7 +169,7 @@ class CustomWithNewHeader extends StatelessWidget {
                   ? AppThemeStyle.extraBold18
                   : TextStyle(
                       fontSize: AppDimensions.eighteen,
-                      fontFamily: AppFonts.plusSansRegular,
+                      fontFamily: AppFonts.plusSansBold,
                       fontWeight: FontWeight.w800,
                       color: Colors.black),
             ),

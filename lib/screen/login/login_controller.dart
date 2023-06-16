@@ -1,9 +1,8 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
 import 'package:bandapp/model/login_Model.dart';
-import 'package:bandapp/model/response_model.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
 import 'package:bandapp/screen/login/login_Code_request.dart';

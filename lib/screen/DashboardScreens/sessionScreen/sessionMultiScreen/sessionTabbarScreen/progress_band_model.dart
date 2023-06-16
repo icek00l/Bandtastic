@@ -1,30 +1,93 @@
-// ignore_for_file: file_names
+
+import 'dart:convert';
+
+BandModalList bandModalFromJson(String str) =>
+    BandModalList.fromJson(json.decode(str) as Map<String, dynamic>);
+
+String bandModalToJson(BandModalList data) => json.encode(data.toJson());
 
 
-class BandProgress{
-   String? number;
-   String? bandName;
-   String? power;
-  BandProgress( this.number,this.bandName,this.power);
+class BandModalList {
+  bool? status;
+  String? message;
+  List<BandData>? result;
+
+  BandModalList({this.status, this.message, this.result});
+
+  BandModalList.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['result'] != null) {
+      result = <BandData>[];
+      json['result'].forEach((v) {
+        result!.add(BandData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-List<BandProgress> bandPower= [
-  BandProgress("1.", "Yellow", "6.5"),
-  BandProgress("2.", "Red", "13"),
-  BandProgress("3.", "Red & Yellow", "19.5"),
-  BandProgress("4.", "Black", "22"),
-  BandProgress("5.", "Black & Yellow", "28.5"),
-  BandProgress("6.", "Purple", "32"),
-  BandProgress("7.", "Purple & Yellow", "38.5"),
-  BandProgress("8.", "Green", "45"),
-  BandProgress("9.", "Green & Yellow", "51.5"),
-  BandProgress("10.", "Purple & Black", "54"),
-  BandProgress("11.", "Green & Red", "58"),
-  BandProgress("12.", "Purple & Black & Yellow", "60.5"),
-  BandProgress("13.", "Green & Red & Yellow", "64.5"),
-  BandProgress("14.", "Green & Black", "67"),
-  BandProgress("15.", "Green & Black & Yellow", "73.5"),
-  BandProgress("16.", "Green & Purple", "77"),
-  BandProgress("17.", "Green & Black & Red", "80"),
-  BandProgress("18.", "Green & Purple & Yellow", "83.5"),
+class BandData {
+  int? id;
+  String? band;
+  dynamic power;
+  String? createdAt;
+  String? updatedAt;
+
+  BandData({this.id, this.band, this.power, this.createdAt, this.updatedAt});
+
+  BandData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    band = json['band'];
+    power = json['power'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['band'] = band;
+    data['power'] = power;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class BandProgress {
+  String number;
+  BandProgress(
+    this.number
+  );
+  
+}
+List<BandProgress> bandNumber= [
+  BandProgress("1."),
+  BandProgress("2."),
+  BandProgress("3."),
+  BandProgress("4."),
+  BandProgress("5."),
+  BandProgress("6."),
+  BandProgress("7."),
+  BandProgress("8."),
+  BandProgress("9."),
+  BandProgress("10."),
+  BandProgress("11."),
+  BandProgress("12."),
+  BandProgress("13."),
+  BandProgress("14."),
+  BandProgress("15."),
+  BandProgress("16."),
+  BandProgress("17."),
+  BandProgress("18."),
 ];

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';

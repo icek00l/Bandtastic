@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable
 
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
@@ -34,6 +34,9 @@ class _ShowGraphViewState extends State<ShowGraphView> {
                 title: CustomWithTextHeader(
                   getHeadingText: widget.getName.isNotEmpty ? widget.getName : "",
                   isBackAllow: true,
+                  navigateBack: () {
+                Navigator.pop(context);
+              },
                 ),
               )),
             body: Container(

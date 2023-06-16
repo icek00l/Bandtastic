@@ -14,53 +14,68 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class WeekDataView extends StatefulWidget {
-  const WeekDataView({super.key});
+class WeekDataView extends StatelessWidget {
+   WeekDataView({super.key});
 
-  @override
-  State<WeekDataView> createState() => _WeekDataViewState();
-}
-
-class _WeekDataViewState extends State<WeekDataView> {
   var dsh = Get.isRegistered<WeekDataController>()
       ? Get.find<WeekDataController>()
       : Get.put(WeekDataController());
+
   @override
-  Widget build(BuildContext context) => GetBuilder<WeekDataController>(
-      builder: (controller) => Scaffold(
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(
-                    AppDimensions.seventy), // here the desired height
-                child: AppBar(
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.white,
-                  elevation: AppDimensions.zero,
-                  title: CustomWithTextHeader(
-                    getHeadingText: AppStrings.cycle,
-                    isBackAllow: true,
-                  ),
-                )),
-            body: SingleChildScrollView(
-                child: Container(
-              margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: AppDimensions.fifTeen),
-                  Text(
-                    AppStrings.thisweekText,
-                    style: AppThemeStyle.heading28Bold,
-                  ),
-                  SizedBox(height: AppDimensions.twenty),
-                  RotatedBoxList(
-                      getBoxdata: controller.cycleDataList,
-                      weekNames: controller.weekNameList),
-                  SizedBox(height: AppDimensions.fifty),
-                ],
-              ),
-            )),
-          ));
+  Widget build(BuildContext context) {
+    dsh.onInit();
+    return GetBuilder<WeekDataController>(
+        builder: (controller) => Scaffold(
+              backgroundColor: Colors.white,
+              appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(
+                      AppDimensions.seventy), // here the desired height
+                  child: AppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: Colors.white,
+                    elevation: AppDimensions.zero,
+                    title: CustomWithTextHeader(
+                      getHeadingText: AppStrings.cycle,
+                      isBackAllow: true,
+                      navigateBack: () {
+                        Navigator.pop(context);
+                        Get.delete<WeekDataController>();
+                      },
+                    ),
+                  )),
+              body: SingleChildScrollView(
+                  child: Container(
+                margin:
+                    EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: AppDimensions.fifTeen),
+                    Text(
+                      AppStrings.thisweekText,
+                      style: AppThemeStyle.heading28Bold,
+                    ),
+                    controller.weekNameList.isNotEmpty
+                        ? SizedBox(height: AppDimensions.twenty)
+                        : SizedBox(height: AppDimensions.twohunDredten),
+                    controller.weekNameList.isNotEmpty
+                        ? RotatedBoxList(
+                            getBoxdata: controller.cycleDataList,
+                            weekNames: controller.weekNameList)
+                        : Center(
+                            child: Text(
+                              "No data found for current week",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: AppDimensions.forteen),
+                            ),
+                          ),
+                    SizedBox(height: AppDimensions.fifty),
+                  ],
+                ),
+              )),
+            ));
+  }
 }
 
 class RotatedBoxList extends StatelessWidget {
@@ -72,27 +87,28 @@ class RotatedBoxList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RotatedBox(
         quarterTurns: -1,
-        
         child: ListView.builder(
           itemCount: weekNames.length,
           scrollDirection: Axis.horizontal,
-shrinkWrap: true,
-          
+          shrinkWrap: true,
           itemBuilder: (context, index) {
             return Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                  pushNewScreen(context,
-                      screen: ExerDataView(
-                       name: weekNames[index].weekName.toString().toUpperCase(),
-                      ),
-                      withNavBar: true);
-                  },
+                    onTap: () {
+                      pushNewScreen(context,
+                          screen: ExerDataView(
+                            name: weekNames[index]
+                                .weekName
+                                .toString()
+                                .toUpperCase(),
+                          ),
+                          withNavBar: true);
+                    },
                     child: Text(
                         weekNames[index].weekName.toString().toUpperCase(),
                         style: AppThemeStyle.bandProgess)),
-                SizedBox(height: AppDimensions.twenty),
+                SizedBox(height: AppDimensions.ten),
                 Container(
                   height: AppDimensions.ten,
                   width: AppDimensions.oneSixty,
@@ -100,33 +116,35 @@ shrinkWrap: true,
                       borderRadius: BorderRadius.circular(AppDimensions.fifty),
                       color: AppColors.buttonColor),
                 ),
-                SizedBox(height: AppDimensions.five)
-,
+                SizedBox(height: AppDimensions.five),
                 Container(
                   margin: EdgeInsets.only(
-                      left: AppDimensions.thirty,
-                      right: AppDimensions.thirty,
-                     ),
+                    left: AppDimensions.thirty,
+                    right: AppDimensions.thirty,
+                  ),
                   width: AppDimensions.oneSixty,
                   height: MediaQuery.of(context).size.height / 2.8,
                   child: GestureDetector(
                     onTap: () {
                       pushNewScreen(context,
-                      screen: ExerDataView(
-                       name: weekNames[index].weekName.toString().toUpperCase(),
-                      ),
-                      withNavBar: true);
+                          screen: ExerDataView(
+                            name: weekNames[index]
+                                .weekName
+                                .toString()
+                                .toUpperCase(),
+                          ),
+                          withNavBar: true);
                     },
                     child: ListView.builder(
                       itemCount: getBoxdata.length,
-                           physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index1) {
                         return index1 != 5
                             ? Container(
-                                margin: EdgeInsets.only(
-                                    bottom: AppDimensions.five),
+                                margin:
+                                    EdgeInsets.only(bottom: AppDimensions.five),
                                 padding: EdgeInsets.symmetric(
                                     vertical: AppDimensions.ten,
                                     horizontal: AppDimensions.ten),
@@ -142,7 +160,15 @@ shrinkWrap: true,
                                     SizedBox(
                                       width: AppDimensions.hunDred,
                                       child: Text(
-                                          getBoxdata[index1].exerName.toString().length > 11 ? "${getBoxdata[index1].exerName.toString().substring(0,11)}..." : getBoxdata[index1].exerName.toString(),
+                                          getBoxdata[index1]
+                                                      .exerName
+                                                      .toString()
+                                                      .length >
+                                                  11
+                                              ? "${getBoxdata[index1].exerName.toString().substring(0, 11)}..."
+                                              : getBoxdata[index1]
+                                                  .exerName
+                                                  .toString(),
                                           overflow: TextOverflow.ellipsis,
                                           style: AppThemeStyle.cycleContainer),
                                     ),
@@ -156,7 +182,7 @@ shrinkWrap: true,
                                   Container(
                                     margin: EdgeInsets.zero,
                                     padding: EdgeInsets.symmetric(
-                                        vertical: AppDimensions.twelve,
+                                        vertical: AppDimensions.thirteen,
                                         horizontal: AppDimensions.ten),
                                     decoration: BoxDecoration(
                                         color: AppColors.buttonColor,
@@ -170,13 +196,21 @@ shrinkWrap: true,
                                         SizedBox(
                                           width: AppDimensions.hunDred,
                                           child: Text(
-                                                  getBoxdata[index1].exerName.toString().length > 11 ? "${getBoxdata[index1].exerName.toString().substring(0,11)}..." : getBoxdata[index1].exerName.toString(),
-                                          
+                                              getBoxdata[index1]
+                                                          .exerName
+                                                          .toString()
+                                                          .length >
+                                                      11
+                                                  ? "${getBoxdata[index1].exerName.toString().substring(0, 11)}..."
+                                                  : getBoxdata[index1]
+                                                      .exerName
+                                                      .toString(),
                                               overflow: TextOverflow.ellipsis,
                                               style:
                                                   AppThemeStyle.cycleContainer),
                                         ),
-                                        Text(getBoxdata[index1].value.toString(),
+                                        Text(
+                                            getBoxdata[index1].value.toString(),
                                             style: AppThemeStyle.cycleContainer)
                                       ],
                                     ),
@@ -187,7 +221,7 @@ shrinkWrap: true,
                                       margin: EdgeInsets.zero,
                                       color: AppColors.buttonColor,
                                       padding: EdgeInsets.symmetric(
-                                        vertical: AppDimensions.twenty,
+                                        vertical: AppDimensions.fifTeen,
                                       ),
                                     ),
                                   )

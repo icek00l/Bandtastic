@@ -43,8 +43,11 @@ abstract class AssetsBase {
  static const String settingInActiveSvg = 'assets/svg/setUpInactiveSvg.svg';
 
  
- static const String anchor1Svg = 'assets/svg/anchor1.svg';
- static const String anchor2Svg = 'assets/svg/anchor2.svg';
+ static const String headAnchor = 'assets/svg/headAnchor.svg';
+ static const String chestAnchor = 'assets/svg/chestAnchor.svg';
+ static const String buttonAnchor = 'assets/svg/buttonAnchor.svg';
+ static const String hipAnchor = 'assets/svg/hipAnchor.svg';
+ static const String feetAnchor = 'assets/svg/feetAnchor.svg';
  static const String playVideoSvgIcon = 'assets/svg/playVideoSvg.svg';
 
  static const String addButtonSvgIcon = 'assets/svg/addButtonSvg.svg';

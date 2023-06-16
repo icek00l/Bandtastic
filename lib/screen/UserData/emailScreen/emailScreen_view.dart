@@ -5,12 +5,10 @@ import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/screen/UserData/emailScreen/emailScreen_controller.dart';
-import 'package:bandapp/screen/UserData/emailScreen/email_Verify.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:bandapp/widgets/custom_checkbox.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
@@ -39,7 +37,12 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: AppDimensions.twenty),
-                      const CustomWithoutTraining(),
+                       CustomWithoutTraining(
+                        navigateBack: () {
+      Navigator.pop(context);
+                          
+                        },
+                       ),
                       SizedBox(height: AppDimensions.fifty),
 
                       Text(

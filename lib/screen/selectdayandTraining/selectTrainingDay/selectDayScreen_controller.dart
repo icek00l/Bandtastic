@@ -18,13 +18,13 @@ class SelectDayScreenController extends GetxController {
   List getNameList = [];
   String getSecondDay = '';
   String getUserID = '';
-String getToken = '';
+  String getToken = '';
   @override
   void onInit() async {
     super.onInit();
     SharedPrefs.getString(SharedPrefKeys.userID).then((value) {
       print(value);
-      if(value.isNotEmpty) {
+      if (value.isNotEmpty) {
         getUserID = value;
       }
     });
@@ -53,11 +53,12 @@ String getToken = '';
 
   void userSelectDayApi(
       BuildContext context, getFirstName, getSecondName) async {
-      print(getUserID);
+    print(getUserID);
 
     var res = await apiClient.userSelectDay(
         firstDay: getFirstName,
-        secondDay: getSecondName,token: getToken,
+        secondDay: getSecondName,
+        token: getToken,
         isLoading: true);
 
     if (jsonDecode(res.body)['status'] != false) {
@@ -65,7 +66,7 @@ String getToken = '';
 
       AppRouteMaps.goToDashbaordScreen("1");
     } else {
-      print(res);
+      print(res.body);
     }
     update();
   }

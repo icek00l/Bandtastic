@@ -31,12 +31,14 @@ class _BottomBarViewState extends State<BottomBarView> {
   Widget build(BuildContext context) => GetBuilder<BottomBarController>(
       builder: (controller) => Scaffold(
             body: PersistentTabView(
+             
               context,
               controller: controller.tabController,
               screens: _buildScreens(),
               items: _navBarsItems(),
-              confineInSafeArea: true,
+              confineInSafeArea: true,resizeToAvoidBottomInset: true,
               backgroundColor: Colors.white,
+             hideNavigationBarWhenKeyboardShows: true,
               decoration: NavBarDecoration(
                   border: Border.all(color: AppColors.borderColorThree)),
               itemAnimationProperties: const ItemAnimationProperties(

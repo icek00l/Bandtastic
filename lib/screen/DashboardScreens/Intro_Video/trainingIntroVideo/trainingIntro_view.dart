@@ -25,7 +25,9 @@ class _TrainIntroViewState extends State<TrainIntroView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TrainIntroController>(
-        builder: (controller) => Scaffold(
+        builder: (controller) {
+    controller.videoController.initialize();
+          return Scaffold(
               body: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -36,6 +38,7 @@ class _TrainIntroViewState extends State<TrainIntroView> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
+                        Get.delete<TrainIntroController>();
                       },
                       child: SvgPicture.asset(AssetsBase.backButtonSvg,
                           height: AppDimensions.thirty),
@@ -86,6 +89,6 @@ class _TrainIntroViewState extends State<TrainIntroView> {
                   ))
                 ],
               ),
-            ));
+            );});
   }
 }

@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:bandapp/model/response_model.dart';
 import 'package:bandapp/network_requests/enums.dart';
 import 'package:bandapp/utility/Utility.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class ApiWrapper {
       switch (request) {
 
         case Request.get:
-          {
+        {
             var uri = _baseUrl + url;
             if (isLoading) Utility.onLoading();
             try {

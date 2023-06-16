@@ -11,7 +11,7 @@ abstract class AppRouteMaps {
     );
   }
   static void goToLoginPage(bool getBool){
-    Get.offAllNamed(
+    Get.offNamed(
       Routes.login,arguments: {
         "changeBooleanValue": getBool
       }
@@ -54,9 +54,11 @@ abstract class AppRouteMaps {
       Routes.restWeekScreen
     );
   }
-  static void goToTrainVideoScreen() {
+  static void goToTrainVideoScreen(String videoUrl) {
     Get.toNamed(
-      Routes.trainIntroVideo
+      Routes.trainIntroVideo,arguments: {
+        "videoUrl" : videoUrl
+      }
     );
   }
   static void goToDashbaordScreen(String number) {

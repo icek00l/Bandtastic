@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:bandapp/appstyle/app_strings.dart';
-import 'package:bandapp/model/login_Model.dart';
 import 'package:bandapp/model/registerModel.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
 import 'package:bandapp/screen/UserData/emailScreen/email_Verify.dart';

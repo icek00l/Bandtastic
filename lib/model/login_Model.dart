@@ -20,11 +20,11 @@ class LoginModel {
         json['result'] != null ?  Result.fromJson(json['result']) : null;
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -77,27 +77,27 @@ class Result {
     if (json['user_info'] != null) {
       userInfo = <UserInfo>[];
       json['user_info'].forEach((v) {
-        userInfo!.add(new UserInfo.fromJson(v));
+        userInfo!.add(UserInfo.fromJson(v));
       });
     }
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['code'] = this.code;
-    data['red_belt_qty'] = this.redBeltQty;
-    data['green_belt_qty'] = this.greenBeltQty;
-    data['yellow_belt_qty'] = this.yellowBeltQty;
-    data['black_belt_qty'] = this.blackBeltQty;
-    data['purple_belt_qty'] = this.purpleBeltQty;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['delete_status'] = this.deleteStatus;
-    data['assign_status'] = this.assignStatus;
-    data['token'] = this.token;
-    if (this.userInfo != null) {
-      data['user_info'] = this.userInfo!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['code'] = code;
+    data['red_belt_qty'] = redBeltQty;
+    data['green_belt_qty'] = greenBeltQty;
+    data['yellow_belt_qty'] = yellowBeltQty;
+    data['black_belt_qty'] = blackBeltQty;
+    data['purple_belt_qty'] = purpleBeltQty;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['delete_status'] = deleteStatus;
+    data['assign_status'] = assignStatus;
+    data['token'] = token;
+    if (userInfo != null) {
+      data['user_info'] = userInfo!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -107,7 +107,7 @@ class UserInfo {
   int? id;
   String? name;
   String? email;
-  Null? emailVerifiedAt;
+  dynamic emailVerifiedAt;
   String? createdAt;
   String? updatedAt;
   String? userType;
@@ -141,18 +141,18 @@ class UserInfo {
     secondDay = json['second_day'];
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['user_type'] = this.userType;
-    data['code'] = this.code;
-    data['email_verified_status'] = this.emailVerifiedStatus;
-    data['first_day'] = this.firstDay;
-    data['second_day'] = this.secondDay;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['user_type'] = userType;
+    data['code'] = code;
+    data['email_verified_status'] = emailVerifiedStatus;
+    data['first_day'] = firstDay;
+    data['second_day'] = secondDay;
     return data;
   }
 }

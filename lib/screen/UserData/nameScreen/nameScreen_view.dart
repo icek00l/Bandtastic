@@ -38,7 +38,12 @@ class _NameScreenViewState extends State<NameScreenView> {
                     children: [
                       SizedBox(height: AppDimensions.twenty),
 
-                      const CustomWithoutTraining(),
+                       CustomWithoutTraining(
+                        navigateBack: () {
+      Navigator.pop(context);
+                          
+                        },
+                       ),
                       SizedBox(height: AppDimensions.oneThirty),
                       // Text(
                       //   AppStrings.tellUsAboutYou,

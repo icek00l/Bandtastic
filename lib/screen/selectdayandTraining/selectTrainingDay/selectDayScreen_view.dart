@@ -6,7 +6,6 @@ import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/selectdayandTraining/selectTrainingDay/selectDayScreen_controller.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
@@ -37,7 +36,12 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: AppDimensions.ten),
-                  const CustomWithoutTraining(),
+                   CustomWithoutTraining(
+                    navigateBack: () {
+      Navigator.pop(context);
+                      
+                    },
+                   ),
                   SizedBox(height: AppDimensions.forty),
                   Text(
                     AppStrings.selectDay,
@@ -273,8 +277,9 @@ class _SelectDayScreenViewState extends State<SelectDayScreenView> {
                   controller.update();
                   var selectedIndex;
                   for (int i = 0; i < controller.weekList.length; i++) {
-                    if (controller.weekList[i].isSelectedWeek == true)
+                    if (controller.weekList[i].isSelectedWeek == true) {
                       selectedIndex = i;
+                    }
                   }
 
                   if (selectedIndex >= 4) {

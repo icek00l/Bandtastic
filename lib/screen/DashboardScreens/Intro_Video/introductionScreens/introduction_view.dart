@@ -27,7 +27,9 @@ class _IntroductionViewState extends State<IntroductionView> {
       : Get.put(IntroductionController());
 
   @override
-  Widget build(BuildContext context) => GetBuilder<IntroductionController>(
+  Widget build(BuildContext context) {
+    dsh.onInit();
+    return GetBuilder<IntroductionController>(
       builder: (controller) => Scaffold(
             backgroundColor: Colors.white,
             appBar: PreferredSize(
@@ -38,22 +40,25 @@ class _IntroductionViewState extends State<IntroductionView> {
                   elevation: AppDimensions.zero,
                   title: const CustomHeader(),
                 )),
-            body: SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: AppDimensions.fifTeen),
-                      const IntroHeading(),
-                      SizedBox(height: AppDimensions.twenty),
-                      InYourBoxData(getController: controller),
-                      SizedBox(height: AppDimensions.forty),
-                    ]),
-              ),
-            ),
+            body: controller.introGetDataList.isNotEmpty
+                ? SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: AppDimensions.twenty),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: AppDimensions.fifTeen),
+                            const IntroHeading(),
+                            SizedBox(height: AppDimensions.twenty),
+                            InYourBoxData(getController: controller),
+                            SizedBox(height: AppDimensions.forty),
+                          ]),
+                    ),
+                  )
+                : Container(),
           ));
-}
+}}
 
 // Introduction class
 class IntroHeading extends StatelessWidget {
@@ -91,132 +96,84 @@ class InYourBoxData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const CustomStraightLine(),
-      SizedBox(height: AppDimensions.fifTeen),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppStrings.inYourBoxText,
-            style: AppThemeStyle.introDataCommon,
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_outlined,
-                size: AppDimensions.twentyFive,
-                color: Colors.black,
-              ))
-        ],
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: getController.introGetDataList.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              const CustomStraightLine(),
+              SizedBox(height: AppDimensions.five),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    getController.introGetDataList[index].title ?? "",
+                    style: AppThemeStyle.introDataCommon,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                       
+                            getController.introGetDataList[index].isListSelect =
+                            !getController.introGetDataList[index].isListSelect;
+                        getController.update();
+
+                      },
+                      icon: Icon(
+                        getController.introGetDataList[index].isListSelect
+                            ? Icons.remove_outlined
+                            : Icons.add_outlined,
+                        size: AppDimensions.twentyFive,
+                        color: Colors.black,
+                      ))
+                ],
+              ),
+              getController.introGetDataList[index].isListSelect
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: getController.introGetDataList[index].introContent!.length,
+                      itemBuilder: (context, index1) {
+                        return GestureDetector(
+                          onTap: () {
+                            AppRouteMaps.goToTrainVideoScreen(
+                              getController.introGetDataList[index].introContent![index1].url.toString()
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: AppDimensions.twenty),
+                            child: Text(
+                              getController.introGetDataList[index].introContent![index1].title.toString(),
+                              style: AppThemeStyle.robotoflex16,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  
+                  : Container(),
+              getController.introGetDataList[index].isListSelect
+                  ? SizedBox(height: AppDimensions.thirty)
+                  : SizedBox(height: AppDimensions.ten),
+              const CustomLine(),
+              SizedBox(height: AppDimensions.ten),
+            ],
+          );
+        },
       ),
-      SizedBox(height: AppDimensions.five),
-      const CustomLine(),
-      SizedBox(height: AppDimensions.ten),
-      const CustomStraightLine(),
-      SizedBox(height: AppDimensions.five),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppStrings.myStoryText,
-            style: AppThemeStyle.introDataCommon,
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_outlined,
-                size: AppDimensions.twentyFive,
-                color: Colors.black,
-              ))
-        ],
-      ),
-      SizedBox(height: AppDimensions.five),
-      const CustomLine(),
-      SizedBox(height: AppDimensions.ten),
-      const CustomStraightLine(),
-      SizedBox(height: AppDimensions.five),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppStrings.bandTrainText,
-            style: AppThemeStyle.introDataCommon,
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_outlined,
-                size: AppDimensions.twentyFive,
-                color: Colors.black,
-              ))
-        ],
-      ),
-      SizedBox(height: AppDimensions.five),
-      const CustomLine(),
-      SizedBox(height: AppDimensions.ten),
-      const CustomStraightLine(),
-      SizedBox(height: AppDimensions.five),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppStrings.howUseText,
-            style: AppThemeStyle.introDataCommon,
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_outlined,
-                size: AppDimensions.twentyFive,
-                color: Colors.black,
-              ))
-        ],
-      ),
-      SizedBox(height: AppDimensions.five),
-      const CustomLine(),
-      SizedBox(height: AppDimensions.ten),
-      const CustomStraightLine(),
-      SizedBox(height: AppDimensions.fifTeen),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppStrings.trainviewText,
-            style: AppThemeStyle.introDataCommon,
-          ),
-          IconButton(
-              onPressed: () {
-                getController.toggleContainer();
-              },
-              icon: Icon(
-                getController.isIconChange
-                    ? Icons.add_outlined
-                    : Icons.remove_rounded,
-                size: AppDimensions.twentyFive,
-                color: Colors.black,
-              ))
-        ],
-      ),
-      SizeTransition(
-          sizeFactor: getController.animation,
-          axis: Axis.vertical,
-          child: InyourBboxData(getController.introList)),
-      getController.isIconChange
-          ? SizedBox(height: AppDimensions.ten)
-          : SizedBox(height: AppDimensions.thirty),
-      const CustomLine(),
     ]);
   }
 
   Widget InyourBboxData(List<IntroDataModel> dataList) {
     return ListView.builder(
       shrinkWrap: true,
-      physics:const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: dataList.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            AppRouteMaps.goToTrainVideoScreen();
+            // AppRouteMaps.goToTrainVideoScreen();
           },
           child: Container(
             margin: EdgeInsets.only(top: AppDimensions.twenty),
@@ -229,6 +186,118 @@ class InYourBoxData extends StatelessWidget {
       },
     );
   }
-
-  
 }
+
+
+
+// Static view code
+// SizeTransition(
+                  //     sizeFactor: getController.animation,
+                  //     axis: Axis.vertical,
+                  //     child: InyourBboxData(getController.introList))
+      // const CustomStraightLine(),
+      // SizedBox(height: AppDimensions.fifTeen),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       AppStrings.inYourBoxText,
+      //       style: AppThemeStyle.introDataCommon,
+      //     ),
+      //     IconButton(
+      //         onPressed: () {},
+      //         icon: Icon(
+      //           Icons.add_outlined,
+      //           size: AppDimensions.twentyFive,
+      //           color: Colors.black,
+      //         ))
+      //   ],
+      // ),
+      // SizedBox(height: AppDimensions.five),
+      // const CustomLine(),
+      // SizedBox(height: AppDimensions.ten),
+      // const CustomStraightLine(),
+      // SizedBox(height: AppDimensions.five),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       AppStrings.myStoryText,
+      //       style: AppThemeStyle.introDataCommon,
+      //     ),
+      //     IconButton(
+      //         onPressed: () {},
+      //         icon: Icon(
+      //           Icons.add_outlined,
+      //           size: AppDimensions.twentyFive,
+      //           color: Colors.black,
+      //         ))
+      //   ],
+      // ),
+      // SizedBox(height: AppDimensions.five),
+      // const CustomLine(),
+      // SizedBox(height: AppDimensions.ten),
+      // const CustomStraightLine(),
+      // SizedBox(height: AppDimensions.five),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       AppStrings.bandTrainText,
+      //       style: AppThemeStyle.introDataCommon,
+      //     ),
+      //     IconButton(
+      //         onPressed: () {},
+      //         icon: Icon(
+      //           Icons.add_outlined,
+      //           size: AppDimensions.twentyFive,
+      //           color: Colors.black,
+      //         ))
+      //   ],
+      // ),
+      // SizedBox(height: AppDimensions.five),
+      // const CustomLine(),
+      // SizedBox(height: AppDimensions.ten),
+      // const CustomStraightLine(),
+      // SizedBox(height: AppDimensions.five),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       AppStrings.howUseText,
+      //       style: AppThemeStyle.introDataCommon,
+      //     ),
+      //     IconButton(
+      //         onPressed: () {},
+      //         icon: Icon(
+      //           Icons.add_outlined,
+      //           size: AppDimensions.twentyFive,
+      //           color: Colors.black,
+      //         ))
+      //   ],
+      // ),
+      // SizedBox(height: AppDimensions.five),
+      // const CustomLine(),
+      // SizedBox(height: AppDimensions.ten),
+      // const CustomStraightLine(),
+      // SizedBox(height: AppDimensions.fifTeen),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       AppStrings.trainviewText,
+      //       style: AppThemeStyle.introDataCommon,
+      //     ),
+          // IconButton(
+          //     onPressed: () {
+          //       getController.toggleContainer();
+          //     },
+          //     icon: Icon(
+          //       getController.isIconChange
+          //           ? Icons.add_outlined
+          //           : Icons.remove_rounded,
+          //       size: AppDimensions.twentyFive,
+          //       color: Colors.black,
+          //     ))
+      //   ],
+      // ),
