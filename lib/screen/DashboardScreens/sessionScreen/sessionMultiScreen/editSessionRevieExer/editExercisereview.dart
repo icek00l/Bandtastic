@@ -1017,7 +1017,7 @@ class NotesAndTotal extends StatelessWidget {
       children: [
         SizedBox(height: AppDimensions.fifty),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: AppDimensions.twenty),
+          margin: EdgeInsets.symmetric(horizontal: AppDimensions.twentyFive),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

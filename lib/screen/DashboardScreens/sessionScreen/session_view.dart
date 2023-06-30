@@ -616,6 +616,7 @@ class VideoGridView extends StatelessWidget {
             }),
         SizedBox(height: AppDimensions.thirtyfive),
         Container(
+          height: AppDimensions.ninty,
           width: double.infinity,
           padding: EdgeInsets.fromLTRB(AppDimensions.five, AppDimensions.five,
               AppDimensions.ten, AppDimensions.ten),
@@ -636,7 +637,7 @@ class VideoGridView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      margin: EdgeInsets.only(bottom: AppDimensions.twenty),
+                      margin: EdgeInsets.only(bottom: AppDimensions.thirty6),
                       height: AppDimensions.thirtyfive,
                       width: AppDimensions.thirtyfive,
                       alignment: Alignment.center,

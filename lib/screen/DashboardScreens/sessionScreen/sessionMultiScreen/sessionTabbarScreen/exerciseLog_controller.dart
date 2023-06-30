@@ -85,10 +85,20 @@ class ExerciseLogController extends GetxController {
       }
     });
     repsDataList.clear();
+    repsDataList.add(RepsList(names: "1"));
+    repsDataList.add(RepsList(names: "2"));
     repsDataList.add(RepsList(names: "3"));
+    repsDataList.add(RepsList(names: "4"));
+    repsDataList.add(RepsList(names: "5"));
     repsDataList.add(RepsList(names: "6"));
+    repsDataList.add(RepsList(names: "7"));
+    repsDataList.add(RepsList(names: "8"));
     repsDataList.add(RepsList(names: "9"));
+    repsDataList.add(RepsList(names: "10"));
+    repsDataList.add(RepsList(names: "11"));
     repsDataList.add(RepsList(names: "12"));
+    repsDataList.add(RepsList(names: "13"));
+    repsDataList.add(RepsList(names: "14"));
     repsDataList.add(RepsList(names: "15"));
 
     beyondFailureList.clear();

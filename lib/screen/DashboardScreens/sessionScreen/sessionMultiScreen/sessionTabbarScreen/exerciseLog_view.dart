@@ -1177,7 +1177,7 @@ class PostionAll extends StatelessWidget {
                                                           height: AppDimensions
                                                               .forty,
                                                           width: AppDimensions
-                                                              .ninty,
+                                                              .oneThirty,
                                                           decoration:
                                                               BoxDecoration(
                                                             color:
@@ -1281,7 +1281,7 @@ class PostionAll extends StatelessWidget {
                                                           height: AppDimensions
                                                               .forty,
                                                           width: AppDimensions
-                                                              .ninty,
+                                                              .oneThirty,
                                                           decoration:
                                                               BoxDecoration(
                                                             color:
