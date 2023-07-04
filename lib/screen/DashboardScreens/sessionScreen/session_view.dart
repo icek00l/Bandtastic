@@ -621,7 +621,7 @@ class VideoGridView extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(AppDimensions.five, AppDimensions.five,
               AppDimensions.ten, AppDimensions.ten),
           decoration: BoxDecoration(
-            color: AppColors.backgColorOne,
+            color: AppColors.sixTextColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(AppDimensions.twenty),
                 topRight: Radius.circular(AppDimensions.five),

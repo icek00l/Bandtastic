@@ -15,13 +15,13 @@ class ApiWrapper {
   final String _baseUrl =
       'https://bold-maxwell.65-1-2-185.plesk.page/public/api/';
 
-  Future makeRequest(String url, Request request, dynamic data,
-      String urlCheck, bool isLoading, Map<String, String>? headers) async {
+  Future makeRequest(String url, Request request, dynamic data, String urlCheck,
+      bool isLoading, Map<String, String>? headers) async {
+    print("Header $headers");
     if (await Utility.isNetworkAvailable()) {
       switch (request) {
-
         case Request.get:
-        {
+          {
             var uri = _baseUrl + url;
             if (isLoading) Utility.onLoading();
             try {
@@ -172,5 +172,4 @@ class ApiWrapper {
   }
 
   /// Method to return the API response based upon the status code of the server
- 
 }

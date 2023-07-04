@@ -164,13 +164,14 @@ class LastSessionClass extends StatelessWidget {
               margin: EdgeInsets.only(bottom: AppDimensions.fifTeen),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: index == 0
                         ? EdgeInsets.only(
                             bottom: AppDimensions.ten,
                             right: AppDimensions.twenty)
-                        : EdgeInsets.only(right: AppDimensions.twenty),
+                        : EdgeInsets.only(right: AppDimensions.twenty, top: 5),
                     width: AppDimensions.oneThirty,
                     child: Text(
                       controller2.magicDataList[index].names.toString(),
@@ -249,14 +250,12 @@ class LastSessionClass extends StatelessWidget {
                                   horizontal: AppDimensions.five)
                               : EdgeInsets.symmetric(
                                   vertical: AppDimensions.two),
-                                  width: AppDimensions.oneSixty,
+                          width: AppDimensions.oneSixty,
                           decoration: BoxDecoration(
-                              color: index == 1
-                                  ? AppColors.greenTextColor
-                                  : Colors.white,
+                              color: index == 1 ? Colors.white : Colors.white,
                               border: index == 0 || index == 1
                                   ? Border.all(
-                                      color: AppColors.greenTextColor,
+                                      color: Colors.white,
                                       width: AppDimensions.two)
                                   : Border.all(color: Colors.white),
                               borderRadius:
@@ -265,37 +264,55 @@ class LastSessionClass extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: AppDimensions.hunDred,
-                                child: Text(
-                                  controller2.magicDataList[index].value
-                                      .toString(),
-                                      overflow:controller2.storeAllLastData.length > 1 ? TextOverflow.ellipsis: TextOverflow.visible,
-                                  style: TextStyle(
-                                      fontSize: AppDimensions.sixTeen,
-                                      fontFamily: AppFonts.robotoMedium,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.0,
-                                      color: index == 1
-                                          ? Colors.white
-                                          : AppColors.textButtonColor),
-                                ),
+                                child: Builder(builder: (context) {
+                                  String name = '';
+                                  if (index == 1) {
+                                    for (var i = 0;
+                                        i < controller2.storeAllLastData.length;
+                                        i++) {
+                                      if (name.isEmpty) {
+                                        name = controller2
+                                            .storeAllLastData[i].band!.band
+                                            .toString();
+                                      } else {
+                                        name =
+                                            '$name / ${controller2.storeAllLastData[i].band?.band}';
+                                      }
+                                    }
+                                  } else {
+                                    name = controller2
+                                        .magicDataList[index].value
+                                        .toString();
+                                  }
+                                  return Text(
+                                    name,
+                                    // overflow:controller2.storeAllLastData.length > 1 ? TextOverflow.ellipsis: TextOverflow.visible,
+                                    style: TextStyle(
+                                        fontSize: AppDimensions.sixTeen,
+                                        fontFamily: AppFonts.robotoMedium,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1.0,
+                                        color: AppColors.textButtonColor),
+                                  );
+                                }),
                               ),
-                              index == 1
-                                  ? SizedBox(width: AppDimensions.ten)
-                                  : Container(),
-                              index == 1 &&
-                                      controller2.storeAllLastData.length > 1
-                                  ? Text(
-                                      "+ ${ controller2.storeAllLastData.length}",
-                                      style: TextStyle(
-                                          fontSize: AppDimensions.sixTeen,
-                                          fontFamily: AppFonts.robotoMedium,
-                                          fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.0,
-                                          color: index == 1
-                                              ? Colors.white
-                                              : AppColors.textButtonColor),
-                                    )
-                                  : Container(),
+                              // index == 1
+                              //     ? SizedBox(width: AppDimensions.ten)
+                              //     : Container(),
+                              // index == 1 &&
+                              //         controller2.storeAllLastData.length > 1
+                              //     ? Text(
+                              //         "+ ${ controller2.storeAllLastData.length}",
+                              //         style: TextStyle(
+                              //             fontSize: AppDimensions.sixTeen,
+                              //             fontFamily: AppFonts.robotoMedium,
+                              //             fontWeight: FontWeight.w500,
+                              //             letterSpacing: 1.0,
+                              //             color: index == 1
+                              //                 ? Colors.white
+                              //                 : AppColors.textButtonColor),
+                              //       )
+                              //     : Container(),
                             ],
                           ),
                         )

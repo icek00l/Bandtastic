@@ -20,11 +20,14 @@ class EditReviewSessionController extends GetxController {
   String getFirstValue = 'Select one',
       getBandPositionID = '',
       getExerciseEditId = '',
+      getBandValue1 = '',
+      getBandValueId1 = '',
       getFirstValueId = '',
       getBandPosition = '',
       getExerciseTypeId = '',
       sessionTypestore = '',
-      getReps = '',getSessionId = '',
+      getReps = '',
+      getSessionId = '',
       getBeyondFailure = '';
   List<ThisSessionData> thisSesstionList = List.empty(growable: true);
   List<BandData> bandPower = List.empty(growable: true);
@@ -33,14 +36,14 @@ class EditReviewSessionController extends GetxController {
   List<BeyondFailureList> beyondFailureList = List.empty(growable: true);
   List<int> getBandsId = List.empty(growable: true);
   TextEditingController notesController = TextEditingController();
-  List<LastSessionPrepData> addBandList = List.empty(growable: true);
+  // List<LastSessionPrepData> addBandList = List.empty(growable: true);
   List<UserExcerciseBand> storeAllLastData = List.empty(growable: true);
-String storeNotes= '';
+  List<BandDataModel> bandList = [];
+  String storeNotes = '';
   int count = 1;
   String getToken = '';
   RxBool isLoading = false.obs;
   var apiClient = ApiClient();
-
 
   //speech to text variable
   bool hasSpeech = false;
@@ -68,20 +71,21 @@ String storeNotes= '';
       }
     });
     SharedPrefs.getString(SharedPrefKeys.exerciseEditID).then((value) {
-        getExerciseEditId = value;
+      getExerciseEditId = value;
     });
 
-    SharedPrefs.getString(SharedPrefKeys.exerciseTypeID).then((value) {
+    SharedPrefs.getString(SharedPrefKeys.sessionId).then((value) {
       getSessionId = value;
-      getSessionDetailApi(int.parse(getSessionId));
+     
 
       print("value has value $value");
     });
-     SharedPrefs.getString(SharedPrefKeys.exerciseTypeID).then((value) {
-getExerciseTypeId = value.toString();
+    SharedPrefs.getString(SharedPrefKeys.exerciseTypeID).then((value) {
+      getExerciseTypeId = value.toString();
       print("value has datagetExerciseTypeId $value");
+       getSessionDetailApi(int.parse(getExerciseTypeId));
     });
-    
+
     repsDataList.clear();
     repsDataList.add(RepsList(names: "3"));
     repsDataList.add(RepsList(names: "6"));
@@ -123,35 +127,43 @@ getExerciseTypeId = value.toString();
       var data1 = lastDataFromJson(res.body);
       if (data1.data != null) {
         storeAllLastData = data1.data!.userExcerciseBand!;
+        getBandValue1 = storeAllLastData[0].band?.band ?? '';
+        getBandValueId1 = storeAllLastData[0].band!.id.toString();
+        for (var i = 0; i < storeAllLastData.length; i++) {
+          print("Id of band ${storeAllLastData[i].band!.id.toString()}");
+          if (i > 0) {
+            bandList.add(BandDataModel(
+                id: storeAllLastData[i].band!.id.toString(),
+                names: storeAllLastData[i].band?.band ?? ''));
+          }
+        }
         sessionTypestore = data1.data!.sessionType.toString();
-       
+
         notesController.text = data1.data!.notes.toString();
         getBandPosition = data1.data!.bandPosition!.position.toString();
-        getBandPositionID= data1.data!.bandPosition!.id.toString();
+        getBandPositionID = data1.data!.bandPosition!.id.toString();
         getReps = data1.data!.reps.toString();
         getBeyondFailure = data1.data!.beyondFailure.toString();
-         if (storeAllLastData.isNotEmpty) {
+        if (storeAllLastData.isNotEmpty) {
           for (int i = 0; i < storeAllLastData.length; i++) {
-            if(storeAllLastData[i].band !=null) {
-              
-            if (i == 0) {
-              getFirstValue = storeAllLastData[i].band!.band.toString();
-              getFirstValueId = storeAllLastData[i].band!.id.toString();
-            } else {
-              count = storeAllLastData.length;
-              var storeCount = i + 1;
-                  getBandsId.add( storeAllLastData[i].band!.id!);
+            if (storeAllLastData[i].band != null) {
+              if (i == 0) {
+                getFirstValue = storeAllLastData[i].band!.band.toString();
+                getFirstValueId = storeAllLastData[i].band!.id.toString();
+              } else {
+                count = storeAllLastData.length;
+                var storeCount = i + 1;
+                getBandsId.add(storeAllLastData[i].band!.id!);
 
-              addBandList.add(LastSessionPrepData(
-                  names:storeAllLastData[i].band!.band.toString(),
-                  value: storeCount.toString()));
-              print(storeAllLastData[i].band!.band.toString());
-            }
+                // addBandList.add(LastSessionPrepData(
+                //     names: storeAllLastData[i].band!.band.toString(),
+                //     value: storeCount.toString()));
+                print(storeAllLastData[i].band!.band.toString());
+              }
             }
           }
-
         }
-        print(addBandList);
+        // print(addBandList);
       }
     } else {}
     update();
@@ -192,18 +204,27 @@ getExerciseTypeId = value.toString();
     } else {}
     update();
   }
+
 //edit and update log exercise api
-    void editExerciseApi(BuildContext context) async {
-    getBandsId.add(int.parse(getFirstValueId));
-    getBandsId.toSet().toList();
-    String commaSeparatedValues = getBandsId.join(',');
+  void editExerciseApi(BuildContext context) async {
+    String commaSeparatedValues = '';
+    List<String> listOdIds = [];
+    listOdIds.add(getBandValueId1);
+    for (var i = 0; i < bandList.length; i++) {
+      listOdIds.add(bandList[i].id.toString());
+    }
+
+    // if (getBandsId.isNotEmpty) {
+    //   getBandsId.toSet().toList();
+
+    print("wopewqioepqw $listOdIds");
+    commaSeparatedValues = listOdIds.join(',');
     print("getBandsId $commaSeparatedValues");
 
     var res = await apiClient.editExerciseLogApi(
         sesionId: int.parse(getSessionId),
         exerciseTypeid: int.parse(getExerciseTypeId),
         sessionTypehere: sessionTypestore,
-
         bandpostionId: int.parse(getBandPositionID),
         reps: getReps,
         beyondFailure: getBeyondFailure,
@@ -222,7 +243,6 @@ getExerciseTypeId = value.toString();
       Navigator.pop(context, true);
 
       Get.delete<EditReviewSessionController>();
-
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
@@ -234,8 +254,7 @@ getExerciseTypeId = value.toString();
     update();
   }
 
-
-    //text to speech method
+  //text to speech method
 
   Future<void> initSpeechState() async {
     logEvent('Initialize');

@@ -46,26 +46,25 @@ class _ExerciseLogBandViewState extends State<ExerciseLogBandView> {
           ? Scaffold(
               backgroundColor: Colors.white,
               appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(
-                      AppDimensions.seventy), // here the desired height
-                  child: AppBar(
-                    automaticallyImplyLeading: false,
-                    backgroundColor: Colors.white,
-                    elevation: AppDimensions.zero,
-                    title: CustomWithTextHeader(
-                      getHeadingText: "${widget.getSessionName} Session",
-                      isBackAllow: true,
-                      navigateBack: () {
-                        Navigator.pop(context, true);
-
-                        Get.delete<ExerciseLogController>();
-                      },
-                    ),
-                  )),
+                preferredSize: Size.fromHeight(
+                    AppDimensions.seventy), // here the desired height
+                child: AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.white,
+                  elevation: AppDimensions.zero,
+                  title: CustomWithTextHeader(
+                    getHeadingText: "${widget.getSessionName} Session",
+                    isBackAllow: true,
+                    navigateBack: () {
+                      Navigator.pop(context, true);
+                      Get.delete<ExerciseLogController>();
+                    },
+                  ),
+                ),
+              ),
               body: WillPopScope(
                 onWillPop: () async {
                   Navigator.pop(context, true);
-
                   Get.delete<ExerciseLogController>();
                   return true;
                 },
@@ -505,41 +504,31 @@ class PostionAll extends StatelessWidget {
               bottom:
                   index == 2 ? AppDimensions.zero : AppDimensions.seventeen),
           child: index == 0
-              ? Padding(
-                  padding: EdgeInsets.only(right: AppDimensions.twenty),
-                  child: Row(
-                    children: [
-                      Expanded(child: Container()),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "BAND 1",
-                              textAlign: TextAlign.end,
-                              style: AppThemeStyle.robotoMedium13,
-                            ),
-                            Text(
-                              controller1.count == 1
-                                  ? "==========="
-                                  : "===========",
-                              textAlign: TextAlign.end,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              controller1.count == 1 ? "BAND 2" : "CANCEL",
-                              textAlign: TextAlign.end,
-                              style: AppThemeStyle.robotoMedium13,
-                            ),
-                          ],
-                        ),
+              ? Row(
+                  children: [
+                    Expanded(child: Container()),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            "BAND 1",
+                            textAlign: TextAlign.end,
+                            style: AppThemeStyle.robotoMedium13,
+                          ),
+                          const Spacer(),
+                          Text(
+                            controller1.bandList.isEmpty ? "BAND 2" : "CANCEL",
+                            textAlign: TextAlign.end,
+                            style: AppThemeStyle.robotoMedium13,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               : index == 1
                   ? Padding(
-                      padding: EdgeInsets.only(right: AppDimensions.twenty),
+                      padding: const EdgeInsets.only(right: 0),
                       child: Row(
                         children: [
                           Expanded(
@@ -590,7 +579,7 @@ class PostionAll extends StatelessWidget {
                                     onChanged: (value) {
                                       controller1.getBandValue1 =
                                           value!.band.toString();
-                                      controller1.getBandValue1ID =
+                                      controller1.getBandValueId1 =
                                           value.id.toString();
                                       controller1.update();
                                     },
@@ -599,27 +588,20 @@ class PostionAll extends StatelessWidget {
                                 SizedBox(width: AppDimensions.fifTeen),
                                 GestureDetector(
                                     onTap: () {
-                                      if (controller1.count == 1) {
-                                        controller1.count++;
-
-                                        controller1.addBandList.add(
-                                            LastSessionPrepData(
-                                                names: "BAND",
-                                                value: "${controller1.count}"));
-                                        print(
-                                            "${controller1.addBandList.length}");
-                                        print(controller1.count);
+                                      if (controller1.bandList.isEmpty) {
+                                        controller1.bandList.add(BandDataModel(
+                                            id: controller1.bandPower[1].id
+                                                .toString(),
+                                            names:
+                                                controller1.bandPower[1].band ??
+                                                    ''));
                                       } else {
-                                        if (controller1.count != 1) {
-                                          controller1.count = 1;
-                                        }
-                                        controller1.addBandList.clear();
-                                        print(controller1.count);
+                                        controller1.bandList.clear();
                                       }
                                       controller1.update();
                                     },
                                     child: SvgPicture.asset(
-                                        controller1.count == 1
+                                        controller1.bandList.isEmpty
                                             ? AssetsBase.addButtonSvgIcon
                                             : AssetsBase.removeSvgIcon)),
                               ],
@@ -629,363 +611,301 @@ class PostionAll extends StatelessWidget {
                       ),
                     )
                   : index == 2
-                      ? controller1.addBandList.isNotEmpty
+                      ? controller1.bandList.isNotEmpty
                           ? ListView.builder(
-                              itemCount: controller1.addBandList.length,
                               shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index12) {
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                      right: AppDimensions.twenty,
-                                      bottom: AppDimensions.fifTeen),
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: Container()),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "BAND ${controller1.addBandList[index12].value}",
-                                                  textAlign: TextAlign.end,
-                                                  style: AppThemeStyle
-                                                      .robotoMedium13,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              itemCount: controller1.bandList.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    const Expanded(
+                                      child: IgnorePointer(),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: index > 0 ? 15 : 0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "BAND ${index + 2}",
+                                                textAlign: TextAlign.end,
+                                                style: AppThemeStyle
+                                                    .robotoMedium13,
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                "BAND ${index + 2}",
+                                                textAlign: TextAlign.end,
+                                                style: AppThemeStyle
+                                                    .robotoMedium13,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        AppDimensions.five),
+                                                height: AppDimensions.forty,
+                                                width: AppDimensions.oneThirty,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white38,
+                                                  border: Border.all(
+                                                      color: AppColors
+                                                          .borderColorThree),
                                                 ),
-                                                SizedBox(
-                                                    height: AppDimensions.ten),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          AppDimensions.five),
-                                                  height: AppDimensions.forty,
-                                                  width:
-                                                      AppDimensions.oneThirty,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white38,
-                                                    border: Border.all(
-                                                        color: AppColors
-                                                            .borderColorThree),
-                                                  ),
-                                                  child:
-                                                      DropdownButton<BandData>(
-                                                    isExpanded: true,
-                                                    underline: const SizedBox(),
+                                                child: DropdownButton<BandData>(
+                                                  isExpanded: true,
+                                                  underline: const SizedBox(),
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          AppDimensions.sixTeen,
+                                                      color: Colors.black),
+                                                  hint: Text(
+                                                    controller1.bandList[index]
+                                                            .names ??
+                                                        '',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         fontSize: AppDimensions
                                                             .sixTeen,
                                                         color: Colors.black),
-                                                    hint: Text(
-                                                      controller1
-                                                          .bandPower[index12]
-                                                          .band!,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              AppDimensions
-                                                                  .sixTeen,
-                                                          color: Colors.black),
-                                                    ),
-                                                    iconEnabledColor:
-                                                        const Color.fromRGBO(
-                                                            76, 73, 73, 0.6),
-                                                    items: controller1.bandPower
-                                                        .map((BandData value) {
-                                                      return DropdownMenuItem<
-                                                          BandData>(
-                                                        value: value,
-                                                        child: Text(
-                                                            "${value.band}   "),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged: (value) {
-                                                      String getID = '';
-                                                      controller1
-                                                          .bandPower[index12]
-                                                          .band = value!.band;
-                                                      getID = controller1
-                                                          .bandPower[index12].id
-                                                          .toString();
-                                                      controller1.getBandsId
-                                                          .add(
-                                                              int.parse(getID));
-
-                                                      controller1.update();
-                                                    },
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                                width: AppDimensions.eighteen),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "BAND ${controller1.addBandList[index12].value}",
-                                                  textAlign: TextAlign.start,
-                                                  style: AppThemeStyle
-                                                      .robotoMedium13,
-                                                ),
-                                                SizedBox(
-                                                    height: AppDimensions.ten),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if (controller1.addBandList
-                                                            .length <
-                                                        4) {
-                                                      if (index12 ==
-                                                          controller1
-                                                                  .addBandList
-                                                                  .length -
-                                                              1) {
-                                                        controller1.count++;
+                                                  iconEnabledColor:
+                                                      const Color.fromRGBO(
+                                                          76, 73, 73, 0.6),
+                                                  items: controller1.bandPower
+                                                      .map((BandData value) {
+                                                    return DropdownMenuItem<
+                                                        BandData>(
+                                                      value: value,
+                                                      child: Text(
+                                                          "${value.band}   "),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    controller1.bandList[index]
+                                                            .id =
+                                                        value!.id.toString();
+                                                    controller1.bandList[index]
+                                                            .names =
+                                                        value.band.toString();
 
-                                                        controller1.addBandList.add(
-                                                            LastSessionPrepData(
-                                                                names: "BAND",
-                                                                value:
-                                                                    "${controller1.count}"));
-                                                      } else {
-                                                        controller1.addBandList
-                                                            .removeAt(index12);
-                                                        for (int i = 0;
-                                                            i <
-                                                                controller1
-                                                                    .addBandList
-                                                                    .length;
-                                                            i++) {
-                                                          if (index12 <
-                                                              controller1
-                                                                  .addBandList
-                                                                  .length && i >= index12) {
-                                                                  
-                                                            print(
-                                                                "${controller1.addBandList[i].value }${index12}-----1");
-                                                            controller1
-                                                                    .addBandList[i]
-                                                                    .value =
-                                                                "${int.parse(controller1.addBandList[i].value.toString()) - 1}";
-                                                          }
-                                                        }
-
-                                                        controller1.count -= 1;
-                                                      }
-                                                    } else {
-                                                      print("finish length");
-                                                      controller1.addBandList
-                                                          .removeAt(index12);
-                                                      for (int i = 0;
-                                                          i <controller1
-                                                                  .getBandsId
-                                                                  .length;
-                                                          i++) {
-                                                        if (controller1
-                                                                .bandPower[
-                                                                    index12]
-                                                                .id
-                                                                .toString() ==
-                                                            controller1
-                                                                    .getBandsId[
-                                                                i]) {
-                                                          controller1.getBandsId
-                                                              .removeAt(i);
-                                                          break;
-                                                        }
-                                                      }
-
-                                                      for (int j = 0;
-                                                          j <
-                                                              controller1
-                                                                  .addBandList
-                                                                  .length;
-                                                          j++) {
-                                                        if (index12  <
-                                                            controller1
-                                                                .addBandList
-                                                                .length && j >= index12) {
-                                                          print(
-                                                              "${controller1.addBandList[j].value}-----1");
-                                                          controller1
-                                                                  .addBandList[j]
-                                                                  .value =
-                                                              "${int.parse(controller1.addBandList[j].value.toString()) - 1}";
-                                                        }
-                                                      }
-                                                      controller1.count -= 1;
-                                                    }
                                                     controller1.update();
                                                   },
-                                                  child: SvgPicture.asset((index12 ==
-                                                              controller1
-                                                                      .addBandList
-                                                                      .length -
-                                                                  1) &&
-                                                          controller1
-                                                                  .addBandList
-                                                                  .length !=
-                                                              4
-                                                      ? AssetsBase
-                                                          .addButtonSvgIcon
-                                                      : AssetsBase
-                                                          .removeSvgIcon),
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                              const SizedBox(
+                                                width: 15,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (controller1
+                                                          .bandList.length ==
+                                                      4) {
+                                                    controller1.bandList
+                                                        .removeAt(index);
+                                                  } else if (index ==
+                                                      controller1
+                                                              .bandList.length -
+                                                          1) {
+                                                    controller1.bandList.add(
+                                                      BandDataModel(
+                                                          id: controller1
+                                                              .bandPower[controller1
+                                                                      .bandList
+                                                                      .length +
+                                                                  1]
+                                                              .id
+                                                              .toString(),
+                                                          names: controller1
+                                                                  .bandPower[controller1
+                                                                          .bandList
+                                                                          .length +
+                                                                      1]
+                                                                  .band ??
+                                                              ''),
+                                                    );
+                                                  } else {
+                                                    controller1.bandList
+                                                        .removeAt(index);
+                                                  }
+                                                  controller1.update();
+                                                },
+                                                child: SvgPicture.asset(
+                                                    (controller1.bandList
+                                                                .length ==
+                                                            4)
+                                                        ? AssetsBase
+                                                            .removeSvgIcon
+                                                        : index ==
+                                                                controller1
+                                                                        .bandList
+                                                                        .length -
+                                                                    1
+                                                            ? AssetsBase
+                                                                .addButtonSvgIcon
+                                                            : AssetsBase
+                                                                .removeSvgIcon),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 );
                               },
                             )
                           : Container()
                       : index == 3
-                          ? Row(
-                              children: [
-                                Expanded(child: Container()),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      pushNewScreen(context,
-                                          screen: const ProgressionList(),
-                                          withNavBar: true);
-                                    },
-                                    child: Text(
-                                      AppStrings.bandProgList,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: AppColors.buttonColor,
-                                          fontSize: AppDimensions.sixTeen,
-                                          fontFamily: AppFonts.robotoFlex,
-                                          fontWeight: FontWeight.w500),
+                          ? Container(
+                              margin: const EdgeInsets.only(top: 10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Container()),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        pushNewScreen(context,
+                                            screen: const ProgressionList(),
+                                            withNavBar: true);
+                                      },
+                                      child: Text(
+                                        AppStrings.bandProgList,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: AppColors.buttonColor,
+                                            fontSize: AppDimensions.sixTeen,
+                                            fontFamily: AppFonts.robotoFlex,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: AppDimensions.twenty)
-                              ],
+                                  // SizedBox(width: AppDimensions.twenty)
+                                ],
+                              ),
                             )
                           : index == 7
-                              ? Padding(
-                                  padding: EdgeInsets.only(
-                                      right: AppDimensions.twenty),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              right: AppDimensions.thirty),
-                                          child: Text(
-                                              thisSessionName[index]
-                                                  .names
-                                                  .toString(),
-                                              textAlign: TextAlign.end,
-                                              style:
-                                                  AppThemeStyle.robotoMedium13),
-                                        ),
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            right: AppDimensions.thirty),
+                                        child: Text(
+                                            thisSessionName[index]
+                                                .names
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style:
+                                                AppThemeStyle.robotoMedium13),
                                       ),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                                width: AppDimensions.oneThirty,
-                                                height: AppDimensions.forty,
-                                                child: TextFormField(
-                                                  controller: controller1
-                                                      .notesController,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        AppDimensions.forteen,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  textInputAction:
-                                                      TextInputAction.done,
-                                                  decoration: InputDecoration(
-                                                    contentPadding:
-                                                        EdgeInsets.only(
-                                                            top: AppDimensions
-                                                                .ten,
-                                                            left: AppDimensions
-                                                                .five,
-                                                            bottom:
-                                                                AppDimensions
-                                                                    .ten),
-                                                    isDense: true,
-                                                    enabledBorder:
-                                                        const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppColors
-                                                                    .borderColorThree),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .zero),
-                                                    focusedBorder:
-                                                        const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppColors
-                                                                    .borderColorThree),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .zero),
-                                                    focusedErrorBorder:
-                                                        const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppColors
-                                                                    .borderColorThree),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .zero),
-                                                    border: const OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: AppColors
-                                                                .borderColorThree),
-                                                        borderRadius:
-                                                            BorderRadius.zero),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                              width: AppDimensions.oneThirty,
+                                              height: AppDimensions.forty,
+                                              child: TextFormField(
+                                                controller:
+                                                    controller1.notesController,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      AppDimensions.forteen,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top:
+                                                              AppDimensions.ten,
+                                                          left: AppDimensions
+                                                              .five,
+                                                          bottom: AppDimensions
+                                                              .ten),
+                                                  isDense: true,
+                                                  enabledBorder:
+                                                      const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+                                                  focusedBorder:
+                                                      const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+                                                  focusedErrorBorder:
+                                                      const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .borderColorThree),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .zero),
+                                                  border: const OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: AppColors
+                                                              .borderColorThree),
+                                                      borderRadius:
+                                                          BorderRadius.zero),
 
-                                                    // errorText: controller.nameErrorText,
-                                                    errorStyle: TextStyle(
-                                                        color: AppColors
-                                                            .errorColor,
-                                                        fontSize: AppDimensions
-                                                            .thirteen),
-                                                  ),
-                                                  onChanged: (String value) {
-                                                    controller1.getNotes =
-                                                        value;
-                                                  },
-                                                )),
-                                            SizedBox(
-                                                width: AppDimensions.fifTeen),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  controller1.startListening();
+                                                  // errorText: controller.nameErrorText,
+                                                  errorStyle: TextStyle(
+                                                      color:
+                                                          AppColors.errorColor,
+                                                      fontSize: AppDimensions
+                                                          .thirteen),
+                                                ),
+                                                onChanged: (String value) {
+                                                  controller1.getNotes = value;
                                                 },
-                                                child: controller1
-                                                        .speech.isListening
-                                                    ? Container()
-                                                    : SvgPicture.asset(
-                                                        AssetsBase
-                                                            .micButtonSvgIcon)),
-                                          ],
-                                        ),
+                                              )),
+                                          SizedBox(
+                                              width: AppDimensions.fifTeen),
+                                          GestureDetector(
+                                              onTap: () {
+                                                controller1.startListening();
+                                              },
+                                              child: controller1
+                                                      .speech.isListening
+                                                  ? Container()
+                                                  : SvgPicture.asset(AssetsBase
+                                                      .micButtonSvgIcon)),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 )
                               : index == 8
                                   ? Padding(
                                       padding: EdgeInsets.only(
-                                          top: AppDimensions.twenty,
-                                          right: AppDimensions.thirty),
+                                          top: AppDimensions.twenty, right: 0),
                                       child: Row(
                                         children: [
                                           Expanded(
@@ -1038,8 +958,8 @@ class PostionAll extends StatelessWidget {
                                     )
                                   : index == 4
                                       ? Padding(
-                                          padding: EdgeInsets.only(
-                                              right: AppDimensions.twenty),
+                                          padding:
+                                              const EdgeInsets.only(right: 0),
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -1143,8 +1063,8 @@ class PostionAll extends StatelessWidget {
                                         )
                                       : index == 5
                                           ? Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: AppDimensions.twenty),
+                                              padding: const EdgeInsets.only(
+                                                  right: 0),
                                               child: Row(
                                                 children: [
                                                   Expanded(
@@ -1247,8 +1167,8 @@ class PostionAll extends StatelessWidget {
                                               ),
                                             )
                                           : Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: AppDimensions.twenty),
+                                              padding: const EdgeInsets.only(
+                                                  right: 0),
                                               child: Row(
                                                 children: [
                                                   Expanded(

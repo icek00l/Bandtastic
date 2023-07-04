@@ -39,10 +39,19 @@ class LastSessionPrepData {
    String? names;
   String? value;
   
- 
   LastSessionPrepData({
     this.names,
     this.value,
+  });
+}
+
+class BandDataModel {
+   String? names;
+  String? id;
+  
+  BandDataModel({
+    this.names,
+    this.id,
   });
 }
 

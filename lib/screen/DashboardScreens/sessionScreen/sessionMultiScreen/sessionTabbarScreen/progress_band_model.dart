@@ -90,4 +90,18 @@ List<BandProgress> bandNumber= [
   BandProgress("16."),
   BandProgress("17."),
   BandProgress("18."),
+
+  BandProgress("19."),
+  BandProgress("20."),
+  BandProgress("21."),
+  BandProgress("22."),
+  BandProgress("23."),
+  BandProgress("24."),
+  BandProgress("25."),
+  BandProgress("26."),
+  BandProgress("27."),
+
+  BandProgress("28."),
+  BandProgress("29."),
+  BandProgress("30."),
 ];

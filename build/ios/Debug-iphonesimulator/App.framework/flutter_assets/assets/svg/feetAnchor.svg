@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="55" height="141" viewBox="0 0 55 141">
+  <g id="Full" transform="translate(-207 -278)">
+    <circle id="Ellipse_47" data-name="Ellipse 47" cx="4" cy="4" r="4" transform="translate(249 278)" fill="#505050"/>
+    <circle id="Ellipse_48" data-name="Ellipse 48" cx="4" cy="4" r="4" transform="translate(249 307)" fill="#505050"/>
+    <circle id="Ellipse_49" data-name="Ellipse 49" cx="4" cy="4" r="4" transform="translate(249 332)" fill="#505050"/>
+    <circle id="Ellipse_89" data-name="Ellipse 89" cx="4" cy="4" r="4" transform="translate(249 357)" fill="#505050"/>
+    <circle id="Ellipse_50" data-name="Ellipse 50" cx="4" cy="4" r="4" transform="translate(249 406)" fill="#505050"/>
+    <path id="Path_49" data-name="Path 49" d="M8477,2801v128.523" transform="translate(-8224 -2519)" fill="none" stroke="#505050" stroke-width="2"/>
+    <g id="Feet" transform="translate(0 99)">
+      <text id="Feet-2" data-name="Feet" transform="translate(245 315)" font-size="12" font-family="Helvetica" letter-spacing="0.075em"><tspan x="-33.368" y="0">FEET</tspan></text>
+      <g id="Rectangle_166" data-name="Rectangle 166" transform="translate(208 303)" fill="none" stroke="#a3a3a3" stroke-width="1">
+        <rect width="53" height="16" rx="8" stroke="none"/>
+        <rect x="-0.5" y="-0.5" width="54" height="17" rx="8.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

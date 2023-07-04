@@ -20,9 +20,8 @@ class ExerciseLogController extends GetxController {
   dynamic argumentData = Get.arguments;
   String selectSet = 'Prep Set',
       thisSelectSet = 'Prep Set',
-      getBandValue1 = 'Select one',
-      getBandValue1ID = '',
-      getBandValue2ID = '',
+      getBandValue1 = '',
+      getBandValueId1 = '',
       getBandPosition = '',
       getBandPositionID = '',
       getReps = '',
@@ -31,18 +30,19 @@ class ExerciseLogController extends GetxController {
       getPower = '';
   var apiClient = ApiClient();
   RxBool isLoading = false.obs;
-  List<BandData> bandPower = List.empty(growable: true);
+  List<BandData> bandPower = [];
+  List<String> selectedbandIdList = [];
   List<BandPositonData> bandPositionList = List.empty(growable: true);
   List<RepsList> repsDataList = List.empty(growable: true);
   List<BeyondFailureList> beyondFailureList = List.empty(growable: true);
   List<LastData> lastSessionDataList = List.empty(growable: true);
-  List<int> getBandsId = List.empty(growable: true);
   List<LastSessionPrepData> prepDataList = List.empty(growable: true);
   List<LastSessionPrepData> magicDataList = List.empty(growable: true);
   TextEditingController notesController = TextEditingController();
   List<ThisSessionData> thisSesstionList = List.empty(growable: true);
   List<LastSessionPrepData> addBandList = List.empty(growable: true);
-  int count = 1;
+  List<BandDataModel> bandList = [];
+  // int count = 1;
   String getToken = '', getExerciseTypeId = '', getSessionId = '';
 
 //speech to text variable
@@ -81,7 +81,7 @@ class ExerciseLogController extends GetxController {
     SharedPrefs.getString(SharedPrefKeys.sessionId).then((value) {
       if (value.isNotEmpty) {
         getSessionId = value;
-        print("value has datagetSessionId $getSessionId");
+        print("Value has datagetSessionId $getSessionId");
       }
     });
     repsDataList.clear();
@@ -146,9 +146,11 @@ class ExerciseLogController extends GetxController {
 
       print(data1);
       bandPower = data1.result!;
+      getBandValue1 = bandPower[0].band ?? '';
+      getBandValueId1 = bandPower[0].id.toString();
       getBandPostionList();
       print(bandPower);
-    } else {}
+    }
     update();
   }
 
@@ -172,11 +174,18 @@ class ExerciseLogController extends GetxController {
 
 // create exercise api
   void createExercise(BuildContext context) async {
-    getBandsId.add(int.parse(getBandValue1ID));
-    getBandsId.toSet().toList();
-    String commaSeparatedValues = getBandsId.join(',');
-    print("getBandsId $commaSeparatedValues");
+    String commaSeparatedValues = '';
+    List<String> listOdIds = [];
+    listOdIds.add(getBandValueId1);
+    for (var i = 0; i < bandList.length; i++) {
+      listOdIds.add(bandList[i].id.toString());
+    }
 
+    // if (getBandsId.isNotEmpty) {
+    //   getBandsId.toSet().toList();
+    commaSeparatedValues = listOdIds.join(',');
+      print("getBandsId $commaSeparatedValues");
+    // }
     var res = await apiClient.createExerciseApi(
         sesionId: int.parse(getSessionId),
         exerciseTypeid: int.parse(getExerciseTypeId),
@@ -198,7 +207,6 @@ class ExerciseLogController extends GetxController {
       Navigator.pop(context, true);
 
       Get.delete<ExerciseLogController>();
-
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:

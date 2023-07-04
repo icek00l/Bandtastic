@@ -140,7 +140,6 @@ class SessionController extends GetxController
   toggleContainer() {
     if (animation.status != AnimationStatus.completed) {
       animationController.forward();
-
       isIconChange = false;
       update();
     } else {

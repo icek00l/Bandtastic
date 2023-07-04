@@ -62,13 +62,12 @@ class ApiClient {
       AppRequestsEnums.SECOND_DAY: secondDay,
     };
 
-    var response = await apiWrapper.makeRequest(
-        AppEndpoints.UPDATE_PROFILE_API,
-        Request.post,
-        getUserData,
-        '',
-        isLoading,
-        {'Content-type': 'application/json','Accept': 'application/json', 'Authorization': 'Bearer $token'});
+    var response = await apiWrapper.makeRequest(AppEndpoints.UPDATE_PROFILE_API,
+        Request.post, getUserData, '', isLoading, {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
     return response;
   }
 
@@ -202,6 +201,8 @@ class ApiClient {
       AppRequestsEnums.POWER: power,
       AppRequestsEnums.BANDS: bands,
     };
+
+    print("sdlkdlsk $getExerciseData");
 
     var response = await apiWrapper.makeRequest(
         AppEndpoints.CREATE_EXERCISE_API,
