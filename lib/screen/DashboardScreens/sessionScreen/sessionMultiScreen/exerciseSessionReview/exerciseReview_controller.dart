@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/model/bandsModel.dart';
 import 'package:bandapp/model/lastSessionModal.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
@@ -12,11 +13,11 @@ import 'package:get/get.dart';
 
 class ReviewExerController extends GetxController {
   List<LastSessionPrepData> magicDataList = List.empty(growable: true);
-  List<UserExcerciseBand>storeAllLastData = List.empty(growable: true);
+  List<UserExcerciseBand> storeAllLastData = List.empty(growable: true);
   TextEditingController notesController = TextEditingController();
   var apiClient = ApiClient();
-  String getToken = '',getSessionIdSave = '',getStoreID = '';
-  
+  String getToken = '', getSessionIdSave = '', getStoreID = '';
+
   @override
   void onInit() {
     SharedPrefs.getString(SharedPrefKeys.token).then((value) {
@@ -29,7 +30,7 @@ class ReviewExerController extends GetxController {
       getSessionIdSave = value;
       getSessionDetailApi(int.parse(value));
     });
-update();
+    update();
     super.onInit();
   }
 
@@ -37,52 +38,66 @@ update();
     var res = await apiClient.getPreviousSessionData(
         getID: getSessionId, token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = lastDataFromJson(res.body);
       if (data1.data != null) {
         storeAllLastData = data1.data!.userExcerciseBand!;
 
-        notesController.text = data1.data!.notes.toString();
-       if(data1.data!.userExcerciseBand!.isNotEmpty) {
-        for (int i = 0; i < data1.data!.userExcerciseBand!.length; i++) {
-          getStoreID = data1.data!.userExcerciseBand![i].id.toString();
+        notesController.text = data1.data!.notes ?? "N/A";
+        if (data1.data!.userExcerciseBand!.isNotEmpty) {
+          for (int i = 0; i < data1.data!.userExcerciseBand!.length; i++) {
+            getStoreID = data1.data!.userExcerciseBand![i].id.toString();
+            magicDataList.clear();
+            magicDataList.add(LastSessionPrepData(names: "Notes"));
+            magicDataList.add(LastSessionPrepData(
+                names: "BAND",
+                value: data1.data!.userExcerciseBand![0].band == null
+                    ? "NA"
+                    : data1.data!.userExcerciseBand![0].band!.band.toString()));
+            magicDataList.add(LastSessionPrepData(
+                names: "BAND POSITION",
+                value: data1.data!.bandPosition == null
+                    ? 'N/A'
+                    : data1.data!.bandPosition!.position ?? "N/A"));
+            magicDataList.add(LastSessionPrepData(
+                names: "MAT POSITION",
+                value: data1.data!.matFrom != null
+                    ? "${data1.data!.matFrom ?? "N/A"} to ${data1.data!.matTo ?? "N/A"}"
+                    : "N/A"));
+
+            magicDataList.add(LastSessionPrepData(
+                names: "TIME", value: data1.data!.time ?? "N/A"));
+            magicDataList.add(LastSessionPrepData(
+                names: "POWER", value: data1.data!.power ?? "N/A"));
+          }
+        } else {
           magicDataList.clear();
-          magicDataList.add(LastSessionPrepData(names: "Notes"));
-          magicDataList.add(LastSessionPrepData(
-              names: "BAND",
-              value:data1.data!.userExcerciseBand![0].band == null ? "NA" : data1.data!.userExcerciseBand![0].band!.band.toString()));
+          magicDataList.add(LastSessionPrepData(names: "Notes", value: ""));
+          magicDataList.add(LastSessionPrepData(names: "BAND", value: "N/A"));
           magicDataList.add(LastSessionPrepData(
               names: "BAND POSITION",
-              value: data1.data!.bandPosition!.position.toString()));
+              value: data1.data!.bandPosition == null
+                  ? "N/A"
+                  : data1.data!.bandPosition!.position.toString()));
           magicDataList.add(LastSessionPrepData(
-              names: "REPS", value: data1.data!.reps.toString()));
+              names: "MAT POSITION",
+              value: data1.data!.matFrom != null
+                  ? "${data1.data!.matFrom ?? "N/A"} to ${data1.data!.matTo ?? "N/A"}"
+                  : "N/A"));
           magicDataList.add(LastSessionPrepData(
-              names: "BEYOND FAILURE",
-              value: data1.data!.beyondFailure.toString()));
+              names: "TIME", value: data1.data!.time ?? "N/A"));
           magicDataList.add(LastSessionPrepData(
-              names: "POWER", value: "+${data1.data!.power.toString()}"));
+              names: "POWER", value: data1.data!.power ?? "00"));
         }
-       } else {
-        magicDataList.clear();
-          magicDataList.add(LastSessionPrepData(names: "Notes"));
-          magicDataList.add(LastSessionPrepData(
-              names: "BAND",
-              value: "Empty"));
-          magicDataList.add(LastSessionPrepData(
-              names: "BAND POSITION",
-              value: data1.data!.bandPosition!.position.toString()));
-          magicDataList.add(LastSessionPrepData(
-              names: "REPS", value: data1.data!.reps.toString()));
-          magicDataList.add(LastSessionPrepData(
-              names: "BEYOND FAILURE",
-              value: data1.data!.beyondFailure.toString()));
-          magicDataList.add(LastSessionPrepData(
-              names: "POWER", value: "+${data1.data!.power.toString()}"));
-       }
       }
-    } else {}
+    } else {
+        ScaffoldMessenger.of(Get.context!).showSnackBar( SnackBar(
+                        content: Text(jsonDecode(res.body)['message'] ?? ""),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: AppColors.errorColor,
+                        duration:const Duration(seconds: 1),
+                      ));
+    }
     update();
   }
 }

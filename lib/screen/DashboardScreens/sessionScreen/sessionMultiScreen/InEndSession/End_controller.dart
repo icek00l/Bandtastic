@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/model/bandsModel.dart';
 import 'package:bandapp/model/sessionDetailModal.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
@@ -18,6 +19,9 @@ import 'package:get/get.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
+import 'package:bandapp/utility/Utility.dart';
 
 class EndSessionController extends GetxController {
   var apiClient = ApiClient();
@@ -25,7 +29,7 @@ class EndSessionController extends GetxController {
   List<ExtraDataList> extraData = List.empty(growable: true);
   List<LastSessionPrepData> endSessionData = List.empty(growable: true);
   TextEditingController notesController = TextEditingController();
-  String storeNotes = '', getToken = '', getSessionID = '', getNameSession = '';
+  String storeNotes = '', getToken = '', getSessionID = '', fetchCycleID = '',getNameSession = '';
 
   List<ExerciseTypeInfo> getSessionInfoDataApi = List.empty(growable: true);
 
@@ -58,6 +62,12 @@ class EndSessionController extends GetxController {
         getToken = value;
 
         print("value has data $getToken");
+      }
+    });
+     SharedPrefs.getString(SharedPrefKeys.cycleID).then((value) {
+      if (value.isNotEmpty) {
+        fetchCycleID= value;
+        print("Value has fetchCycleID $fetchCycleID");
       }
     });
     SharedPrefs.getString(SharedPrefKeys.sessionId).then((value) {
@@ -106,42 +116,42 @@ class EndSessionController extends GetxController {
     var res = await apiClient.getSessionData(
         getID: getSessionId, token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = sessionDataFromJson(res.body);
       if (data1.data != null) {
         getNameSession = data1.data!.name!;
         getSessionInfoDataApi = data1.data!.exerciseTypeInfo!;
-       for (int i = 0; i < getSessionInfoDataApi.length; i++) {
+        for (int i = 0; i < getSessionInfoDataApi.length; i++) {
           if (getSessionInfoDataApi[i].userExcercise != null) {
             if (extraData.isNotEmpty) {
               extraData.clear();
             }
             getSessionInfoDataApi[i].responseDataSession!.add(ResponseSession(
                 name: " Band",
-                value: getSessionInfoDataApi[i]
+                value:getSessionInfoDataApi[i]
+                        .userExcercise!
+                        .userExcerciseBand!.isEmpty ? "NA": getSessionInfoDataApi[i]
                         .userExcercise!
                         .userExcerciseBand![0]
                         .bandName ??
-                    ""));
+                    "N/A"));
             getSessionInfoDataApi[i].responseDataSession!.add(ResponseSession(
-                name: " Position",
-                value: getSessionInfoDataApi[i]
-                        .userExcercise!
-                        .bandPosition!
-                        .position ??
-                    ""));
+                name: " POS",
+                value:
+                    getSessionInfoDataApi[i].userExcercise!.bandPosition == null
+                        ? "N/A"
+                        : getSessionInfoDataApi[i]
+                                .userExcercise!
+                                .bandPosition!
+                                .position ??
+                            ""));
             getSessionInfoDataApi[i].responseDataSession!.add(ResponseSession(
-                name: " Reps",
-                value: getSessionInfoDataApi[i].userExcercise!.reps ?? ""));
-            getSessionInfoDataApi[i].responseDataSession!.add(ResponseSession(
-                name: " Beyond \n  failure",
-                value: getSessionInfoDataApi[i].userExcercise!.beyondFailure ??
-                    ""));
+                name: " Time",
+                value: getSessionInfoDataApi[i].userExcercise!.time ?? "N/A"));
+
             getSessionInfoDataApi[i].responseDataSession!.add(ResponseSession(
                 name: " Power",
-                value: getSessionInfoDataApi[i].userExcercise!.power ?? ""));
+                value: getSessionInfoDataApi[i].userExcercise!.power ?? "N/A"));
           }
         }
         print(extraData.length);
@@ -149,8 +159,21 @@ class EndSessionController extends GetxController {
       }
     } else {
       if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goTowalkthrough();
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
       }
     }
     update();
@@ -160,31 +183,44 @@ class EndSessionController extends GetxController {
     var res = await apiClient.endSessionAPi(
         notes: storeNotes,
         sessionId: int.parse(getSessionID),
+        getcycleid: int.parse(fetchCycleID),
         totalTime: storeTimerHere,
         token: getToken,
         isLoading: true);
 
-    print(res);
-
     if (jsonDecode(res.body)['status'] == 1) {
       Get.delete<HomeScreenController>();
-Get.delete<SessionController>();
+      Get.delete<SessionController>();
       Get.delete<EndSessionController>();
       Get.delete<SetUpController>();
       Get.delete<WeekCycleController>();
       AppRouteMaps.goToDashbaordScreen("");
       notesController.clear();
-      
     } else {
       if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goTowalkthrough();
-        
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
       }
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
             Text(jsonDecode(res.body)['message'] as String? ?? 'Invalid Data'),
-        duration: const Duration(milliseconds: 500),
+            behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.errorColor,
+
+        duration: const Duration(milliseconds: 1000),
       ));
     }
   }
@@ -240,7 +276,10 @@ Get.delete<SessionController>();
 
     update();
   }
-
+ void stopListening() async {
+    await speech.stop();
+    update();
+  }
   void startListening() {
     logEvent('start listening');
     lastWords = '';

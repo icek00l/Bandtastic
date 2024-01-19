@@ -2,14 +2,20 @@
 
 import 'dart:convert';
 
+import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/model/profileGetModal.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/utility/Utility.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
 import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/sessionScreen/session_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
 
 class SetUpController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -19,20 +25,20 @@ class SetUpController extends GetxController {
   TextEditingController codeField = TextEditingController();
   String name = '', nameErrorText = '', getName = '';
   bool isNameValid = false;
-  String email = '', emailErrorText = '', getEmail = '', getToken = '',firstDay='',secondDay = '';
+  String email = '', emailErrorText = '', getEmail = '', getToken = '';
   bool isemailValid = false;
   bool isCodeChange = false;
   var apiClient = ApiClient();
-  bool isLoading = true;
   @override
   void onInit() {
     super.onInit();
+    FocusManager.instance.primaryFocus?.unfocus();
 
     SharedPrefs.getString(SharedPrefKeys.token).then((value) {
       if (value != "0") {
         getToken = value;
         print("value has data $getToken");
-        getUserProfileApi();
+        getUserProfileApi(true);
       }
     });
 
@@ -62,49 +68,67 @@ class SetUpController extends GetxController {
     email = emailText;
     update();
   }
-void userUpdateApi(BuildContext context) async {
-      isLoading = true;
 
+  void userUpdateApi(BuildContext context) async {
     var res = await apiClient.userEditApi(
-        getCode: codeField.text, name: nameController.text, email: emailController.text,firstDay: firstDay,secondDay: secondDay, token: getToken,isLoading: true);
-
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
-      getUserProfileApi();
-
+        getCode: codeField.text,
+        name: nameController.text,
+        email: emailController.text,
+        token: getToken,
+        isLoading: true);
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (jsonDecode(res.body)['status'] == true) {
+      getUserProfileApi(false);
     } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      getUserProfileApi(true);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
             Text(jsonDecode(res.body)['message'] as String? ?? 'Invalid Data'),
-        duration: const Duration(milliseconds: 500),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.errorColor,
+        duration: const Duration(milliseconds: 1000),
       ));
     }
 
     update();
   }
-  void getUserProfileApi() async {
-    isLoading = true;
+
+  void getUserProfileApi(isLoad) async {
     var res = await apiClient.getProfileApi(token: getToken, isLoading: true);
 
-    print(res);
-
     if (jsonDecode(res.body)['status'] == 1) {
-
       var data1 = profileDataFromJson(res.body);
       nameController.text = data1.data!.name ?? "";
       emailController.text = data1.data!.email ?? "";
       codeField.text = data1.data!.code ?? "";
-      firstDay = data1.data!.firstDay ?? "";
-      secondDay = data1.data!.secondDay ?? "";
-      isLoading = false;
 
+      if (isLoad == false) {
+        Utility.showCommonDialog(
+          "Profile updated successfully",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+          },
+        );
+      }
       print(data1);
     } else {
-      isLoading = false;
- if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goToLoginPage(false);
+      if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
       }
     }
     update();

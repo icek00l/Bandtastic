@@ -20,25 +20,31 @@ class EditReviewSessionController extends GetxController {
   String getFirstValue = 'Select one',
       getBandPositionID = '',
       getExerciseEditId = '',
-      getBandValue1 = '',
-      getBandValueId1 = '',
+      getcycleidFetch = '',
+      getLastSessionPower = '00',
+      powerEmoji = '🙂',
+      getPowerDiffer = '',
       getFirstValueId = '',
+      getBandPower = '',
+      getBandPowerCalculate = '',
       getBandPosition = '',
+      getBandValue = '',
       getExerciseTypeId = '',
       sessionTypestore = '',
       getReps = '',
-      getSessionId = '',
-      getBeyondFailure = '';
+      getSessionId = '';
   List<ThisSessionData> thisSesstionList = List.empty(growable: true);
   List<BandData> bandPower = List.empty(growable: true);
   List<BandPositonData> bandPositionList = List.empty(growable: true);
   List<RepsList> repsDataList = List.empty(growable: true);
-  List<BeyondFailureList> beyondFailureList = List.empty(growable: true);
   List<int> getBandsId = List.empty(growable: true);
   TextEditingController notesController = TextEditingController();
-  // List<LastSessionPrepData> addBandList = List.empty(growable: true);
+  TextEditingController timeController = TextEditingController();
+  TextEditingController mattoController = TextEditingController();
+  TextEditingController matfromController = TextEditingController();
   List<UserExcerciseBand> storeAllLastData = List.empty(growable: true);
   List<BandDataModel> bandList = [];
+  LastinSessionData storeAllData = LastinSessionData();
   String storeNotes = '';
   int count = 1;
   String getToken = '';
@@ -63,7 +69,8 @@ class EditReviewSessionController extends GetxController {
   List<LocaleName> localeNames = [];
   final SpeechToText speech = SpeechToText();
   @override
-  void onInit() async {
+  void onInit() {
+    initSpeechState();
     SharedPrefs.getString(SharedPrefKeys.token).then((value) {
       if (value != "0") {
         getToken = value;
@@ -73,43 +80,45 @@ class EditReviewSessionController extends GetxController {
     SharedPrefs.getString(SharedPrefKeys.exerciseEditID).then((value) {
       getExerciseEditId = value;
     });
+    SharedPrefs.getString(SharedPrefKeys.cycleID).then((value) {
+      getcycleidFetch = value;
+    });
 
     SharedPrefs.getString(SharedPrefKeys.sessionId).then((value) {
       getSessionId = value;
-     
 
       print("value has value $value");
     });
     SharedPrefs.getString(SharedPrefKeys.exerciseTypeID).then((value) {
       getExerciseTypeId = value.toString();
       print("value has datagetExerciseTypeId $value");
-       getSessionDetailApi(int.parse(getExerciseTypeId));
+      getBandProgressList();
     });
 
     repsDataList.clear();
-    repsDataList.add(RepsList(names: "3"));
-    repsDataList.add(RepsList(names: "6"));
-    repsDataList.add(RepsList(names: "9"));
-    repsDataList.add(RepsList(names: "12"));
-    repsDataList.add(RepsList(names: "15"));
-
-    beyondFailureList.clear();
-    beyondFailureList.add(BeyondFailureList(names: "1"));
-    beyondFailureList.add(BeyondFailureList(names: "2"));
-    beyondFailureList.add(BeyondFailureList(names: "3"));
-    beyondFailureList.add(BeyondFailureList(names: "4"));
-    beyondFailureList.add(BeyondFailureList(names: "5"));
+    repsDataList.add(RepsList(names: "1", value: "0.1"));
+    repsDataList.add(RepsList(names: "2", value: "0.1"));
+    repsDataList.add(RepsList(names: "3", value: "0.1"));
+    repsDataList.add(RepsList(names: "4", value: "0.1"));
+    repsDataList.add(RepsList(names: "5", value: "0.1"));
+    repsDataList.add(RepsList(names: "6", value: "0.1"));
+    repsDataList.add(RepsList(names: "7", value: "0.1"));
+    repsDataList.add(RepsList(names: "8", value: "0.1"));
+    repsDataList.add(RepsList(names: "9", value: "0.1"));
+    repsDataList.add(RepsList(names: "10", value: "1"));
+    repsDataList.add(RepsList(names: "11", value: "1"));
+    repsDataList.add(RepsList(names: "12", value: "1"));
+    repsDataList.add(RepsList(names: "13", value: "1"));
+    repsDataList.add(RepsList(names: "14", value: "1"));
+    repsDataList.add(RepsList(names: "15", value: "1.5"));
 
     thisSesstionList.clear();
     thisSesstionList.add(ThisSessionData(names: "NOTES"));
     thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
     thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
     thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
-    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
-    thisSesstionList.add(ThisSessionData(names: "BAND POSITION"));
-    // thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
-    thisSesstionList.add(ThisSessionData(names: "REPS"));
-    thisSesstionList.add(ThisSessionData(names: "BEYOND FAILURE"));
+    thisSesstionList.add(ThisSessionData(names: "MAT POSITION"));
+    thisSesstionList.add(ThisSessionData(names: "TIME"));
     thisSesstionList.add(ThisSessionData(names: "POWER \nINCREASE"));
 
     super.onInit();
@@ -119,51 +128,59 @@ class EditReviewSessionController extends GetxController {
     var res = await apiClient.getPreviousSessionData(
         getID: getSessionId, token: getToken, isLoading: true);
 
-    print(res);
-    getBandProgressList();
-
-    if (jsonDecode(res.body) != null &&
-        jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = lastDataFromJson(res.body);
       if (data1.data != null) {
-        storeAllLastData = data1.data!.userExcerciseBand!;
-        getBandValue1 = storeAllLastData[0].band?.band ?? '';
-        getBandValueId1 = storeAllLastData[0].band!.id.toString();
-        for (var i = 0; i < storeAllLastData.length; i++) {
-          print("Id of band ${storeAllLastData[i].band!.id.toString()}");
-          if (i > 0) {
-            bandList.add(BandDataModel(
-                id: storeAllLastData[i].band!.id.toString(),
-                names: storeAllLastData[i].band?.band ?? ''));
+        storeAllData = data1;
+        getLastSessionPower = storeAllData.powerDifference.toString();
+        if (data1.data!.userExcerciseBand!.isNotEmpty) {
+          storeAllLastData = data1.data!.userExcerciseBand!;
+          if (storeAllLastData[0].band != null) {
+            getBandPower = storeAllLastData[0].band!.power.toString();
           }
-        }
-        sessionTypestore = data1.data!.sessionType.toString();
-
-        notesController.text = data1.data!.notes.toString();
-        getBandPosition = data1.data!.bandPosition!.position.toString();
-        getBandPositionID = data1.data!.bandPosition!.id.toString();
-        getReps = data1.data!.reps.toString();
-        getBeyondFailure = data1.data!.beyondFailure.toString();
-        if (storeAllLastData.isNotEmpty) {
-          for (int i = 0; i < storeAllLastData.length; i++) {
+          for (var i = 0; i < storeAllLastData.length; i++) {
             if (storeAllLastData[i].band != null) {
-              if (i == 0) {
-                getFirstValue = storeAllLastData[i].band!.band.toString();
-                getFirstValueId = storeAllLastData[i].band!.id.toString();
-              } else {
-                count = storeAllLastData.length;
-                var storeCount = i + 1;
-                getBandsId.add(storeAllLastData[i].band!.id!);
-
-                // addBandList.add(LastSessionPrepData(
-                //     names: storeAllLastData[i].band!.band.toString(),
-                //     value: storeCount.toString()));
-                print(storeAllLastData[i].band!.band.toString());
-              }
+              bandList.add(BandDataModel(
+                  id: storeAllLastData[i].bandId.toString(),
+                  names: storeAllLastData[i].band == null
+                      ? ""
+                      : storeAllLastData[i].band!.band ?? '',
+                  power: storeAllLastData[i].band == null
+                      ? "00"
+                      : storeAllLastData[i].band!.power.toString()));
+            } else {
+              bandList.add(BandDataModel(
+                  id: bandPower[0].id.toString(),
+                  names: bandPower[0].band ?? '',
+                  power: bandPower[0].power.toString()));
             }
           }
+        } else {
+          bandList.add(BandDataModel(
+              id: bandPower[0].id.toString(),
+              names: bandPower[0].band ?? '',
+              power: bandPower[0].power.toString()));
         }
-        // print(addBandList);
+
+        notesController.text = data1.data!.notes ?? "";
+        getBandPosition = data1.data!.bandPosition == null
+            ? ''
+            : data1.data!.bandPosition!.position ?? "";
+        getBandPositionID = data1.data!.bandPosition == null
+            ? ""
+            : data1.data!.bandPosition!.id.toString();
+        matfromController.text =
+            data1.data!.matFrom == null ? "" : data1.data!.matFrom.toString();
+        mattoController.text =
+            data1.data!.matTo == null ? "" : data1.data!.matTo.toString();
+        getReps = data1.data!.reps ?? "";
+        timeController.text = data1.data!.time ?? "";
+        getBandValue = data1.data!.bandPosition == null
+            ? ""
+            : data1.data!.bandPosition!.value ?? "";
+        calculateValue();
+        calculateBandPosition();
+        calculateTimeValue(data1.data!.time ?? "");
       }
     } else {}
     update();
@@ -174,14 +191,15 @@ class EditReviewSessionController extends GetxController {
     var res =
         await apiClient.getBandProgressData(token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = bandModalFromJson(res.body);
 
       print(data1);
-      bandPower = data1.result!;
-      getBandPostionList();
+      bandPower.add(BandData(
+          id: 0, band: "Select one", power: 0, createdAt: "", updatedAt: ""));
+      bandPower.addAll(data1.band!);
+
+getBandPostionList();
       print(bandPower);
     } else {}
     update();
@@ -193,12 +211,12 @@ class EditReviewSessionController extends GetxController {
     var res =
         await apiClient.getBandPositionData(token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == true) {
       var data1 = bandPositionFromJson(res.body);
       print(data1);
       bandPositionList = data1.result!;
+      getSessionDetailApi(int.parse(getExerciseTypeId));
+
       isLoading.value = true;
       print(bandPower);
     } else {}
@@ -209,33 +227,32 @@ class EditReviewSessionController extends GetxController {
   void editExerciseApi(BuildContext context) async {
     String commaSeparatedValues = '';
     List<String> listOdIds = [];
-    listOdIds.add(getBandValueId1);
+
     for (var i = 0; i < bandList.length; i++) {
-      listOdIds.add(bandList[i].id.toString());
+      if (bandList[i].id == "0") {
+        listOdIds.remove("0");
+      } else {
+        listOdIds.add(bandList[i].id.toString());
+      }
     }
 
-    // if (getBandsId.isNotEmpty) {
-    //   getBandsId.toSet().toList();
-
-    print("wopewqioepqw $listOdIds");
     commaSeparatedValues = listOdIds.join(',');
     print("getBandsId $commaSeparatedValues");
-
     var res = await apiClient.editExerciseLogApi(
         sesionId: int.parse(getSessionId),
         exerciseTypeid: int.parse(getExerciseTypeId),
-        sessionTypehere: sessionTypestore,
-        bandpostionId: int.parse(getBandPositionID),
-        reps: getReps,
-        beyondFailure: getBeyondFailure,
+        getcycleid: int.parse(getcycleidFetch),
+        bandpostionId:
+            getBandPositionID.isEmpty ? null : int.parse(getBandPositionID),
+        getTime: timeController.text,
         notes: notesController.text,
-        power: 50,
-        bands: commaSeparatedValues.isNotEmpty ? commaSeparatedValues : [],
+        matfromvalue: matfromController.text,
+        matTovalue: mattoController.text,
+        power: getBandPower,
+        bands: commaSeparatedValues.isNotEmpty ? commaSeparatedValues : "",
         getID: int.parse(getExerciseEditId),
         token: getToken,
         isLoading: true);
-
-    print(res);
 
     if (jsonDecode(res.body)['status'] == 1) {
       print("success");
@@ -306,6 +323,11 @@ class EditReviewSessionController extends GetxController {
     update();
   }
 
+  void stopListening() async {
+    await speech.stop();
+    update();
+  }
+
   void startListening() {
     logEvent('start listening');
     lastWords = '';
@@ -343,4 +365,171 @@ class EditReviewSessionController extends GetxController {
     this.level = level;
     update();
   }
+
+ 
+
+  calculateValue() {
+    List<double> getPower = [];
+    for (int i = 0; i < bandList.length; i++) {
+      print(bandList[i].power);
+      getPower.add(double.parse(bandList[i].power.toString()));
+    }
+    List<double> selectedValues = getPower.toList();
+
+    double powerCalculate =
+        selectedValues.reduce((value, element) => value + element);
+    getBandPowerCalculate = powerCalculate.toString();
+    var getBandPower1 = powerCalculate.toInt();
+    getBandPower = getBandPower1.toString();
+    if (getLastSessionPower != "00") {
+      if (double.parse(getLastSessionPower) > double.parse(getBandPower)) {
+        var powerDiffer =
+            double.parse(getLastSessionPower) - double.parse(getBandPower);
+        var storePower = powerDiffer.toInt();
+        getPowerDiffer = "- $storePower";
+        powerEmoji = '😔';
+      } else {
+        var powerDiffer =
+            double.parse(getBandPower) - double.parse(getLastSessionPower);
+        var storePower = powerDiffer.toInt();
+        getPowerDiffer = "+ $storePower";
+
+        powerEmoji = '🙂';
+      }
+    }
+
+    update();
+  }
+
+  calculateBandPosition() {
+    var getBandMulti = double.parse(getBandPower) *
+        double.parse(getBandValue.isEmpty ? "1" : getBandValue);
+     int  getBandPowerCalculate1 = getBandMulti.round();
+    getBandPowerCalculate = getBandPowerCalculate1.toString();
+
+    var getBandPower1 = getBandMulti.toInt();
+    getBandPower = getBandPower1.toString();
+    if (getLastSessionPower != "00") {
+      if (double.parse(getLastSessionPower) > double.parse(getBandPower)) {
+        var powerDiffer =
+            double.parse(getLastSessionPower) - double.parse(getBandPower);
+        var storePower = powerDiffer.toInt();
+        getPowerDiffer = "- $storePower";
+        powerEmoji = '😔';
+      } else {
+        var powerDiffer =
+            double.parse(getBandPower) - double.parse(getLastSessionPower);
+        var storePower = powerDiffer.toInt();
+        getPowerDiffer = "+ $storePower";
+        powerEmoji = '🙂';
+      }
+    }
+    print(getBandMulti);
+    print(getBandPower);
+    update();
+  }
+
+  calculateTimeValue(value) {
+    if (int.parse(value) < int.parse("90")) {
+      print("less");
+      var getBandMulti =
+          double.parse(getBandPowerCalculate) * double.parse("0.011");
+
+      int getBandPower1 = getBandMulti.round();
+      getBandPowerCalculate = getBandPower1.toString();
+      getBandPower = getBandPower1.toString();
+      if (getLastSessionPower != "00") {
+        if (double.parse(getLastSessionPower) >
+            double.parse(getBandPowerCalculate)) {
+          var powerDiffer = double.parse(getLastSessionPower) -
+              double.parse(getBandPowerCalculate);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "- $storePower";
+          powerEmoji = '😔';
+        } else {
+          var powerDiffer = double.parse(getBandPowerCalculate) -
+              double.parse(getLastSessionPower);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "+ $storePower";
+          powerEmoji = '🙂';
+        }
+      }
+    } else if (value == "90") {
+      var getBandMulti =
+          double.parse(getBandPowerCalculate) * double.parse("1");
+
+      int getBandPower1 = getBandMulti.round();
+      getBandPowerCalculate = getBandPower1.toString();
+      getBandPower = getBandPower1.toString();
+      if (getLastSessionPower != "00") {
+        if (double.parse(getLastSessionPower) >
+            double.parse(getBandPowerCalculate)) {
+          var powerDiffer = double.parse(getLastSessionPower) -
+              double.parse(getBandPowerCalculate);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "- $storePower";
+          powerEmoji = '😔';
+        } else {
+          var powerDiffer = double.parse(getBandPowerCalculate) -
+              double.parse(getLastSessionPower);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "+ $storePower";
+          powerEmoji = '🙂';
+        }
+      }
+    } else if (value == "180") {
+      var getBandMulti =
+          double.parse(getBandPowerCalculate) * double.parse("1.225");
+
+      int getBandPower1 = getBandMulti.round();
+      getBandPowerCalculate = getBandPower1.toString();
+      getBandPower = getBandPower1.toString();
+      if (getLastSessionPower != "00") {
+        if (double.parse(getLastSessionPower) >
+            double.parse(getBandPowerCalculate)) {
+          var powerDiffer = double.parse(getLastSessionPower) -
+              double.parse(getBandPowerCalculate);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "- $storePower";
+          powerEmoji = '😔';
+        } else {
+          var powerDiffer = double.parse(getBandPowerCalculate) -
+              double.parse(getLastSessionPower);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "+ $storePower";
+          powerEmoji = '🙂';
+        }
+      }
+    } else if (int.parse(value) > int.parse("90")) {
+      print(value);
+      var result = int.parse(value) - 90;
+      var result1 = (double.parse(result.toString()) * 0.0025) + 1;
+      print(result1);
+      var getBandMulti = double.parse(getBandPowerCalculate) *
+          double.parse(result1.toString());
+
+      int getBandPower1 = getBandMulti.round();
+      getBandPowerCalculate = getBandPower1.toString();
+      getBandPower = getBandPower1.toString();
+      if (getLastSessionPower != "00") {
+        if (double.parse(getLastSessionPower) >
+            double.parse(getBandPowerCalculate)) {
+          var powerDiffer = double.parse(getLastSessionPower) -
+              double.parse(getBandPowerCalculate);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "- $storePower";
+          powerEmoji = '😔';
+        } else {
+          var powerDiffer = double.parse(getBandPowerCalculate) -
+              double.parse(getLastSessionPower);
+          var storePower = powerDiffer.toInt();
+          getPowerDiffer = "+ $storePower";
+          powerEmoji = '🙂';
+        }
+      }
+    }
+
+    update();
+  }
+
 }

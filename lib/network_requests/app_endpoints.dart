@@ -6,18 +6,18 @@ abstract class AppEndpoints {
   static String USER_SELECT_DAY = 'user-selecte-dates';
   static String GET_INTRO_API = 'getintro';
   static String BAND_PROGRESS_LIST = 'bands';
-  static String HOME_API = 'home';
+  static String HOME_API = 'v2/home';
   static String GET_SESSION_DETAIL_API = 'get-session-detail';
   static String GET_PREVIOUS_SESSION_DETAIL_API = 'get-previous-session-detail';
   static String CREATE_EXERCISE_API = 'create-excercise';
   static String BANDS_POSITION_API = 'bands-position';
   static String EDIT_LOG_API = 'edit-log';
-  static String END_SESSION_API = 'end-session';
-  static String WEEKLY_CYCLE_API = 'weekly-cycle';
-  static String OVERALL_PERFORMANCE_API = 'overall-performance';
-  static String YEARLY_CYCLE_API = 'yearly-cycle';
-  static String MONTHLY_CYCLE_API = 'monthly-weekly-cycle';
+  static String END_SESSION_API = 'v2/end-session';
+  static String WEEKLY_CYCLE_API = 'v2/weekly-cycle';
+  static String OVERALL_PERFORMANCE_API = 'v2/overall-performance';
+  static String YEARLY_CYCLE_API = 'v2/yearly-cycle';
+  static String MONTHLY_CYCLE_API = 'v2/monthly-weekly-cycle';
   static String UPDATE_PROFILE_API = 'update-profile';
   static String GET_PROFILE_API = 'get-profile';
-  
+  static String dailycycle = 'v2/daily-cycle';
 }

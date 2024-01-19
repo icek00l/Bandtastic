@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66.115" height="136" viewBox="0 0 66.115 136">
+  <g id="Full" transform="translate(-195.885 -278)">
+    <circle id="Ellipse_47" data-name="Ellipse 47" cx="4" cy="4" r="4" transform="translate(249 278)" fill="#505050"/>
+    <circle id="Ellipse_48" data-name="Ellipse 48" cx="4" cy="4" r="4" transform="translate(249 307)" fill="#505050"/>
+    <circle id="Ellipse_49" data-name="Ellipse 49" cx="4" cy="4" r="4" transform="translate(249 332)" fill="#505050"/>
+    <circle id="Ellipse_89" data-name="Ellipse 89" cx="4" cy="4" r="4" transform="translate(249 357)" fill="#505050"/>
+    <circle id="Ellipse_50" data-name="Ellipse 50" cx="4" cy="4" r="4" transform="translate(249 406)" fill="#505050"/>
+    <path id="Path_49" data-name="Path 49" d="M8477,2801v128.523" transform="translate(-8224 -2519)" fill="none" stroke="#505050" stroke-width="2"/>
+    <g id="Button" transform="translate(0 25)">
+      <text id="NAVAL" transform="translate(245 315)" font-size="12" font-family="Helvetica" letter-spacing="0.075em"><tspan x="-41.182" y="0">NAVAL</tspan></text>
+      <g id="Path_164" data-name="Path 164" transform="translate(196.885 303)" fill="none">
+        <path d="M8.273,0H55.842a8.14,8.14,0,0,1,8.273,8,8.14,8.14,0,0,1-8.273,8H8.273A8.14,8.14,0,0,1,0,8,8.14,8.14,0,0,1,8.273,0Z" stroke="none"/>
+        <path d="M 8.272937774658203 0 C 3.70391845703125 0 0 3.581720352172852 0 8 C 0 12.41827964782715 3.70391845703125 16 8.272937774658203 16 L 55.8422966003418 16 C 60.41130828857422 16 64.115234375 12.41827964782715 64.115234375 8 C 64.115234375 3.581720352172852 60.41130828857422 0 55.8422966003418 0 L 8.272937774658203 0 M 8.272937774658203 -1 L 55.8422966003418 -1 C 60.95541763305664 -1 65.115234375 3.037380218505859 65.115234375 8 C 65.115234375 12.96261978149414 60.95541763305664 17 55.8422966003418 17 L 8.272937774658203 17 C 3.159816741943359 17 -1 12.96261978149414 -1 8 C -1 3.037380218505859 3.159816741943359 -1 8.272937774658203 -1 Z" stroke="none" fill="#a3a3a3"/>
+      </g>
+    </g>
+  </g>
+</svg>

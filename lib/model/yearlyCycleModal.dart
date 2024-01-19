@@ -38,13 +38,15 @@ class CycleYearlyModel {
 }
 
 class YearlyData {
-  String? month;
+  int? cycleId;
+  String? cycle;
   List<Data>? data;
 
-  YearlyData({this.month, this.data});
+  YearlyData({this.cycleId, this.cycle, this.data});
 
   YearlyData.fromJson(Map<String, dynamic> json) {
-    month = json['month'];
+    cycleId = json['cycle_id'];
+    cycle = json['cycle'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -55,7 +57,8 @@ class YearlyData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['month'] = month;
+    data['cycle_id'] = cycleId;
+    data['cycle'] = cycle;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -65,7 +68,7 @@ class YearlyData {
 
 class Data {
   String? exercise;
-  int? power;
+  dynamic power;
 
   Data({this.exercise, this.power});
 
@@ -81,3 +84,4 @@ class Data {
     return data;
   }
 }
+

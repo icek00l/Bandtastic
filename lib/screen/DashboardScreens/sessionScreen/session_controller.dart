@@ -3,10 +3,14 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/model/bandsModel.dart';
 import 'package:bandapp/model/sessionDetailModal.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
+import 'package:bandapp/utility/Utility.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
 import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
@@ -30,21 +34,18 @@ class SessionController extends GetxController
   late AnimationController animationController;
   late Animation<double> animation;
   bool isIconChange = true;
-  bool endSession = false;
   String buttonName = '';
   String anchorImage = '';
   var apiClient = ApiClient();
-  List<BandsModel> bandsList = List.empty(growable: true);
   List<ExerciseVideoList> exerciseVideo = List.empty(growable: true);
   List<ResponseSession> extraData = List.empty(growable: true);
-
+  SessionDataModal sessionData = SessionDataModal();
   List<ExerciseTypeInfo> getSessionInfoDataList = List.empty(growable: true);
-  String getNameSession = '';
-  String getNameDay = '';
   bool isShowVideo = false;
+  bool isExtraExercise = false;
+  String isExtraExerciseName = '';
   String getNamehere = '';
   String getNumberhere = '';
-  String getFirstVideoUrl = '';
   String getExerVideo = '';
   String getIdhere = '';
   String getToken = '';
@@ -67,11 +68,7 @@ class SessionController extends GetxController
         print("value has data $getToken");
       }
     });
-    SharedPrefs.getString(SharedPrefKeys.userDay).then((value) {
-      if (value != "0") {
-        getNameDay = value;
-      }
-    });
+
     SharedPrefs.getString(SharedPrefKeys.sessionId).then((value) {
       if (value.isNotEmpty) {
         getSessionID = value;
@@ -144,7 +141,7 @@ class SessionController extends GetxController
       update();
     } else {
       animationController
-          .animateBack(0, duration: const Duration(milliseconds: 600))
+          .animateBack(0, duration: const Duration(milliseconds: 300))
           .then((value) {
         isIconChange = true;
         update();
@@ -156,26 +153,22 @@ class SessionController extends GetxController
     var res = await apiClient.getSessionData(
         getID: getSessionId, token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = sessionDataFromJson(res.body);
       if (data1.data != null) {
-        getNameSession = data1.data!.name!;
-        getFirstVideoUrl = data1.data!.video;
-        getSessionInfoDataList = data1.data!.exerciseTypeInfo!;
-        endSession = data1.data!.sessionComplete!;
+        sessionData = data1;
+        getSessionInfoDataList = sessionData.data!.exerciseTypeInfo!;
+        buttonName = '';
         for (int j = 0; j < getSessionInfoDataList.length; j++) {
           if (getSessionInfoDataList[j].isUserExcercise == false) {
             isShowVideo = true;
             anchorImage = getSessionInfoDataList[j].anchor.toString();
             print("get id here ==>${getSessionInfoDataList[j].id}");
-            SharedPrefs.saveStringInPrefs(SharedPrefKeys.exerciseTypeID,
-                getSessionInfoDataList[j].id.toString());
-            buttonName = getSessionInfoDataList[j].name.toString();
+
+            buttonName = getSessionInfoDataList[j].name??"";
 
             break;
-          }
+          } 
         }
         for (int k = 0; k < getSessionInfoDataList.length; k++) {
           if (getSessionInfoDataList[k].isUserExcercise == true) {
@@ -183,76 +176,109 @@ class SessionController extends GetxController
             break;
           }
         }
+        for (int t = 0; t < getSessionInfoDataList.length; t++) {
+          if (getSessionInfoDataList[t].isTrue == "Yes") {
+            isExtraExerciseName = getSessionInfoDataList[t].name ?? "";
+            isExtraExercise = true;
+            break;
+          }
+        }
 
         for (int i = 0; i < getSessionInfoDataList.length; i++) {
           if (getSessionInfoDataList[i].userExcercise != null) {
-            if (extraData.isNotEmpty) {
-              extraData.clear();
+            if (getSessionInfoDataList[i].isTrue == "Yes") {
+              extraData.add(ResponseSession(
+                  name: " Band",
+                  value: getSessionInfoDataList[i]
+                          .userExcercise!
+                          .userExcerciseBand==null ? "NA":getSessionInfoDataList[i]
+                          .userExcercise!
+                          .userExcerciseBand![0]
+                          .bandName ??
+                      "N/A"));
+              extraData.add(ResponseSession(
+                  name: " Position",
+                  value: getSessionInfoDataList[i]
+                          .userExcercise!
+                          .bandPosition!
+                          .position ??
+                      "N/A"));
+              extraData.add(ResponseSession(
+                  name: " Time",
+                  value:
+                      getSessionInfoDataList[i].userExcercise!.time ?? "N/A"));
+              extraData.add(ResponseSession(
+                  name: " Power",
+                  value:
+                      getSessionInfoDataList[i].userExcercise!.power ?? "N/A"));
+              print(extraData.length);
+            } else {
+              getSessionInfoDataList[i].responseDataSession!.add(
+                  ResponseSession(
+                      name: " Band",
+                      value: getSessionInfoDataList[i]
+                              .userExcercise!
+                              .userExcerciseBand == null ?  "NA":getSessionInfoDataList[i]
+                              .userExcercise!
+                              .userExcerciseBand!
+                              .isEmpty
+                          ? "NA"
+                          : getSessionInfoDataList[i]
+                                  .userExcercise!
+                                  .userExcerciseBand![0]
+                                  .bandName ??
+                              "N/A"));
+              getSessionInfoDataList[i].responseDataSession!.add(
+                  ResponseSession(
+                      name: " Position",
+                      value: getSessionInfoDataList[i]
+                                  .userExcercise!
+                                  .bandPosition ==
+                              null
+                          ? "N/A"
+                          : getSessionInfoDataList[i]
+                                  .userExcercise!
+                                  .bandPosition!
+                                  .position ??
+                              "N/A"));
+              getSessionInfoDataList[i].responseDataSession!.add(
+                  ResponseSession(
+                      name: " Time",
+                      value: getSessionInfoDataList[i].userExcercise!.time ??
+                          "N/A"));
+              getSessionInfoDataList[i].responseDataSession!.add(
+                  ResponseSession(
+                      name: " Power",
+                      value: getSessionInfoDataList[i].userExcercise!.power ??
+                          "N/A"));
             }
-            getSessionInfoDataList[i].responseDataSession!.add(ResponseSession(
-                name: " Band",
-                value: getSessionInfoDataList[i]
-                        .userExcercise!
-                        .userExcerciseBand![0]
-                        .bandName ??
-                    ""));
-            getSessionInfoDataList[i].responseDataSession!.add(ResponseSession(
-                name: " Position",
-                value: getSessionInfoDataList[i]
-                        .userExcercise!
-                        .bandPosition!
-                        .position ??
-                    ""));
-            getSessionInfoDataList[i].responseDataSession!.add(ResponseSession(
-                name: " Reps",
-                value: getSessionInfoDataList[i].userExcercise!.reps ?? ""));
-            getSessionInfoDataList[i].responseDataSession!.add(ResponseSession(
-                name: " Beyond \n  failure",
-                value: getSessionInfoDataList[i].userExcercise!.beyondFailure ??
-                    ""));
-            getSessionInfoDataList[i].responseDataSession!.add(ResponseSession(
-                name: " Power",
-                value: getSessionInfoDataList[i].userExcercise!.power ?? ""));
           }
         }
         print(getSessionInfoDataList);
       }
     } else {
       if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goTowalkthrough();
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
       }
     }
     update();
   }
 
   addListData() {
-    bandsList.clear();
-    bandsList.add(BandsModel(
-      bandName: "2x",
-      colorName: "Green",
-      colorValue: AppColors.buttonColor,
-    ));
-    bandsList.add(BandsModel(
-      bandName: "1x",
-      colorName: "Purple",
-      colorValue: Colors.purple,
-    ));
-    bandsList.add(BandsModel(
-      bandName: "2x",
-      colorName: "Black",
-      colorValue: Colors.black,
-    ));
-    bandsList.add(BandsModel(
-      bandName: "2x",
-      colorName: "Red",
-      colorValue: Colors.red,
-    ));
-    bandsList.add(BandsModel(
-      bandName: "2x",
-      colorName: "Yellow",
-      colorValue: Colors.yellow,
-    ));
     exerciseVideo.clear();
     exerciseVideo.add(ExerciseVideoList(
         exerciseName: "  Straight leg \n  deadlifts with bar", value: 1));

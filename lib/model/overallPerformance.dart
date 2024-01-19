@@ -21,17 +21,17 @@ class OverallPerformanceModal {
     if (json['ExerciseData'] != null) {
       exerciseData = <ExerciseData>[];
       json['ExerciseData'].forEach((v) {
-        exerciseData!.add(new ExerciseData.fromJson(v));
+        exerciseData!.add(ExerciseData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.exerciseData != null) {
-      data['ExerciseData'] = this.exerciseData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (exerciseData != null) {
+      data['ExerciseData'] = exerciseData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -44,18 +44,18 @@ class ExerciseData {
   ExerciseData({this.exercise, this.data});
 
   ExerciseData.fromJson(Map<String, dynamic> json) {
-    exercise = json['exercise'];
+    exercise = json['name'];
     if (json['data'] != null) {
       data = <GraphData>[];
       json['data'].forEach((v) {
-        data!.add(new GraphData.fromJson(v));
+        data!.add(GraphData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['exercise'] = this.exercise;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = exercise;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -65,7 +65,7 @@ class ExerciseData {
 
 class GraphData {
   String? name;
-  int? value;
+  dynamic value;
 
   GraphData({this.name, this.value});
 
@@ -75,9 +75,9 @@ class GraphData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['value'] = value;
     return data;
   }
 }

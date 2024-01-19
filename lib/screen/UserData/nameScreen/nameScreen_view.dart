@@ -58,7 +58,7 @@ class _NameScreenViewState extends State<NameScreenView> {
                       Text(
                         AppStrings.whatYourName,
                         style: TextStyle(
-                            fontFamily: AppFonts.plusSansRegular,
+                            fontFamily: AppFonts.plusSansBold,
                             fontSize: AppDimensions.twentyFour,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1.0,
@@ -134,7 +134,7 @@ class _NameScreenViewState extends State<NameScreenView> {
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                backgroundColor: AppColors.buttonColor,
+                                backgroundColor: AppColors.errorColor,
                                 content: Text(
                                   "Please Enter your name",
                                   style: TextStyle(

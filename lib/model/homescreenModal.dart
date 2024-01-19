@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unrelated_type_equality_checks
 
 import 'dart:convert';
 
@@ -7,10 +7,11 @@ HomeSessionModal homeDataFromJson(String str) =>
 
 String homeDataToJson(HomeSessionModal data) => json.encode(data.toJson());
 
+
 class HomeSessionModal {
   bool? status;
-  String? message;
-  HomeDataMain? result;
+  dynamic message;
+  HomeDataType? result;
 
   HomeSessionModal({this.status, this.message, this.result});
 
@@ -18,36 +19,15 @@ class HomeSessionModal {
     status = json['status'];
     message = json['message'];
     result =
-        json['result'] != null ? new HomeDataMain.fromJson(json['result']) : null;
+        json['result'] != null ? HomeDataType.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
-    }
-    return data;
-  }
-}
-
-class HomeDataMain {
-  String? day;
-  HomeDataType? data;
-
-  HomeDataMain({this.day, this.data});
-
-  HomeDataMain.fromJson(Map<String, dynamic> json) {
-    day = json['day'];
-    data = json['data'] != null ? new HomeDataType.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['day'] = this.day;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -55,15 +35,46 @@ class HomeDataMain {
 
 class HomeDataType {
   int? id;
-  String? name;
-  String? video;
-  String? createdAt;
-  String? updatedAt;
-  bool? sessionComplete;
-  String? days;
-   List<ExerciseInfo>? exerciseInfo;
+  dynamic name;
+  dynamic createdAt;
+  dynamic updatedAt;
+  Session? session;
 
-  HomeDataType(
+  HomeDataType({this.id, this.name, this.createdAt, this.updatedAt, this.session});
+
+  HomeDataType.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    session =
+        json['session'] != null ? Session.fromJson(json['session']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (session != null) {
+      data['session'] = session!.toJson();
+    }
+    return data;
+  }
+}
+
+class Session {
+  int? id;
+  dynamic name;
+  dynamic video;
+  dynamic createdAt;
+  dynamic updatedAt;
+  bool? sessionComplete;
+  dynamic days;
+  List<ExerciseInfo>? exerciseInfo;
+
+  Session(
       {this.id,
       this.name,
       this.video,
@@ -73,7 +84,7 @@ class HomeDataType {
       this.days,
       this.exerciseInfo});
 
-  HomeDataType.fromJson(Map<String, dynamic> json) {
+  Session.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     video = json['video'];
@@ -84,23 +95,23 @@ class HomeDataType {
     if (json['exercise_info'] != null) {
       exerciseInfo = <ExerciseInfo>[];
       json['exercise_info'].forEach((v) {
-        exerciseInfo!.add(new ExerciseInfo.fromJson(v));
+        exerciseInfo!.add(ExerciseInfo.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['video'] = this.video;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['session_complete'] = this.sessionComplete;
-    data['days'] = this.days;
-    if (this.exerciseInfo != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['video'] = video;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['session_complete'] = sessionComplete;
+    data['days'] = days;
+    if (exerciseInfo != null) {
       data['exercise_info'] =
-          this.exerciseInfo!.map((v) => v.toJson()).toList();
+          exerciseInfo!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -108,11 +119,10 @@ class HomeDataType {
 
 class ExerciseInfo {
   int? id;
-  String? name;
-  String? isExtra;
-  String? createdAt;
-  String? updatedAt;
-  int? laravelThroughKey;
+  dynamic name;
+  dynamic isExtra;
+  dynamic createdAt;
+  dynamic updatedAt;
   ExerciseType? exerciseType;
 
   ExerciseInfo(
@@ -121,7 +131,6 @@ class ExerciseInfo {
       this.isExtra,
       this.createdAt,
       this.updatedAt,
-      this.laravelThroughKey,
       this.exerciseType});
 
   ExerciseInfo.fromJson(Map<String, dynamic> json) {
@@ -130,22 +139,20 @@ class ExerciseInfo {
     isExtra = json['is_extra'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    laravelThroughKey = json['laravel_through_key'];
     exerciseType = json['exercise_type'] != null
-        ? new ExerciseType.fromJson(json['exercise_type'])
+        ? ExerciseType.fromJson(json['exercise_type'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['is_extra'] = this.isExtra;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['laravel_through_key'] = this.laravelThroughKey;
-    if (this.exerciseType != null) {
-      data['exercise_type'] = this.exerciseType!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['is_extra'] = isExtra;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (exerciseType != null) {
+      data['exercise_type'] = exerciseType!.toJson();
     }
     return data;
   }
@@ -156,8 +163,8 @@ class ExerciseType {
   int? sessionId;
   int? exerciseId;
   int? exerciseTypeId;
-  String? createdAt;
-  String? updatedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
   ExerciseTypeInfo? exerciseTypeInfo;
 
   ExerciseType(
@@ -177,20 +184,20 @@ class ExerciseType {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     exerciseTypeInfo = json['exercise_type_info'] != null
-        ? new ExerciseTypeInfo.fromJson(json['exercise_type_info'])
+        ? ExerciseTypeInfo.fromJson(json['exercise_type_info'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['session_id'] = this.sessionId;
-    data['exercise_id'] = this.exerciseId;
-    data['exercise_type_id'] = this.exerciseTypeId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.exerciseTypeInfo != null) {
-      data['exercise_type_info'] = this.exerciseTypeInfo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['session_id'] = sessionId;
+    data['exercise_id'] = exerciseId;
+    data['exercise_type_id'] = exerciseTypeId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (exerciseTypeInfo != null) {
+      data['exercise_type_info'] = exerciseTypeInfo!.toJson();
     }
     return data;
   }
@@ -199,13 +206,15 @@ class ExerciseType {
 class ExerciseTypeInfo {
   int? id;
   int? exerciseId;
-  String? name;
-  String? anchor;
-  String? url;
-  String? createdAt;
-  String? updatedAt;
+  dynamic name;
+  dynamic anchor;
+  dynamic url;
+  dynamic image;
+  dynamic createdAt;
+  dynamic updatedAt;
   bool? isUserExcercise;
-  UserExcercise? userExcercise;
+  dynamic isTrue;
+  
 
   ExerciseTypeInfo(
       {this.id,
@@ -213,10 +222,11 @@ class ExerciseTypeInfo {
       this.name,
       this.anchor,
       this.url,
+      this.image,
       this.createdAt,
       this.updatedAt,
       this.isUserExcercise,
-      this.userExcercise});
+      this.isTrue});
 
   ExerciseTypeInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -224,96 +234,133 @@ class ExerciseTypeInfo {
     name = json['name'];
     anchor = json['anchor'];
     url = json['url'];
+    image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isUserExcercise = json['is_user_Excercise'];
-    userExcercise = json['user_excercise'] != null
-        ? new UserExcercise.fromJson(json['user_excercise'])
-        : null;
+    isTrue = json['is_true'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['exercise_id'] = this.exerciseId;
-    data['name'] = this.name;
-    data['anchor'] = this.anchor;
-    data['url'] = this.url;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_user_Excercise'] = this.isUserExcercise;
-    if (this.userExcercise != null) {
-      data['user_excercise'] = this.userExcercise!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['exercise_id'] = exerciseId;
+    data['name'] = name;
+    data['anchor'] = anchor;
+    data['url'] = url;
+    data['image'] = image;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_user_Excercise'] = isUserExcercise;
+    data['is_true'] = isTrue;
+   
+    return data;
+  }
+}
+
+
+class BandPosition {
+  int? id;
+  dynamic position;
+  dynamic value;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  BandPosition(
+      {this.id, this.position, this.value, this.createdAt, this.updatedAt});
+
+  BandPosition.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    position = json['position'];
+    value = json['value'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['position'] = position;
+    data['value'] = value;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class UserExcerciseBand {
+  int? id;
+  int? bandId;
+  int? userExcerciseId;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic bandName;
+  dynamic power;
+  Band? band;
+
+  UserExcerciseBand(
+      {this.id,
+      this.bandId,
+      this.userExcerciseId,
+      this.createdAt,
+      this.updatedAt,
+      this.bandName,
+      this.power,
+      this.band});
+
+  UserExcerciseBand.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    bandId = json['band_id'];
+    userExcerciseId = json['user_excercise_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    bandName = json['band_name'];
+    power = json['power'];
+    band = json['band'] != null ? Band.fromJson(json['band']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['band_id'] = bandId;
+    data['user_excercise_id'] = userExcerciseId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['band_name'] = bandName;
+    data['power'] = power;
+    if (band != null) {
+      data['band'] = band!.toJson();
     }
     return data;
   }
 }
 
-class UserExcercise {
+class Band {
   int? id;
-  int? userId;
-  int? sessionId;
-  int? excerciseId;
-  int? excerciseTypeId;
-  String? sessionType;
-  int? bandPositionId;
-  String? reps;
-  String? beyondFailure;
-  String? notes;
-  String? status;
-  String? power;
-  String? createdAt;
-  String? updatedAt;
+  dynamic band;
+  double? power;
+  dynamic createdAt;
+  dynamic updatedAt;
 
-  UserExcercise(
-      {this.id,
-      this.userId,
-      this.sessionId,
-      this.excerciseId,
-      this.excerciseTypeId,
-      this.sessionType,
-      this.bandPositionId,
-      this.reps,
-      this.beyondFailure,
-      this.notes,
-      this.status,
-      this.power,
-      this.createdAt,
-      this.updatedAt});
+  Band({this.id, this.band, this.power, this.createdAt, this.updatedAt});
 
-  UserExcercise.fromJson(Map<String, dynamic> json) {
+  Band.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['user_id'];
-    sessionId = json['session_id'];
-    excerciseId = json['excercise_id'];
-    excerciseTypeId = json['excercise_type_id'];
-    sessionType = json['session_type'];
-    bandPositionId = json['band_position_id'];
-    reps = json['reps'];
-    beyondFailure = json['beyond_failure'];
-    notes = json['notes'];
-    status = json['status'];
+    band = json['band'];
     power = json['power'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['session_id'] = this.sessionId;
-    data['excercise_id'] = this.excerciseId;
-    data['excercise_type_id'] = this.excerciseTypeId;
-    data['session_type'] = this.sessionType;
-    data['band_position_id'] = this.bandPositionId;
-    data['reps'] = this.reps;
-    data['beyond_failure'] = this.beyondFailure;
-    data['notes'] = this.notes;
-    data['status'] = this.status;
-    data['power'] = this.power;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['band'] = band;
+    data['power'] = power;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
+
+

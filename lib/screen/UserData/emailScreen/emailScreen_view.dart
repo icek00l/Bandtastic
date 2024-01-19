@@ -37,12 +37,11 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: AppDimensions.twenty),
-                       CustomWithoutTraining(
+                      CustomWithoutTraining(
                         navigateBack: () {
-      Navigator.pop(context);
-                          
+                          Navigator.pop(context);
                         },
-                       ),
+                      ),
                       SizedBox(height: AppDimensions.fifty),
 
                       Text(
@@ -70,7 +69,7 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                       Text(
                         AppStrings.whatYourEmail,
                         style: TextStyle(
-                            fontFamily: AppFonts.plusSansRegular,
+                            fontFamily: AppFonts.plusSansBold,
                             fontSize: AppDimensions.twentyFour,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1.0,
@@ -130,11 +129,12 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                         onFieldSubmitted: (value) {
                           print("value");
                           if (value.isNotEmpty) {
-                             if (controller.emailID.isNotEmpty &&
+                            if (controller.emailID.isNotEmpty &&
                                 RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(controller.emailID) &&
                                 controller.isEmailSelect == true) {
-                             controller.userRegisterApi(context,controller.name,value);
+                              controller.userRegisterApi(
+                                  context, controller.name, value);
                             }
                           }
                         },
@@ -168,35 +168,48 @@ class _EmailScreenViewState extends State<EmailScreenView> {
                         ],
                       ),
 
-                      ButtonCommonArrowClass(isMargin: false,
-                          onTap: (p0) {
-                            if (controller.emailID.isNotEmpty &&
-                                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(controller.emailID) &&
-                                controller.isEmailSelect == true) {
-
-                             controller.userRegisterApi(context,controller.name,controller.email);
-
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: AppColors.buttonColor,
-                                content: Text(
-                                  "Please fill all details",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: AppDimensions.forteen),
-                                ),
-                                duration: const Duration(milliseconds: 500),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppDimensions.ten)),
-                              ));
-                            }
-                          },
-                          buttonText: AppStrings.confirmText,
-                          ),
+                      ButtonCommonArrowClass(
+                        isMargin: false,
+                        onTap: (p0) {
+                          if (controller.emailID.isEmpty &&
+                              !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(controller.emailID)) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: AppColors.errorColor,
+                              content: Text(
+                                "Please fill all details",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: AppDimensions.forteen),
+                              ),
+                              duration: const Duration(milliseconds: 500),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppDimensions.ten)),
+                            ));
+                          } else if (controller.isEmailSelect == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: AppColors.errorColor,
+                              content: Text(
+                                "Please agree to the terms and conditions",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: AppDimensions.forteen),
+                              ),
+                              duration: const Duration(milliseconds: 500),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppDimensions.ten)),
+                            ));
+                          } else {
+                            controller.userRegisterApi(
+                                context, controller.name, controller.email);
+                          }
+                        },
+                        buttonText: AppStrings.confirmText,
+                      ),
 
                       SizedBox(height: AppDimensions.forty),
                     ],

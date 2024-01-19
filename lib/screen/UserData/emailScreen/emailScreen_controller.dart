@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/model/registerModel.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
@@ -58,9 +59,7 @@ codeBox = value;
     var res = await apiClient.userRegister(
         getCode: codeBox,getType:codeType , name: getName, email: getEmail, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == true) {
       var data1 = registerFromJson(res.body);
       print(data1);
       SharedPrefs.saveStringInPrefs(SharedPrefKeys.isLoggedIn, "2");
@@ -74,7 +73,10 @@ codeBox = value;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
             Text(jsonDecode(res.body)['message'] as String? ?? 'Invalid Data'),
-        duration: const Duration(milliseconds: 500),
+       behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.errorColor,
+
+        duration: const Duration(milliseconds: 1000),
       ));
     }
 

@@ -111,8 +111,13 @@ class CustomWithTextHeader extends StatelessWidget {
         isBackAllow == true
             ? GestureDetector(
                 onTap: navigateBack,
-                child: SvgPicture.asset(AssetsBase.backButtonSvg,
-                    height: AppDimensions.twentyFive),
+                child: Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.symmetric(horizontal: AppDimensions.eight),
+                  height: AppDimensions.forty,
+                  child: SvgPicture.asset(AssetsBase.backButtonSvg,
+                      height: AppDimensions.twentyFive),
+                ),
               )
             : SvgPicture.asset(AssetsBase.backButtonSvg,
                 height: AppDimensions.twentyFive),

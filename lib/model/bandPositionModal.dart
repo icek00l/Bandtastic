@@ -38,16 +38,18 @@ class BandPositionDataModal {
 }
 
 class BandPositonData {
-  int? id;
+ int? id;
   String? position;
+  String? value;
   String? createdAt;
   String? updatedAt;
 
-  BandPositonData({this.id, this.position, this.createdAt, this.updatedAt});
+  BandPositonData({this.id, this.position, this.value, this.createdAt, this.updatedAt});
 
   BandPositonData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     position = json['position'];
+    value = json['value'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -56,6 +58,7 @@ class BandPositonData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['position'] = position;
+    data['value'] = value;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;

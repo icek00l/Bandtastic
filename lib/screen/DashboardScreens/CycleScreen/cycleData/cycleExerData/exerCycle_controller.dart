@@ -1,34 +1,74 @@
 // ignore_for_file: file_names
 
-import 'package:bandapp/model/cycleModel.dart';
+import 'dart:convert';
+
+import 'package:bandapp/model/dayreview_modal.dart';
+import 'package:bandapp/network_requests/network_requests.dart';
+import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
+import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
+
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/sessionScreen/session_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
+import 'package:bandapp/utility/Utility.dart';
 
 class ExerDataController extends GetxController {
-  List<CycleModel> cycleDataList = List.empty(growable: true);
-  List<WeekDataModel> weekWiseData = List.empty(growable: true);
-  
-ScrollController scrollControl = ScrollController();
+  ExerDataController({this.sessionIDGet});
+  String? sessionIDGet;
+  String getToken = '';
+  DayReviewData dayReviewExerData = DayReviewData();
+  var apiClient = ApiClient();
+  bool isLoading = false;
   @override
   void onInit() async {
-    cycleDataList.clear();
-    cycleDataList.add(
-        CycleModel(exerName: "Stiff leg deadlifts", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Chest Press", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Wide grip row", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Shoulder press", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Reverse bicep curl", value: "+12"));
-    cycleDataList
-        .add(CycleModel(exerName: "Overhead tricep extension", value: "+12"));
-   
-weekWiseData.clear();
-    weekWiseData.add(WeekDataModel(weekDay: "wk 1", power: "49",value: "Change" ));
-    weekWiseData.add(WeekDataModel(weekDay: "2", power: "53",value: "+4" ));
-    weekWiseData.add(WeekDataModel(weekDay: "3", power: "55",value: "+1" ));
-    weekWiseData.add(WeekDataModel(weekDay: "4", power: "60",value: "+5" ));
-    weekWiseData.add(WeekDataModel(weekDay: "5", power: "62",value: "+2" ));
-    weekWiseData.add(WeekDataModel(weekDay: "6", power: "63",value: "+1" ));
+    isLoading = true;
+    print(sessionIDGet);
+    SharedPrefs.getString(SharedPrefKeys.token).then((value) {
+      if (value != "0") {
+        getToken = value;
+        print("value has getToken $getToken");
+        dayReviewData(sessionIDGet);
+      }
+    });
 
     super.onInit();
+  }
+
+  dayReviewData(fetchSessionId) async {
+    var res = await apiClient.dayReviewApi(
+        sessionId: fetchSessionId, token: getToken, isLoading: true);
+
+    if (jsonDecode(res.body)['status'] == 1) {
+      var data1 = dayReviewDataFromJson(res.body);
+
+      dayReviewExerData = data1;
+      isLoading = false;
+      print(dayReviewExerData);
+    } else {
+      isLoading = false;
+      if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
+      }
+    }
+    update();
   }
 }

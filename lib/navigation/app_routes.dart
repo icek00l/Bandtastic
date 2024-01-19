@@ -12,7 +12,6 @@ abstract class Routes {
   static const welcomeView = _Paths.welcomeView;
   static const trainingExplain = _Paths.trainingExplain;
   static const trainingTwoThree = _Paths.trainingTwoThree;
-  static const exerciseDaySelect = _Paths.exerciseDaySelect;
   static const restWeekScreen = _Paths.restWeekScreen;
   static const trainIntroVideo = _Paths.trainIntroVideo;
   static const bottomBar = _Paths.bottomBar;
@@ -29,7 +28,6 @@ abstract class _Paths {
   static const welcomeView = '/welcomeView';
   static const trainingExplain = '/trainingExplain';
   static const trainingTwoThree = '/trainingTwoThree';
-  static const exerciseDaySelect = '/exerciseDaySelect';
   static const restWeekScreen = '/restWeekScreen';
   static const trainIntroVideo = '/trainIntroVideo';
   static const bottomBar = '/bottomBar';

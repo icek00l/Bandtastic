@@ -7,11 +7,10 @@ abstract class SharedPrefKeys {
   static String saveType = 'savetype';
   static String userID = 'userID';
   static String sessionId = 'session_ID';
+  static String cycleID = 'cycle_ID';
   static String exerciseTypeID = 'exercise_Type_ID';
   static String saveTimer = 'saveTimer';
   static String exerciseEditID = 'edit_ID';
-  static String firstDate = 'firstDate';
-  static String secondDate = 'endDate';
   static String userDay = 'userDay';
-
+  static String getClickID = 'getClickID';
 }

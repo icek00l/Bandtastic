@@ -44,11 +44,7 @@ abstract class AppRouteMaps {
       Routes.trainingTwoThree,
     );
   }
-  static void goToSelectExerciseDay() {
-    Get.toNamed(
-      Routes.exerciseDaySelect
-    );
-  }
+ 
   static void goToRestWeekScreen() {
     Get.toNamed(
       Routes.restWeekScreen

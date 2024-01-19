@@ -6,8 +6,8 @@ import 'dart:io';
 import 'package:bandapp/network_requests/enums.dart';
 import 'package:bandapp/utility/Utility.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect.dart';
-import 'package:get/route_manager.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
@@ -18,25 +18,31 @@ class ApiWrapper {
   Future makeRequest(String url, Request request, dynamic data, String urlCheck,
       bool isLoading, Map<String, String>? headers) async {
     print("Header $headers");
+    print("data $data");
     if (await Utility.isNetworkAvailable()) {
       switch (request) {
         case Request.get:
           {
+            final ioc = HttpClient();
+            ioc.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
+
+            final httpObj = IOClient(ioc);
             var uri = _baseUrl + url;
-            if (isLoading) Utility.onLoading();
             try {
-              final response = await http
+              EasyLoading.show();
+
+              final response = await httpObj
                   .get(
                     Uri.parse(uri),
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-              // Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               Utility.printILog(uri);
               return response;
             } on TimeoutException catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               return const Response();
             }
           }
@@ -52,7 +58,8 @@ class ApiWrapper {
 
             var uri = _baseUrl + url;
             try {
-              if (isLoading) Utility.onLoading();
+              EasyLoading.show();
+
               final response = await httpObj
                   .post(
                     Uri.parse(uri),
@@ -60,12 +67,12 @@ class ApiWrapper {
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
 
               Utility.printILog(uri);
               return response;
             } on Exception catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               return const Response();
             }
           }
@@ -75,7 +82,8 @@ class ApiWrapper {
           {
             var uri = _baseUrl + url;
             try {
-              if (isLoading) Utility.onLoading();
+              EasyLoading.show();
+
               final response = await http
                   .put(
                     Uri.parse(uri),
@@ -83,11 +91,11 @@ class ApiWrapper {
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               Utility.printILog(uri);
               return response;
             } on TimeoutException catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               return const Response();
             }
           }
@@ -97,7 +105,8 @@ class ApiWrapper {
           {
             var uri = _baseUrl + url;
             try {
-              if (isLoading) Utility.onLoading();
+              EasyLoading.show();
+
               final response = await http
                   .patch(
                     Uri.parse(uri),
@@ -105,11 +114,11 @@ class ApiWrapper {
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               Utility.printILog(uri);
               return response;
             } on TimeoutException catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
 
               return const Response();
             }
@@ -120,7 +129,7 @@ class ApiWrapper {
           {
             var uri = _baseUrl + url;
             try {
-              if (isLoading) Utility.onLoading();
+              EasyLoading.show();
 
               final response = await http
                   .delete(
@@ -129,12 +138,12 @@ class ApiWrapper {
                     headers: headers,
                   )
                   .timeout(const Duration(seconds: 60));
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               Utility.printILog(uri);
               Utility.printLog(response.body);
               return response;
             } on TimeoutException catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               return const Response();
             }
           }
@@ -142,8 +151,10 @@ class ApiWrapper {
         case Request.multipart:
           {
             var uri = _baseUrl + url;
-            if (isLoading) Utility.onLoading();
+
             try {
+              EasyLoading.show();
+
               final response = http.MultipartRequest("POST", Uri.parse(uri));
               response.headers.addAll(headers!);
 
@@ -151,11 +162,11 @@ class ApiWrapper {
               final responseX =
                   await http.Response.fromStream(streamedResponse);
               print("response code ${responseX.body}");
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               Utility.printILog(uri);
               return responseX;
             } on TimeoutException catch (_) {
-              Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+              EasyLoading.dismiss();
               return const Response();
             }
           }
@@ -164,9 +175,11 @@ class ApiWrapper {
 
     /// If there is no network available then instead of print can show the no internet widget too
     else {
-      return const Response(
-        statusText:
-            '{"message":"No internet, please enable mobile data or wi-fi in your phone settings and try again"}',
+      return Utility.showCommonDialog(
+        "No internet, please enable mobile data or wi-fi in your phone settings and try again",
+        () {
+          Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+        },
       );
     }
   }

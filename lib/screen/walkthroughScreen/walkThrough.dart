@@ -5,15 +5,14 @@ import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
 import 'package:bandapp/screen/walkthroughScreen/sliderModel.dart';
 import 'package:bandapp/screen/walkthroughScreen/walkThrough_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
-
 import '../../appstyle/app_dimensions.dart';
 
 class WalkThroughView extends StatefulWidget {
@@ -24,22 +23,17 @@ class WalkThroughView extends StatefulWidget {
 }
 
 class _WalkThroughViewState extends State<WalkThroughView> {
-  var dsh = Get.isRegistered<WalkThroughController>()
-      ? Get.find<WalkThroughController>()
-      : Get.put(WalkThroughController());
-
   @override
   Widget build(BuildContext context) => GetBuilder<WalkThroughController>(
+      init: WalkThroughController(),
       builder: (controller) => Scaffold(
             body: Column(
               children: [
                 Expanded(
                   child: PageView.builder(
-
                     controller: controller.pageController,
                     itemCount: contents.length,
                     onPageChanged: (int index) {
-                      
                       controller.courrentIndex = index;
                       controller.update();
                     },
@@ -116,7 +110,7 @@ class _WalkThroughViewState extends State<WalkThroughView> {
                             left: AppDimensions.ten, right: AppDimensions.ten),
                         child: GestureDetector(
                           onTap: () {
-                            AppRouteMaps.goToLoginPage(false);
+                            Get.offAll(() =>const LoginWelcomeView());
                           },
                           child: Text(
                             AppStrings.skip,
@@ -138,7 +132,7 @@ class _WalkThroughViewState extends State<WalkThroughView> {
                           onPressed: () {
                             if (controller.courrentIndex ==
                                 contents.length - 1) {
-                              AppRouteMaps.goToLoginPage(false);
+                            Get.offAll(const LoginWelcomeView());
                             }
                             controller.pageController.nextPage(
                                 duration: const Duration(milliseconds: 1000),

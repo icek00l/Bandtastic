@@ -13,12 +13,15 @@ abstract class AppRequestsEnums {
   static String SESSION_ID = 'session_id';
   static String EXERCISE_TYPE_ID = 'excercise_type_id';
   static String SESSION_TPE = 'session_type';
+  static String cycle_id = 'cycle_id';
   static String BAND_POSITION_ID = 'band_position_id';
   static String REPS = 'reps';
-  static String BEYOND_FAILURE = 'beyond_failure';
+  static String time = 'time';
   static String NOTES = 'notes';
   static String POWER = 'power';
   static String BANDS = 'bands';
+  static String matTo = 'mat_to';
+  static String matFrom = 'mat_from';
 
   //endsession Param
   static String SESSIONIDEND = 'session_id';

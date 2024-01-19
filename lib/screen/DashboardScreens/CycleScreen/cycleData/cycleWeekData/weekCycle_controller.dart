@@ -2,72 +2,72 @@
 
 import 'dart:convert';
 
-import 'package:bandapp/model/cycleModel.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
+import 'package:bandapp/model/weeklyCycleModal.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
+import 'package:bandapp/utility/Utility.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
 import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/sessionScreen/session_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
+import 'package:flutter/material.dart';
 
 class WeekDataController extends GetxController {
-  List<CycleModel> cycleDataList = List.empty(growable: true);
-  List<WeekName> weekNameList = List.empty(growable: true);
-String getToken = '',firstDate= '',endDate = '';
-var apiClient = ApiClient();
+  WeeklyCycleModal cycleDataList = WeeklyCycleModal();
+  String getToken = '', fetchCycleID = '';
+  var apiClient = ApiClient();
   @override
   void onInit() async {
-
-     SharedPrefs.getString(SharedPrefKeys.token).then((value) {
+    SharedPrefs.getString(SharedPrefKeys.token).then((value) {
       if (value != "0") {
         getToken = value;
+
         print("value has getToken $getToken");
-
-      }
-    }); SharedPrefs.getString(SharedPrefKeys.firstDate).then((value) {
-      if (value != "0") {
-        firstDate= value;
-
-        print("value has datafirstDate $firstDate");
-      }
-    }); SharedPrefs.getString(SharedPrefKeys.secondDate).then((value) {
-      if (value != "0") {
-        endDate = value;
-getCycleYearList();
-        print("value has dataendDate $endDate");
       }
     });
-    cycleDataList.clear();
-    cycleDataList.add(
-        CycleModel(exerName: "Stiff leg deadlifts", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Chest Press", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Wide grip row", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Shoulder press", value: "+12"));
-    cycleDataList.add(CycleModel(exerName: "Reverse bicep curl", value: "+12"));
-    cycleDataList
-        .add(CycleModel(exerName: "Overhead tricep extension", value: "+12"));
-    weekNameList.clear();
+    SharedPrefs.getString(SharedPrefKeys.getClickID).then((value) {
+      if (value.isNotEmpty) {
+        fetchCycleID = value;
+        getCycleYearList();
+      }
+    });
 
     super.onInit();
   }
 
   void getCycleYearList() async {
-    var res = await apiClient.monthlyCycleAPi(startDate:firstDate ,endDate: endDate,token: getToken, isLoading: true);
+    var res = await apiClient.monthlyCycleAPi(
+        cycleIDApi: fetchCycleID, token: getToken, isLoading: true);
 
-    print(res);
 
-    if (jsonDecode(res.body)['status'] != false) {
-      // var data1 = cycleYearDataFromJson(res.body);
+    if (jsonDecode(res.body)['status'] == 1) {
+      var data1 = weeklyCycleDataFromJson(res.body);
 
-      // yearlyCycleList = data1.yearlyData!;
-      // print(yearlyCycleList);
+      cycleDataList = data1;
+      print(cycleDataList);
     } else {
-       if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goTowalkthrough();
+      if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
+        Utility.showLogoutDialog(
+          "Login again!",
+          () {
+            Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+              Get.delete<SessionController>();
+              Get.delete<HomeScreenController>();
+              Get.delete<IntroductionController>();
+              Get.delete<WeekCycleController>();
+              Get.delete<SetUpController>();
+              Get.offAll(() => const LoginWelcomeView());
+            });
+          },
+        );
       }
     }
     update();
   }
-  
 }

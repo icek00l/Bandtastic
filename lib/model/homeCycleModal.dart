@@ -12,8 +12,9 @@ class HomeCycleModal {
   String? message;
   dynamic weekNumber;
   List<CycleHomeData>? data;
+  dynamic dailySessionNumber;
 
-  HomeCycleModal({this.status, this.message,this.weekNumber, this.data});
+  HomeCycleModal({this.status, this.message,this.weekNumber, this.data,this.dailySessionNumber});
 
   HomeCycleModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -25,6 +26,7 @@ class HomeCycleModal {
         data!.add(CycleHomeData.fromJson(v));
       });
     }
+    dailySessionNumber = json['daily_session_number'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,17 +34,17 @@ class HomeCycleModal {
     data['status'] = status;
     data['message'] = message;
     data['Week Number'] = weekNumber;
-
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['daily_session_number'] = dailySessionNumber;
     return data;
   }
 }
 
 class CycleHomeData {
   String? name;
-  int? power;
+  dynamic power;
 
   CycleHomeData({this.name, this.power});
 

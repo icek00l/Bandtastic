@@ -9,6 +9,8 @@ import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/selectdayandTraining/trainingExplanation/howWorlModel.dart';
 import 'package:bandapp/screen/selectdayandTraining/trainingExplanation/trainingScreen_controller.dart';
+import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
+import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
@@ -111,7 +113,11 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                     children: [
                       InkWell(
                         onTap: () {
-                          AppRouteMaps.goToSelectExerciseDay();
+                          SharedPrefs.saveStringInPrefs(
+                                  SharedPrefKeys.isLoggedIn, "4")
+                              .then((value) {
+                            AppRouteMaps.goToDashbaordScreen("1");
+                          });
                         },
                         child: Text(
                           AppStrings.skip,
@@ -132,7 +138,11 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                           onPressed: () {
                             if (controller.courrentIndex ==
                                 howWorkModel.length - 1) {
-                              AppRouteMaps.goToSelectExerciseDay();
+                              SharedPrefs.saveStringInPrefs(
+                                      SharedPrefKeys.isLoggedIn, "4")
+                                  .then((value) {
+                                AppRouteMaps.goToDashbaordScreen("1");
+                              });
                             }
                             controller.pageController.nextPage(
                                 duration: const Duration(milliseconds: 1000),
@@ -146,6 +156,3 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
             ),
           ));
 }
-
-
-

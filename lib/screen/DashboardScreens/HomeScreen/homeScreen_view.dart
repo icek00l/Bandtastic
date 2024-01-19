@@ -1,21 +1,21 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, file_names, must_be_immutable
 
-import 'dart:convert';
-import 'dart:math';
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_fonts.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/model/exerciseModel.dart';
+import 'package:bandapp/model/overallPerformance.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
+import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:bandapp/widgets/buttonBackground.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
-import 'package:fcharts/fcharts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreenView extends StatefulWidget {
   const HomeScreenView({super.key});
@@ -25,55 +25,66 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  var dsh = Get.isRegistered<HomeScreenController>()
-      ? Get.find<HomeScreenController>()
-      : Get.put(HomeScreenController());
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeScreenController>(
-        builder: (controller) => Scaffold(
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(
-                    AppDimensions.seventy), // here the desired height
-                child: AppBar(
-                  backgroundColor: Colors.white,
-                  elevation: AppDimensions.zero,
-                  title: const CustomHeader(),
-                )),
-            body:
-                controller.isLoading.value
-                    ? SingleChildScrollView(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: AppDimensions.twenty),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: AppDimensions.fifTeen),
-                                WorkoutHeading(
-                                    exerciseListName: controller.exerciseList,
-                                    controller2: controller),
-                                SizedBox(height: AppDimensions.thirty),
-                                CenterButtonArrowClass(
-                                    onTap: (p0) {
-                                      AppRouteMaps.goToDashbaordScreen("2");
-                                    },
-                                    buttonText: AppStrings.viewSessionText),
-                                SizedBox(height: AppDimensions.forty),
-                                CycleHeading(controller3: controller),
-                                SizedBox(height: AppDimensions.thirty),
-                                ProgressBar(controller1: controller),
-                                SizedBox(height: AppDimensions.thirty),
-                                OverallGraph(controller4: controller),
-                                SizedBox(height: AppDimensions.fifty),
-                              ]),
-                        ),
-                      ):Container()
-                   ),
-      );
-}
+      init: HomeScreenController(),
+      builder: (controller) => Scaffold(
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(
+                  AppDimensions.seventy), // here the desired height
+              child: AppBar(
+                backgroundColor: Colors.white,
+                elevation: AppDimensions.zero,
+                title: const CustomHeader(),
+              )),
+          body: controller.isLoading.value
+              ? RefreshIndicator(
+                  color: AppColors.buttonColor,
+                  onRefresh: () async {
+                    controller.getHomeApi();
+                  },
+                  child: SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: AppDimensions.twenty),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: AppDimensions.fifTeen),
+                            WorkoutHeading(
+                                exerciseListName: controller.exerciseList,
+                                controller2: controller),
+                            SizedBox(height: AppDimensions.twenty),
+                            CenterButtonArrowClass(
+                                onTap: (p0) {
+                                  SharedPrefs.saveStringInPrefs(
+                                      SharedPrefKeys.cycleID,
+                                      controller.homeDataList.id.toString());
+                                  SharedPrefs.saveStringInPrefs(
+                                          SharedPrefKeys.sessionId,
+                                          controller.homeDataList.session!.id
+                                              .toString())
+                                      .then((value) {
+                                    AppRouteMaps.goToDashbaordScreen("2");
+                                  });
+                                },
+                                buttonText: AppStrings.viewSessionText),
+                            SizedBox(height: AppDimensions.thirty4),
+                            CycleHeading(controller3: controller),
+                            SizedBox(height: AppDimensions.thirty),
+                            ProgressBar(controller1: controller),
+                            SizedBox(height: AppDimensions.thirty),
+                            OverallGraph(controller4: controller),
+                            SizedBox(height: AppDimensions.fifty),
+                          ]),
+                    ),
+                  ),
+                )
+              : Container()),
+    );
+  }
 }
 
 // Workout class
@@ -94,25 +105,22 @@ class WorkoutHeading extends StatelessWidget {
           style: AppThemeStyle.heading28Bold,
         ),
         SizedBox(height: AppDimensions.twentyFive),
-        
         Align(
-          alignment: Alignment.center,
+            alignment: Alignment.center,
             child: Text(
-          controller2.getSessionDay.isNotEmpty
-              ? controller2.getSessionDay
-              : "",
-          style: TextStyle(
-              fontSize: AppDimensions.twentyTwo,
-              fontFamily: AppFonts.plusSansMedium,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 1.0,
-              color: Colors.black),
-        )),
+              controller2.homeDataList.session!.name ?? "",
+              style: TextStyle(
+                  fontSize: AppDimensions.twentyTwo,
+                  fontFamily: AppFonts.plusSansMedium,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.4,
+                  color: Colors.black),
+            )),
         SizedBox(height: AppDimensions.thirty),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: controller2.homeDataList.exerciseInfo!.length,
+          itemCount: controller2.homeDataList.session!.exerciseInfo!.length,
           itemBuilder: (context, index) {
             return Container(
               margin: EdgeInsets.only(bottom: AppDimensions.twenty),
@@ -123,13 +131,15 @@ class WorkoutHeading extends StatelessWidget {
                     width: 120,
                     margin: EdgeInsets.only(right: AppDimensions.twenty),
                     child: Text(
-                      controller2.homeDataList.exerciseInfo == null &&
-                              controller2
-                                      .homeDataList.exerciseInfo![index].name ==
+                      controller2.homeDataList.session!.exerciseInfo == null &&
+                              controller2.homeDataList.session!
+                                      .exerciseInfo![index].name ==
                                   null
                           ? ""
-                          : controller2.homeDataList.exerciseInfo![index].name
-                              .toString(),
+                          : controller2
+                              .homeDataList.session!.exerciseInfo![index].name
+                              .toString()
+                              .toUpperCase(),
                       textAlign: TextAlign.end,
                       style: TextStyle(
                           fontSize: AppDimensions.sixTeen,
@@ -141,7 +151,7 @@ class WorkoutHeading extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      controller2.homeDataList.exerciseInfo![index]
+                      controller2.homeDataList.session!.exerciseInfo![index]
                               .exerciseType!.exerciseTypeInfo!.name ??
                           "",
                       style: TextStyle(
@@ -198,7 +208,7 @@ class CycleHeading extends StatelessWidget {
                     ))),
             Expanded(
                 child: Text(
-              "Week ${controller3.weekNumberstore} of 4",
+              "Session ${controller3.weekNumberstore}",
               style: TextStyle(
                   fontSize: AppDimensions.twentyTwo,
                   fontFamily: AppFonts.plusSansMedium,
@@ -219,11 +229,16 @@ class Common extends StatelessWidget {
     required this.barLightList,
   }) : super(key: key);
 
-  final int barLightList;
+  final dynamic barLightList;
   @override
   Widget build(BuildContext context) {
     var storeValue = 0;
-    if (barLightList > 5) {
+    double parsedValue = double.parse(barLightList);
+
+
+    int roundedDownValue2 = parsedValue.toInt();
+    print('Rounded down value using toInt(): $roundedDownValue2');
+    if (roundedDownValue2 > 5) {
       storeValue = 10;
     }
     return Container(
@@ -273,7 +288,7 @@ class ProgressBar extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  controller1.cycleListData[index].name!,
+                  controller1.cycleListData[index].name ?? "",
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: AppDimensions.sixTeen,
@@ -284,7 +299,8 @@ class ProgressBar extends StatelessWidget {
               ),
               Expanded(
                   child: Common(
-                      barLightList: controller1.cycleListData[index].power!)),
+                      barLightList:
+                          controller1.cycleListData[index].power.toString())),
               Expanded(
                 child: Text(
                   "+${controller1.cycleListData[index].power.toString()}",
@@ -306,7 +322,6 @@ class ProgressBar extends StatelessWidget {
 }
 
 // overallGraph
-
 class OverallGraph extends StatelessWidget {
   OverallGraph({
     Key? key,
@@ -334,7 +349,6 @@ class OverallGraph extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            final span = DoubleSpan(-30, 300);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -344,7 +358,7 @@ class OverallGraph extends StatelessWidget {
                       bottom: AppDimensions.fifTeen,
                       top: AppDimensions.fifty),
                   child: Text(
-                    controller4.graphListData[index].exercise!,
+                    controller4.graphListData[index].exercise ?? "",
                     style: TextStyle(
                         fontSize: AppDimensions.sixTeen,
                         fontFamily: AppFonts.plusSansBold,
@@ -354,43 +368,43 @@ class OverallGraph extends StatelessWidget {
                   ),
                 ),
                 AspectRatio(
-                  aspectRatio: 4 / 3,
-                  child: LineChart(
-                    lines: [
-                      Line(
-                        data: controller4.graphListData[index].data,
-                        curve: LineCurves.cardinalSpline,
-                        marker: const MarkerOptions(
-                            paint: PaintOptions.fill(
-                          color: AppColors.buttonColor,
-                          strokeCap: StrokeCap.round,
-                        )),
-                        stroke: PaintOptions.stroke(
-                          color: AppColors.buttonColor,
-                          strokeWidth: AppDimensions.three,
-                        ),
-                        xFn: (datum) => datum.name,
-                        yFn: (datum) => datum.value,
-                        xAxis: ChartAxis(
-                            hideTickNotch: true,
-                            opposite: false,
-                            paint: PaintOptions.fill(
-                                color: AppColors.lineGraphColor,
-                                strokeCap: StrokeCap.round,
-                                strokeWidth: AppDimensions.two)),
-                        yAxis: ChartAxis(
-                            opposite: true,
-                            hideTickNotch: true,
-                            span: span,
-                            offset: -5,
-                            paint: PaintOptions.fill(
-                                color: AppColors.lineGraphColor,
-                                strokeCap: StrokeCap.round,
-                                strokeWidth: AppDimensions.two)),
+                  aspectRatio: 4 / 4,
+                  child: SfCartesianChart(
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    plotAreaBorderWidth: 0,
+                    series: <ChartSeries>[
+                      SplineSeries<GraphData, String>(
+                        dataSource: controller4.graphListData[index].data!,
+                        xValueMapper: (GraphData point, _) => point.name,
+                        yValueMapper: (GraphData point, _) => point.value,
+                        color: AppColors.lineGraphColor,
+                        markerSettings: MarkerSettings(
+                            isVisible: true,
+                            borderWidth: AppDimensions.three,
+                            height: AppDimensions.twelve,
+                            width: AppDimensions.twelve,
+                            borderColor: AppColors.markerColor),
+                        splineType: SplineType.monotonic,
                       ),
                     ],
+                    primaryXAxis: CategoryAxis(
+                      axisLine: AxisLine(
+                          color: AppColors.lineColor, width: AppDimensions.two),
+                      majorGridLines: MajorGridLines(width: AppDimensions.zero),
+                      minorGridLines: MinorGridLines(width: AppDimensions.zero),
+                    ),
+                    primaryYAxis: NumericAxis(
+                      opposedPosition: true,
+                      axisLine: AxisLine(
+                          color: AppColors.lineColor, width: AppDimensions.two),
+                      tickPosition: TickPosition.outside,
+                      majorGridLines: MajorGridLines(
+                          width: AppDimensions.one, dashArray: const [5, 5]),
+                      minorGridLines: MinorGridLines(
+                          width: AppDimensions.one, dashArray: [5, 5]),
+                    ),
                   ),
-                ),
+                )
               ],
             );
           },

@@ -1,3 +1,11 @@
+
+import 'dart:convert';
+
+WeeklyCycleModal weeklyCycleDataFromJson(String str) =>
+    WeeklyCycleModal.fromJson(json.decode(str) as Map<String, dynamic>);
+
+String weeklyCycleDataToJson(WeeklyCycleModal data) => json.encode(data.toJson());
+
 class WeeklyCycleModal {
   int? status;
   String? message;
@@ -11,7 +19,7 @@ class WeeklyCycleModal {
     if (json['weeklyData'] != null) {
       weeklyData = <WeeklyData>[];
       json['weeklyData'].forEach((v) {
-        weeklyData!.add(new WeeklyData.fromJson(v));
+        weeklyData!.add(WeeklyData.fromJson(v));
       });
     }
   }
@@ -28,27 +36,27 @@ class WeeklyCycleModal {
 }
 
 class WeeklyData {
-  String? thisWeek;
-  String? day;
+  String? session;
+  int? sessionId;
   List<Data>? data;
 
-  WeeklyData({this.thisWeek, this.day, this.data});
+  WeeklyData({this.session, this.sessionId, this.data});
 
   WeeklyData.fromJson(Map<String, dynamic> json) {
-    thisWeek = json['thisWeek'];
-    day = json['day'];
+    session = json['session'];
+    sessionId = json['session_id'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['thisWeek'] = thisWeek;
-    data['day'] = day;
+    data['session'] = session;
+    data['session_id'] = sessionId;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -57,23 +65,24 @@ class WeeklyData {
 }
 
 class Data {
-  String? exercise;
-  String? date;
-  int? power;
+  String? exerciseType;
+  int? exerciseTypeId;
+  dynamic power;
 
-  Data({this.exercise, this.date, this.power});
+  Data({this.exerciseType, this.exerciseTypeId, this.power});
 
   Data.fromJson(Map<String, dynamic> json) {
-    exercise = json['Exercise'];
-    date = json['Date'];
+    exerciseType = json['Exercise Type'];
+    exerciseTypeId = json['Exercise Type Id'];
     power = json['Power'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['Exercise'] = exercise;
-    data['Date'] = date;
+    data['Exercise Type'] = exerciseType;
+    data['Exercise Type Id'] = exerciseTypeId;
     data['Power'] = power;
     return data;
   }
 }
+

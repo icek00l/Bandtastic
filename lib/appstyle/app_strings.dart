@@ -20,7 +20,7 @@ abstract class AppStrings {
   static String welcomTextTwo = 'WELCOME TO \nBANDTASTIC'.tr;
   static String uniqueCode = 'UNIQUE CODE'.tr;
   static String codeRequestdescText = 'It looks like we have a problem. Please send a message to our support team and they’ll be able to get things moving. Sorry about this.'.tr;
-  static String uniqueCodeText = 'Enter your unique code'.tr;
+  static String uniqueCodeText = 'Enter admin code'.tr;
   static String descriptionText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do tempor incididunt ut labore et dolore magna aliqua.'.tr;
   static String notGetText = 'Haven’t got the b Box?'.tr;
   // static String buttonTextCheck = 'CHECK IT OUT HERE'.tr;
@@ -68,7 +68,7 @@ abstract class AppStrings {
   static String lastSessionText = 'LAST SESSION'.tr;
   static String letsmashText = 'Let’s Smash it!'.tr;
   static String thisSessionText = 'THIS SESSION'.tr;
-  static String cancelText = 'CANCEL'.tr;
+  static String cancelText = 'Cancel'.tr;
 
 //setup screen
 static String nameText = 'NAME'.tr;

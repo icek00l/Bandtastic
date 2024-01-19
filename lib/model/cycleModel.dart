@@ -19,7 +19,7 @@ class WeekName {
 
 class WeekDataModel {
    String? weekDay;
-  String? power;
+  dynamic power;
   String? value;
  
   WeekDataModel({

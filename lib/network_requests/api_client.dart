@@ -49,8 +49,6 @@ class ApiClient {
     required getCode,
     required name,
     required email,
-    required firstDay,
-    required secondDay,
     required token,
     required bool isLoading,
   }) async {
@@ -58,8 +56,6 @@ class ApiClient {
       AppRequestsEnums.CODE_TYPE: getCode,
       AppRequestsEnums.NAME_TYPE: name,
       AppRequestsEnums.EMAIL_TYPE: email,
-      AppRequestsEnums.FIRST_DAY: firstDay,
-      AppRequestsEnums.SECOND_DAY: secondDay,
     };
 
     var response = await apiWrapper.makeRequest(AppEndpoints.UPDATE_PROFILE_API,
@@ -180,26 +176,30 @@ class ApiClient {
   Future createExerciseApi({
     required sesionId,
     required exerciseTypeid,
-    required sessionType,
+    required getcycleid,
     required bandpostionId,
     required reps,
-    required beyondFailure,
+    required time,
     required notes,
     required power,
     required bands,
+    required matfromvalue,
+    required matTovalue,
     required token,
     required bool isLoading,
   }) async {
     var getExerciseData = {
       AppRequestsEnums.SESSION_ID: sesionId,
       AppRequestsEnums.EXERCISE_TYPE_ID: exerciseTypeid,
-      AppRequestsEnums.SESSION_TPE: sessionType,
+      AppRequestsEnums.cycle_id: getcycleid,
       AppRequestsEnums.BAND_POSITION_ID: bandpostionId,
       AppRequestsEnums.REPS: reps,
-      AppRequestsEnums.BEYOND_FAILURE: beyondFailure,
+      AppRequestsEnums.time: time,
       AppRequestsEnums.NOTES: notes,
       AppRequestsEnums.POWER: power,
       AppRequestsEnums.BANDS: bands,
+      AppRequestsEnums.matFrom: matfromvalue,
+      AppRequestsEnums.matTo: matTovalue,
     };
 
     print("sdlkdlsk $getExerciseData");
@@ -219,11 +219,12 @@ class ApiClient {
   Future editExerciseLogApi({
     required sesionId,
     required exerciseTypeid,
-    required sessionTypehere,
+    required getcycleid,
     required bandpostionId,
-    required reps,
-    required beyondFailure,
+    required getTime,
     required notes,
+    required matfromvalue,
+    required matTovalue,
     required power,
     required bands,
     required getID,
@@ -233,15 +234,15 @@ class ApiClient {
     var getExerciseData = {
       AppRequestsEnums.SESSION_ID: sesionId,
       AppRequestsEnums.EXERCISE_TYPE_ID: exerciseTypeid,
-      AppRequestsEnums.SESSION_TPE: sessionTypehere,
+      AppRequestsEnums.cycle_id: getcycleid,
       AppRequestsEnums.BAND_POSITION_ID: bandpostionId,
-      AppRequestsEnums.REPS: reps,
-      AppRequestsEnums.BEYOND_FAILURE: beyondFailure,
+      AppRequestsEnums.time: getTime,
       AppRequestsEnums.NOTES: notes,
       AppRequestsEnums.POWER: power,
       AppRequestsEnums.BANDS: bands,
+      AppRequestsEnums.matFrom: matfromvalue,
+      AppRequestsEnums.matTo: matTovalue,
     };
-
     var response = await apiWrapper.makeRequest(
         "${AppEndpoints.EDIT_LOG_API}?id=$getID",
         Request.post,
@@ -271,6 +272,7 @@ class ApiClient {
 
   Future endSessionAPi({
     required sessionId,
+    required getcycleid,
     required totalTime,
     required notes,
     required token,
@@ -278,6 +280,7 @@ class ApiClient {
   }) async {
     var getUserData = {
       AppRequestsEnums.SESSIONIDEND: sessionId,
+      AppRequestsEnums.cycle_id: getcycleid,
       AppRequestsEnums.TOTALTIMEEND: totalTime.toString(),
       AppRequestsEnums.NOTESEND: notes,
     };
@@ -294,10 +297,12 @@ class ApiClient {
 
   Future weeklyCycleAPi({
     required token,
+    required sessionID,
+    required cycleID,
     required bool isLoading,
   }) async {
     var response = await apiWrapper.makeRequest(
-        AppEndpoints.WEEKLY_CYCLE_API,
+       "${AppEndpoints.WEEKLY_CYCLE_API}?s_id=$sessionID&cycle_id=$cycleID",
         Request.get,
         '',
         '',
@@ -308,10 +313,11 @@ class ApiClient {
 
   Future overallPerformanceAPi({
     required token,
+    required sessionID,
     required bool isLoading,
   }) async {
     var response = await apiWrapper.makeRequest(
-        AppEndpoints.OVERALL_PERFORMANCE_API,
+        "${AppEndpoints.OVERALL_PERFORMANCE_API}?s_id=$sessionID",
         Request.get,
         '',
         '',
@@ -335,13 +341,26 @@ class ApiClient {
   }
 
   Future monthlyCycleAPi({
-    required startDate,
-    required endDate,
+    required cycleIDApi,
     required token,
     required bool isLoading,
   }) async {
     var response = await apiWrapper.makeRequest(
-        "${AppEndpoints.MONTHLY_CYCLE_API}?start_date=$startDate&end_date=$endDate",
+        "${AppEndpoints.MONTHLY_CYCLE_API}?cycle_id=$cycleIDApi",
+        Request.get,
+        '',
+        '',
+        isLoading,
+        {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
+    return response;
+  }
+  Future dayReviewApi({
+    required sessionId,
+    required token,
+    required bool isLoading,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+        "${AppEndpoints.dailycycle}?s_id=$sessionId",
         Request.get,
         '',
         '',

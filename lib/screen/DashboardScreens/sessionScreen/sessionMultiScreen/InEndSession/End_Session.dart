@@ -25,11 +25,9 @@ class EndSessionOverview extends StatefulWidget {
 }
 
 class _EndSessionOverviewState extends State<EndSessionOverview> {
-  var dsh = Get.isRegistered<EndSessionController>()
-      ? Get.find<EndSessionController>()
-      : Get.put(EndSessionController());
   @override
   Widget build(BuildContext context) => GetBuilder<EndSessionController>(
+        init: EndSessionController(),
         builder: (controller) => Scaffold(
           backgroundColor: Colors.white,
           appBar: PreferredSize(
@@ -165,10 +163,18 @@ class _EndSessionOverviewState extends State<EndSessionOverview> {
                               ),
                               GestureDetector(
                                   onTap: () {
-                                    controller.startListening();
+                                    if (controller.speech.isListening) {
+                                      controller.stopListening();
+                                    } else {
+                                      controller.startListening();
+                                    }
                                   },
                                   child: controller.speech.isListening
-                                      ? Container()
+                                      ? const CircleAvatar(
+                                          backgroundColor:
+                                              AppColors.greenTextColor,
+                                          child: Icon(Icons.mic_off,
+                                              color: Colors.white))
                                       : SvgPicture.asset(
                                           AssetsBase.micButtonSvgIcon))
                             ],
@@ -189,9 +195,7 @@ class _EndSessionOverviewState extends State<EndSessionOverview> {
 // video grid
 class VideoGridView extends StatelessWidget {
   VideoGridView(
-      {Key? key,
-      required this.getExerciseGrid,
-      required this.controller2})
+      {Key? key, required this.getExerciseGrid, required this.controller2})
       : super(key: key);
   final List<ExerciseVideoList> getExerciseGrid;
   EndSessionController controller2;
@@ -228,11 +232,7 @@ class VideoGridView extends StatelessWidget {
                       AppDimensions.five,
                       AppDimensions.ten),
                   decoration: BoxDecoration(
-                    color: controller2
-                                .getSessionInfoDataApi[index].isUserExcercise ==
-                            true
-                        ? AppColors.backgColorOne
-                        : AppColors.secondaryTextColor,
+                    color: AppColors.secondaryTextColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(AppDimensions.twenty),
                         topRight: Radius.circular(AppDimensions.five),
@@ -252,14 +252,14 @@ class VideoGridView extends StatelessWidget {
                             width: AppDimensions.thirtyfive,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: AppColors.buttonColor,
+                                color: Colors.white,
                                 borderRadius:
                                     BorderRadius.circular(AppDimensions.fifty)),
                             child: Text(
                               getExerciseGrid[index].value.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: AppDimensions.sixTeen,
                                   fontFamily: AppFonts.robotoMedium),
                             ),
@@ -274,7 +274,10 @@ class VideoGridView extends StatelessWidget {
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemCount: controller2.getSessionInfoDataApi[index].responseDataSession!.length,
+                                    itemCount: controller2
+                                        .getSessionInfoDataApi[index]
+                                        .responseDataSession!
+                                        .length,
                                     itemBuilder: (context, index1) {
                                       return Container(
                                         margin: EdgeInsets.only(
@@ -283,13 +286,17 @@ class VideoGridView extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                controller2.getSessionInfoDataApi[index].responseDataSession![index1]
+                                                controller2
+                                                    .getSessionInfoDataApi[
+                                                        index]
+                                                    .responseDataSession![
+                                                        index1]
                                                     .name
                                                     .toString(),
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
-                                                    backgroundColor:
-                                                        AppColors.buttonColor,
+                                                    // backgroundColor:
+                                                    //     AppColors.buttonColor,
                                                     fontSize:
                                                         AppDimensions.twelve,
                                                     fontFamily:
@@ -307,7 +314,8 @@ class VideoGridView extends StatelessWidget {
                                                     alignment: Alignment.center,
                                                     height:
                                                         AppDimensions.thirteen,
-                                                    width: AppDimensions.twenty,
+                                                    width: AppDimensions
+                                                        .twentyFive,
                                                     decoration: BoxDecoration(
                                                         color: AppColors
                                                             .buttonColor,
@@ -317,10 +325,15 @@ class VideoGridView extends StatelessWidget {
                                                             width: AppDimensions
                                                                 .one)),
                                                     child: Text(
-                                                      controller2.getSessionInfoDataApi[index].responseDataSession![index1]
-                                                    .value
-                                                          .toString().substring(0, 2)
-                                                              .toString(),
+                                                      controller2
+                                                          .getSessionInfoDataApi[
+                                                              index]
+                                                          .responseDataSession![
+                                                              index1]
+                                                          .value
+                                                          .toString()
+                                                          .substring(0, 2)
+                                                          .toString(),
                                                       style: TextStyle(
                                                           fontSize:
                                                               AppDimensions
@@ -335,22 +348,28 @@ class VideoGridView extends StatelessWidget {
                                                 : Container(
                                                     padding: EdgeInsets.only(
                                                         right:
-                                                            AppDimensions.two),
+                                                            AppDimensions.two,
+                                                        top: AppDimensions.one,
+                                                        bottom:
+                                                            AppDimensions.one),
                                                     margin: EdgeInsets.only(
                                                         left:
                                                             AppDimensions.five),
-                                                    width: AppDimensions.twenty,
-                                                    color:
-                                                        AppColors.buttonColor,
+                                                    width: AppDimensions.thirty,
+                                                    // color:
+                                                    //     AppColors.buttonColor,
                                                     child: Text(
-                                                     controller2.getSessionInfoDataApi[index].responseDataSession![index1]
-                                                    .value
+                                                      controller2
+                                                          .getSessionInfoDataApi[
+                                                              index]
+                                                          .responseDataSession![
+                                                              index1]
+                                                          .value
                                                           .toString(),
                                                       textAlign: TextAlign.end,
                                                       style: TextStyle(
                                                           fontSize:
-                                                              AppDimensions
-                                                                  .twelve,
+                                                              AppDimensions.ten,
                                                           fontFamily: AppFonts
                                                               .robotoFlex,
                                                           fontWeight:
@@ -377,7 +396,7 @@ class VideoGridView extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.white,
                               letterSpacing: 0.1,
-                              backgroundColor: AppColors.buttonColor,
+                              // backgroundColor: AppColors.buttonColor,
                               fontWeight: FontWeight.w600,
                               fontSize: AppDimensions.forteen,
                               fontFamily: AppFonts.robotoFlex),

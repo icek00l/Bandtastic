@@ -3,6 +3,8 @@
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
 import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_view.dart';
 import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_view.dart';
 import 'package:bandapp/screen/DashboardScreens/bottomBarScreen/bottomBar_controller.dart';
@@ -31,14 +33,28 @@ class _BottomBarViewState extends State<BottomBarView> {
   Widget build(BuildContext context) => GetBuilder<BottomBarController>(
       builder: (controller) => Scaffold(
             body: PersistentTabView(
-             
               context,
               controller: controller.tabController,
               screens: _buildScreens(),
               items: _navBarsItems(),
-              confineInSafeArea: true,resizeToAvoidBottomInset: true,
+              confineInSafeArea: true,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Colors.white,
-             hideNavigationBarWhenKeyboardShows: true,
+              popActionScreens: PopActionScreensType.once,
+              onItemSelected: (value) {
+                print(value);
+                if (value == 2) {
+                  final controller1 = Get.put(WeekCycleController());
+                  controller1.onInit();
+                } else if(value == 0) {
+                  final controller2 = Get.put(HomeScreenController());
+                  if(controller2.homeDataList.session==null){
+                  controller2.getHomeApi();
+
+                  }
+                }
+              },
+              hideNavigationBarWhenKeyboardShows: true,
               decoration: NavBarDecoration(
                   border: Border.all(color: AppColors.borderColorThree)),
               itemAnimationProperties: const ItemAnimationProperties(

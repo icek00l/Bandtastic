@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:bandapp/model/login_Model.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
@@ -49,7 +50,7 @@ class LoginController extends GetxController {
     }
     print("value printed======>${res.body}");
 
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == true) {
       var data1 = loginFromJson(res.body);
 
       SharedPrefs.saveStringInPrefs(SharedPrefKeys.isLoggedIn, "4");
@@ -79,6 +80,9 @@ class LoginController extends GetxController {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
             Text(jsonDecode(res.body)['message'] as String? ?? 'Invalid Data'),
+         behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.errorColor,
+
         duration: const Duration(milliseconds: 1000),
       ));
     }

@@ -28,12 +28,10 @@ class ReviewExerView extends StatefulWidget {
 }
 
 class _ReviewExerViewState extends State<ReviewExerView> {
-  var dsh = Get.isRegistered<ReviewExerController>()
-      ? Get.find<ReviewExerController>()
-      : Get.put(ReviewExerController());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ReviewExerController>(
+      init: ReviewExerController(),
       builder: (controller) => Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
@@ -68,12 +66,14 @@ class _ReviewExerViewState extends State<ReviewExerView> {
                           screen: EditReviewSessionExerView(
                             name: widget.name,
                             number: widget.number,
+                            videoURL: widget.getVideoUrl,
                           ),
                           withNavBar: true)
                       .then((value) {
-                    if (value != null) {
-                      controller.getSessionDetailApi(
-                          int.parse(controller.getSessionIdSave));
+                    if (value == true) {
+                      Navigator.pop(context, true);
+                    } else {
+                      Navigator.pop(context, false);
                     }
                   });
                 },
@@ -121,7 +121,16 @@ class ExerciseNameVideo extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            AppRouteMaps.goToTrainVideoScreen(getVideoLink);
+            if (getVideoLink.isNotEmpty) {
+              AppRouteMaps.goToTrainVideoScreen(getVideoLink);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Sorry no video available for this exercise."),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.errorColor,
+                duration: Duration(seconds: 2),
+              ));
+            }
           },
           child: Container(
               height: AppDimensions.seventy,
@@ -156,7 +165,7 @@ class LastSessionClass extends StatelessWidget {
         ),
         SizedBox(height: AppDimensions.thirty),
         ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemCount: controller2.magicDataList.length,
           itemBuilder: (context, index) {
@@ -164,12 +173,14 @@ class LastSessionClass extends StatelessWidget {
               margin: EdgeInsets.only(bottom: AppDimensions.fifTeen),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: index == 0
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: index == 0
                         ? EdgeInsets.only(
-                            bottom: AppDimensions.ten,
+                            bottom: AppDimensions.twelve,
                             right: AppDimensions.twenty)
                         : EdgeInsets.only(right: AppDimensions.twenty, top: 5),
                     width: AppDimensions.oneThirty,
@@ -239,7 +250,6 @@ class LastSessionClass extends StatelessWidget {
                                   onChanged: (String value) {},
                                 ),
                               ),
-                              SvgPicture.asset(AssetsBase.micButtonSvgIcon)
                             ],
                           ),
                         )
@@ -267,18 +277,35 @@ class LastSessionClass extends StatelessWidget {
                                 child: Builder(builder: (context) {
                                   String name = '';
                                   if (index == 1) {
-                                    for (var i = 0;
-                                        i < controller2.storeAllLastData.length;
-                                        i++) {
-                                      if (name.isEmpty) {
-                                        name = controller2
-                                            .storeAllLastData[i].band!.band
-                                            .toString();
-                                      } else {
-                                        name =
-                                            '$name / ${controller2.storeAllLastData[i].band?.band}';
+                                    if (controller2.storeAllLastData.isEmpty) {
+                                      name = "N/A";
+                                    } else {
+                                      for (var i = 0;
+                                          i <
+                                              controller2
+                                                  .storeAllLastData.length;
+                                          i++) {
+                                        if (name.isEmpty) {
+                                          name = controller2.storeAllLastData[i]
+                                                      .band ==
+                                                  null
+                                              ? "N/A"
+                                              : controller2.storeAllLastData[i]
+                                                  .band!.band
+                                                  .toString();
+                                        } else {
+                                          name =
+                                              '$name ${controller2.storeAllLastData[i].band == null ? "" : "/"} ${controller2.storeAllLastData[i].band == null ? "" : controller2.storeAllLastData[i].band?.band}';
+                                        }
                                       }
                                     }
+                                  } else if (index == 5) {
+                                    double powerParsedValue = double.parse(
+                                        controller2.magicDataList[index].value
+                                            .toString());
+                                    int powerValue = powerParsedValue.toInt();
+
+                                    name = powerValue.toString();
                                   } else {
                                     name = controller2
                                         .magicDataList[index].value
@@ -286,7 +313,6 @@ class LastSessionClass extends StatelessWidget {
                                   }
                                   return Text(
                                     name,
-                                    // overflow:controller2.storeAllLastData.length > 1 ? TextOverflow.ellipsis: TextOverflow.visible,
                                     style: TextStyle(
                                         fontSize: AppDimensions.sixTeen,
                                         fontFamily: AppFonts.robotoMedium,

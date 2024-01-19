@@ -16,7 +16,7 @@ class BottomBarController extends GetxController {
       print("route $route");
     }
     tabController = PersistentTabController(
-        initialIndex: route == "1" ? 3 :route == "2" ? 1 : currentBottomTab);
+        initialIndex:route == "0" ? 0: route == "1" ? 3 :route == "2" ? 1 : currentBottomTab);
 
     super.onInit();
   }

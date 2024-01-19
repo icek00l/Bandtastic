@@ -1,4 +1,5 @@
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
 
 abstract class AppColors {
 //text color
@@ -29,12 +30,15 @@ abstract class AppColors {
   static const Color checkBoxBorderColor = Color(0xff219E43);
   static const Color containerColor = Color(0xff939393);
   static const Color lineColor = Color(0xffE3E3E3);
-  static const Color lineGraphColor = Color(0xffe9e9e9);
+  static const Color markerColor = Color(0xff179148);
+  static const Color lineGraphColor = Color(0xff7DCB99);
   static const Color gradientColor1 = Color(0xffDBDBDB);
   static const Color gradientColor2 = Color(0xffFFFFFF);
   static const Color peachColor = Color(0xffF7CDCD);
   static const Color dividerLineColor = Color(0xffCBDFCF);
   static const Color gridContainer = Color(0xff163320);
-
+  static const Color mainGridLineColor = Colors.white10;
+  static const Color contentColorBlue = Color(0xFF2196F3);
+  static const Color contentColorCyan = Color(0xFF50E4FF);
   
 }

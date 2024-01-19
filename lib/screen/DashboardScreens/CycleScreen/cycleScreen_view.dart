@@ -12,9 +12,7 @@ import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:intl/intl.dart';
 
 class WeekCycleView extends StatefulWidget {
   const WeekCycleView({super.key});
@@ -24,13 +22,10 @@ class WeekCycleView extends StatefulWidget {
 }
 
 class _WeekCycleViewState extends State<WeekCycleView> {
-  var dsh = Get.isRegistered<WeekCycleController>()
-      ? Get.find<WeekCycleController>()
-      : Get.put(WeekCycleController());
   @override
   Widget build(BuildContext context) {
-    dsh.onInit();
     return GetBuilder<WeekCycleController>(
+        init: WeekCycleController(),
         builder: (controller) => Scaffold(
               backgroundColor: Colors.white,
               appBar: PreferredSize(
@@ -57,7 +52,7 @@ class _WeekCycleViewState extends State<WeekCycleView> {
                         children: [
                           SizedBox(height: AppDimensions.fifTeen),
                           Text(
-                            AppStrings.thisyearText,
+                            "Cycles",
                             style: AppThemeStyle.heading28Bold,
                           ),
                           controller.yearlyCycleList.isNotEmpty
@@ -93,48 +88,25 @@ class RotatedBoxList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            String dateString =
-                controller1.yearlyCycleList[index].month.toString();
-            List<String> dateParts = dateString.split("-");
-            DateTime storeFirstDate = DateTime.parse(
-                "${dateParts[0]}-${dateParts[1]}-${dateParts[2]}");
-            DateTime storeEndDate = DateTime.parse(
-                "${dateParts[3]}-${dateParts[4]}-${dateParts[5]}");
-
-            String getMonthAbbreviation(int month) {
-              List<String> months = [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec"
-              ];
-              return months[month - 1];
-            }
-
-            String combinedDate =
-                "${storeFirstDate.day.toString().padLeft(2, '0')}   ${getMonthAbbreviation(storeFirstDate.month)}";
-            combinedDate +=
-                " - ${storeEndDate.day.toString().padLeft(2, '0')}   ${getMonthAbbreviation(storeEndDate.month)}";
-
-            return Column(
+            return controller1.yearlyCycleList[index].data!.isEmpty ? const IgnorePointer(): Column(
               children: [
                 GestureDetector(
                     onTap: () {
-                      pushNewScreen(context,
-                          screen: WeekDataView(), withNavBar: true);
+                      SharedPrefs.saveStringInPrefs(
+                              SharedPrefKeys.getClickID,
+                              controller1.yearlyCycleList[index].cycleId
+                                  .toString())
+                          .then((value) {
+                        pushNewScreen(context,
+                            screen: WeekDataView(
+                              ),
+                            withNavBar: true);
+                      });
                     },
                     child: Text(
                         index == controller1.yearlyCycleList.length - 1
-                            ? "This"
-                            : combinedDate,
+                            ? "THIS CYCLE"
+                            : controller1.yearlyCycleList[index].cycle ?? "",
                         style: AppThemeStyle.bandProgess)),
                 SizedBox(height: AppDimensions.ten),
                 Container(
@@ -154,17 +126,15 @@ class RotatedBoxList extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 2.8,
                   child: GestureDetector(
                     onTap: () {
-                      var firstDateForm =
-                          DateFormat('yyyy-MM-dd').format(storeFirstDate);
-                      var endDateForm =
-                          DateFormat('yyyy-MM-dd').format(storeEndDate);
                       SharedPrefs.saveStringInPrefs(
-                          SharedPrefKeys.firstDate, firstDateForm.toString());
-                      SharedPrefs.saveStringInPrefs(
-                              SharedPrefKeys.secondDate, endDateForm.toString())
+                              SharedPrefKeys.getClickID,
+                              controller1.yearlyCycleList[index].cycleId
+                                  .toString())
                           .then((value) {
                         pushNewScreen(context,
-                            screen: WeekDataView(), withNavBar: true);
+                            screen: WeekDataView(
+                             ),
+                            withNavBar: true);
                       });
                     },
                     child: ListView.builder(

@@ -11,13 +11,15 @@ class SessionDataModal {
   int? status;
   dynamic message;
   SessionData? data;
+  List<String>? anchor;
 
-  SessionDataModal({this.status, this.message, this.data});
+  SessionDataModal({this.status, this.message, this.data,this.anchor});
 
   SessionDataModal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? SessionData.fromJson(json['data']) : null;
+    anchor = json['anchor'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +29,7 @@ class SessionDataModal {
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
+    data['anchor'] = anchor;
     return data;
   }
 }
@@ -90,10 +93,12 @@ class ExerciseTypeInfo {
   dynamic name;
   dynamic anchor;
   dynamic url;
+  dynamic image;
   dynamic createdAt;
   dynamic updatedAt;
   int? laravelThroughKey;
   bool? isUserExcercise;
+  dynamic isTrue;
   UserExcercise? userExcercise;
   List<ResponseSession>? responseDataSession=[];
 
@@ -103,10 +108,12 @@ class ExerciseTypeInfo {
       this.name,
       this.anchor,
       this.url,
+      this.image,
       this.createdAt,
       this.updatedAt,
       this.laravelThroughKey,
       this.isUserExcercise,
+      this.isTrue,
       this.userExcercise,
       this.responseDataSession});
 
@@ -116,10 +123,12 @@ class ExerciseTypeInfo {
     name = json['name'];
     anchor = json['anchor'];
     url = json['url'];
+    image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     laravelThroughKey = json['laravel_through_key'];
     isUserExcercise = json['is_user_Excercise'];
+    isTrue = json['is_true'];
     userExcercise = json['user_excercise'] != null
         ? UserExcercise.fromJson(json['user_excercise'])
         : null;
@@ -132,32 +141,34 @@ class ExerciseTypeInfo {
     data['name'] = name;
     data['anchor'] = anchor;
     data['url'] = url;
+    data['image'] = image;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['laravel_through_key'] = laravelThroughKey;
     data['is_user_Excercise'] = isUserExcercise;
+    data['is_true'] = isTrue;
     if (userExcercise != null) {
       data['user_excercise'] = userExcercise!.toJson();
     }
     return data;
   }
 }
-
 class UserExcercise {
   int? id;
   int? userId;
   int? sessionId;
   int? excerciseId;
   int? excerciseTypeId;
-  dynamic sessionType;
+  String? sessionType;
   int? bandPositionId;
-  dynamic reps;
+  String? reps;
   dynamic beyondFailure;
-  dynamic notes;
+  String? notes;
+  String? status;
+  dynamic time;
   dynamic power;
-  dynamic createdAt;
-  dynamic updatedAt;
-  dynamic status;
+  String? createdAt;
+  String? updatedAt;
   BandPosition? bandPosition;
   List<UserExcerciseBand>? userExcerciseBand;
 
@@ -172,10 +183,11 @@ class UserExcercise {
       this.reps,
       this.beyondFailure,
       this.notes,
+      this.status,
+      this.time,
       this.power,
       this.createdAt,
       this.updatedAt,
-      this.status,
       this.bandPosition,
       this.userExcerciseBand});
 
@@ -190,10 +202,11 @@ class UserExcercise {
     reps = json['reps'];
     beyondFailure = json['beyond_failure'];
     notes = json['notes'];
+    status = json['status'];
+    time = json['time'];
     power = json['power'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    status = json['status'];
     bandPosition = json['band_position'] != null
         ? BandPosition.fromJson(json['band_position'])
         : null;
@@ -217,10 +230,11 @@ class UserExcercise {
     data['reps'] = reps;
     data['beyond_failure'] = beyondFailure;
     data['notes'] = notes;
+    data['status'] = status;
+    data['time'] = time;
     data['power'] = power;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['status'] = status;
     if (bandPosition != null) {
       data['band_position'] = bandPosition!.toJson();
     }
@@ -234,9 +248,9 @@ class UserExcercise {
 
 class BandPosition {
   int? id;
-  dynamic position;
-  dynamic createdAt;
-  dynamic updatedAt;
+  String? position;
+  String? createdAt;
+  String? updatedAt;
 
   BandPosition({this.id, this.position, this.createdAt, this.updatedAt});
 
@@ -261,9 +275,9 @@ class UserExcerciseBand {
   int? id;
   int? bandId;
   int? userExcerciseId;
-  dynamic createdAt;
-  dynamic updatedAt;
-  dynamic bandName;
+  String? createdAt;
+  String? updatedAt;
+  String? bandName;
   dynamic power;
   Band? band;
 
@@ -306,10 +320,10 @@ class UserExcerciseBand {
 
 class Band {
   int? id;
-  dynamic band;
+  String? band;
   dynamic power;
-  dynamic createdAt;
-  dynamic updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
   Band({this.id, this.band, this.power, this.createdAt, this.updatedAt});
 
@@ -332,6 +346,34 @@ class Band {
   }
 }
 
+class ExerciseInfo {
+  int? id;
+  String? name;
+  String? isExtra;
+  String? createdAt;
+  String? updatedAt;
+
+  ExerciseInfo(
+      {this.id, this.name, this.isExtra, this.createdAt, this.updatedAt});
+
+  ExerciseInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    isExtra = json['is_extra'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['is_extra'] = isExtra;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
 class ResponseSession {
   String? name;
   String? value;

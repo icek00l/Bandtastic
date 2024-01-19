@@ -1,18 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:flutter/material.dart';
 
-class BandsModel {
-   String? bandName;
-  String? colorName;
-  Color? colorValue;
- 
-  BandsModel({
-    this.bandName,
-    this.colorName,
-    this.colorValue,
-  });
-}
 
 class ExerciseVideoList {
   String? exerciseName;
@@ -48,10 +36,12 @@ class LastSessionPrepData {
 class BandDataModel {
    String? names;
   String? id;
+  String? power;
   
   BandDataModel({
     this.names,
     this.id,
+    this.power,
   });
 }
 
@@ -76,10 +66,12 @@ class IntroDataModel {
 
 class RepsList {
    String? names;
+   String? value;
   
  
   RepsList({
     this.names,
+    this.value,
   });
 }
 class BeyondFailureList {

@@ -10,15 +10,17 @@ String lastDataToJson(LastinSessionData data) => json.encode(data.toJson());
 
 
 class LastinSessionData {
-  int? status;
-  String? message;
+  dynamic status;
+  dynamic message;
+  dynamic powerDifference;
   LastData? data;
 
-  LastinSessionData({this.status, this.message, this.data});
+  LastinSessionData({this.status, this.message,this.powerDifference, this.data});
 
   LastinSessionData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    powerDifference = json['power_difference'];
     data = json['data'] != null ? LastData.fromJson(json['data']) : null;
   }
 
@@ -26,6 +28,7 @@ class LastinSessionData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
+    data['power_difference'] = powerDifference;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,27 +36,33 @@ class LastinSessionData {
   }
 }
 
-class LastData {
-  int? id;
-  int? userId;
-  int? sessionId;
+ class LastData {
+  dynamic id;
+  dynamic userId;
+  dynamic sessionId;
+  dynamic cycleId;
   dynamic excerciseId;
-  int? excerciseTypeId;
-  String? sessionType;
-  int? bandPositionId;
-  String? reps;
-  String? beyondFailure;
-  String? notes;
-  String? power;
+  dynamic excerciseTypeId;
+  dynamic sessionType;
+  dynamic bandPositionId;
+  dynamic reps;
+  dynamic beyondFailure;
+  dynamic notes;
+  dynamic matFrom;
+  dynamic matTo;
+  dynamic status;
+  dynamic time;
+  dynamic power;
   dynamic createdAt;
   dynamic updatedAt;
-  BandPosition? bandPosition;
+  BandPositon? bandPosition;
   List<UserExcerciseBand>? userExcerciseBand;
 
   LastData(
       {this.id,
       this.userId,
       this.sessionId,
+      this.cycleId,
       this.excerciseId,
       this.excerciseTypeId,
       this.sessionType,
@@ -61,6 +70,10 @@ class LastData {
       this.reps,
       this.beyondFailure,
       this.notes,
+      this.matFrom,
+      this.matTo,
+      this.status,
+      this.time,
       this.power,
       this.createdAt,
       this.updatedAt,
@@ -71,6 +84,7 @@ class LastData {
     id = json['id'];
     userId = json['user_id'];
     sessionId = json['session_id'];
+    cycleId = json['cycle_id'];
     excerciseId = json['excercise_id'];
     excerciseTypeId = json['excercise_type_id'];
     sessionType = json['session_type'];
@@ -78,11 +92,15 @@ class LastData {
     reps = json['reps'];
     beyondFailure = json['beyond_failure'];
     notes = json['notes'];
+    matFrom = json['mat_from'];
+    matTo = json['mat_to'];
+    status = json['status'];
+    time = json['time'];
     power = json['power'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     bandPosition = json['band_position'] != null
-        ? BandPosition.fromJson(json['band_position'])
+        ? BandPositon.fromJson(json['band_position'])
         : null;
     if (json['user_excercise_band'] != null) {
       userExcerciseBand = <UserExcerciseBand>[];
@@ -97,6 +115,7 @@ class LastData {
     data['id'] = id;
     data['user_id'] = userId;
     data['session_id'] = sessionId;
+    data['cycle_id'] = cycleId;
     data['excercise_id'] = excerciseId;
     data['excercise_type_id'] = excerciseTypeId;
     data['session_type'] = sessionType;
@@ -104,6 +123,10 @@ class LastData {
     data['reps'] = reps;
     data['beyond_failure'] = beyondFailure;
     data['notes'] = notes;
+    data['mat_from'] = matFrom;
+    data['mat_to'] = matTo;
+    data['status'] = status;
+    data['time'] = time;
     data['power'] = power;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
@@ -118,17 +141,19 @@ class LastData {
   }
 }
 
-class BandPosition {
-  int? id;
+class BandPositon {
+ int? id;
   String? position;
+  String? value;
   String? createdAt;
   String? updatedAt;
 
-  BandPosition({this.id, this.position, this.createdAt, this.updatedAt});
+  BandPositon({this.id, this.position, this.value, this.createdAt, this.updatedAt});
 
-  BandPosition.fromJson(Map<String, dynamic> json) {
+  BandPositon.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     position = json['position'];
+    value = json['value'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -137,6 +162,7 @@ class BandPosition {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['position'] = position;
+    data['value'] = value;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;
@@ -144,9 +170,9 @@ class BandPosition {
 }
 
 class UserExcerciseBand {
-  int? id;
-  int? bandId;
-  int? userExcerciseId;
+  dynamic id;
+  dynamic bandId;
+  dynamic userExcerciseId;
   dynamic createdAt;
   dynamic updatedAt;
   Band? band;
@@ -183,11 +209,11 @@ class UserExcerciseBand {
 }
 
 class Band {
-  int? id;
-  String? band;
+  dynamic id;
+  dynamic band;
   dynamic power;
-  String? createdAt;
-  String? updatedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Band({this.id, this.band, this.power, this.createdAt, this.updatedAt});
 

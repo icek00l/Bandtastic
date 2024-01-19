@@ -5,14 +5,21 @@ import 'dart:convert';
 import 'package:bandapp/appstyle/app_dimensions.dart';
 import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
-import 'package:bandapp/navigation/app_route_maps.dart';
 import 'package:bandapp/network_requests/network_requests.dart';
 import 'package:bandapp/screen/DashboardScreens/sessionScreen/sessionMultiScreen/sessionTabbarScreen/progress_band_model.dart';
+import 'package:bandapp/screen/DashboardScreens/sessionScreen/session_controller.dart';
+import 'package:bandapp/utility/Utility.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
 import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
 import 'package:bandapp/widgets/customBackButton.dart';
 import 'package:flutter/material.dart';
 
+import 'package:bandapp/screen/DashboardScreens/CycleScreen/cycleScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/HomeScreen/homeScreen_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/Intro_Video/introductionScreens/introduction_controller.dart';
+import 'package:bandapp/screen/DashboardScreens/setUpScreen/setUp_controller.dart';
+import 'package:bandapp/screen/login/login_welcome.dart';
+import 'package:get/get.dart';
 class ProgressionList extends StatefulWidget {
   const ProgressionList({super.key});
 
@@ -23,7 +30,7 @@ class ProgressionList extends StatefulWidget {
 class _ProgressionListState extends State<ProgressionList> {
   String getToken = '';
   var apiClient = ApiClient();
-  List<BandData> bandPower = List.empty(growable: true);
+  List<FullList> bandPower = List.empty(growable: true);
   @override
   void initState() {
     SharedPrefs.getString(SharedPrefKeys.token).then((value) {
@@ -40,18 +47,27 @@ class _ProgressionListState extends State<ProgressionList> {
     bandPower.clear();
     var res = await apiClient.getBandProgressData(token: getToken, isLoading: true);
 
-    print(res);
-
-    if (jsonDecode(res.body)['status'] != false) {
+    if (jsonDecode(res.body)['status'] == 1) {
       var data1 = bandModalFromJson(res.body);
 
       print(data1);
-      bandPower = data1.result!;
+      bandPower = data1.fullList!;
       print(bandPower);
     } else {
        if (jsonDecode(res.body)['message'] == "Unauthenticated.") {
-        SharedPrefs.clear();
-        AppRouteMaps.goTowalkthrough();
+         Utility.showLogoutDialog(
+          "Login again!", () {
+                Navigator.of(Get.context!, rootNavigator: true).pop('dialog');
+
+            SharedPrefs.clear().then((value) {
+                                  Get.delete<SessionController>();
+                                  Get.delete<HomeScreenController>();
+                                  Get.delete<IntroductionController>();
+                                  Get.delete<WeekCycleController>();
+                                  Get.delete<SetUpController>();
+                                 Get.offAll(() => const LoginWelcomeView());
+                                });
+          },);
       }
     }
     setState(() {});
