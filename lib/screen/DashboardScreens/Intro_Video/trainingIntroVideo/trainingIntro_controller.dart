@@ -1,6 +1,7 @@
 import 'package:bandapp/appstyle/app_colors.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
@@ -14,6 +15,8 @@ class TrainIntroController extends GetxController {
 
   @override
   void onInit() async {
+    EasyLoading.show();
+
     if (argumentData != null) {
       getVideoUrl = '';
       getVideoUrl = argumentData['videoUrl'];
@@ -26,12 +29,14 @@ class TrainIntroController extends GetxController {
     }
     super.onInit();
   }
+  
 
   initVideoPlayer() async {
-    final videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(getVideoUrl));
-    await videoPlayerController.initialize();
-    chewieController = ChewieController(
+    try {
+      final videoPlayerController =
+          VideoPlayerController.networkUrl(Uri.parse(getVideoUrl));
+      await videoPlayerController.initialize();
+      chewieController = ChewieController(
         videoPlayerController: videoPlayerController,
         autoPlay: false,
         looping: false,
@@ -45,8 +50,17 @@ class TrainIntroController extends GetxController {
         ),
         customControls: const MaterialDesktopControls(),
         aspectRatio: 0.6,
-        startAt: const Duration(seconds: 2));
-    update();
+        startAt: const Duration(seconds: 2),
+      );
+      EasyLoading.dismiss();
+
+      update();
+    } catch (e) {
+      EasyLoading.dismiss();
+      Get.delete<TrainIntroController>();
+      Get.back();
+      print('Error initializing video player: $e');
+    }
   }
 
   @override
@@ -61,5 +75,4 @@ class TrainIntroController extends GetxController {
       chewieController = null;
     }
   }
-
 }

@@ -1,17 +1,31 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
+
 import 'package:bandapp/appstyle/app_dimensions.dart';
+import 'package:bandapp/model/generalDatamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TrainingController extends GetxController {
   int courrentIndex = 0;
+  GeneralDataModel generalData = GeneralDataModel();
   late PageController pageController;
   @override
   void onInit() async {
+    getGenerealData();
+
     pageController = PageController(initialPage: 0);
 
     super.onInit();
+  }getGenerealData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> userMap =
+        jsonDecode(preferences.getString("generalData") ?? '');
+    generalData = GeneralDataModel.fromJson(userMap);
+update();
   }
 
   @override
@@ -28,8 +42,7 @@ class TrainingController extends GetxController {
         //   AppRouteMaps.goToLoginPage();
         // }
         controller.pageController.nextPage(
-            duration: const Duration(seconds: 3),
-            curve: Curves.easeIn);
+            duration: const Duration(seconds: 3), curve: Curves.easeIn);
       },
       child: Container(
         height: AppDimensions.forteen,

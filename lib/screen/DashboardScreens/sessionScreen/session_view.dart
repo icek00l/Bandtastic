@@ -530,6 +530,9 @@ class VideoGridView extends StatelessWidget {
                                   getURlHere: controller3
                                       .getSessionInfoDataList[index].url
                                       .toString(),
+                                      getImageURlHere: controller3
+                                    .getSessionInfoDataList[index].image ??
+                                "",
                                 ),
                                 withNavBar: true)
                             .then((value) {
@@ -788,6 +791,9 @@ class VideoGridView extends StatelessWidget {
                                     getNumber: controller3.getNumberhere,
                                     getURlHere: controller3
                                         .getSessionInfoDataList[6].url,
+                                        getImageURlHere: controller3
+                                    .getSessionInfoDataList[6].image ??
+                                "",
                                   ),
                                   withNavBar: true)
                               .then((value) {
@@ -922,6 +928,9 @@ class VideoGridView extends StatelessWidget {
                                       getExerName: controller3.getNamehere,
                                       getNumber: controller3.getNumberhere,
                                       getURlHere: controller3.getExerVideo,
+                                      getImageURlHere: controller3
+                                    .getSessionInfoDataList[int.parse(controller3.value)].image ??
+                                "",
                                     ),
                                     withNavBar: true)
                                 .then((value) {

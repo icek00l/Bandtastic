@@ -18,7 +18,7 @@ class ApiClient {
     };
 
     var response = await apiWrapper.makeRequest(
-        AppEndpoints.CODEAUTH, Request.post, getNumberData, '', isLoading, {
+        AppEndpoints.CODEAUTH, Request.post, getNumberData, '', true, {
       'Content-type': 'application/json',
     });
     return response;
@@ -39,7 +39,7 @@ class ApiClient {
     };
 
     var response = await apiWrapper.makeRequest(
-        AppEndpoints.USER_REGIS, Request.post, getUserData, '', isLoading, {
+        AppEndpoints.USER_REGIS, Request.post, getUserData, '', true, {
       'Content-type': 'application/json',
     });
     return response;
@@ -59,7 +59,7 @@ class ApiClient {
     };
 
     var response = await apiWrapper.makeRequest(AppEndpoints.UPDATE_PROFILE_API,
-        Request.post, getUserData, '', isLoading, {
+        Request.post, getUserData, '', true, {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
@@ -76,7 +76,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -97,7 +97,7 @@ class ApiClient {
         Request.post,
         getUserData,
         '',
-        isLoading,
+        true,
         {'Content-type': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -111,7 +111,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -125,7 +125,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -139,7 +139,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -154,7 +154,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -168,7 +168,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -209,7 +209,7 @@ class ApiClient {
         Request.post,
         getExerciseData,
         '',
-        isLoading, {
+        true, {
       'Content-type': 'application/json',
       'Authorization': 'Bearer $token',
     });
@@ -248,7 +248,7 @@ class ApiClient {
         Request.post,
         getExerciseData,
         '',
-        isLoading, {
+        true, {
       'Content-type': 'application/json',
       'Authorization': 'Bearer $token',
     });
@@ -265,7 +265,7 @@ class ApiClient {
         Request.get,
         "",
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -290,7 +290,7 @@ class ApiClient {
         Request.post,
         getUserData,
         '',
-        isLoading,
+        true,
         {'Content-type': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -306,7 +306,7 @@ class ApiClient {
         Request.get,
         '',
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -321,7 +321,7 @@ class ApiClient {
         Request.get,
         '',
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -335,7 +335,7 @@ class ApiClient {
         Request.get,
         '',
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -350,7 +350,7 @@ class ApiClient {
         Request.get,
         '',
         '',
-        isLoading,
+        true,
         {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
     return response;
   }
@@ -361,6 +361,20 @@ class ApiClient {
   }) async {
     var response = await apiWrapper.makeRequest(
         "${AppEndpoints.dailycycle}?s_id=$sessionId",
+        Request.get,
+        '',
+        '',
+        true,
+        {'Accept': 'application/json', 'Authorization': 'Bearer $token'});
+    return response;
+  }
+
+  Future getGeneralDataApi({
+    required token,
+    required bool isLoading,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+        AppEndpoints.getAppDataApi,
         Request.get,
         '',
         '',

@@ -7,7 +7,6 @@ import 'package:bandapp/appstyle/app_strings.dart';
 import 'package:bandapp/appstyle/app_themestyle.dart';
 import 'package:bandapp/appstyle/assetbase.dart';
 import 'package:bandapp/navigation/app_route_maps.dart';
-import 'package:bandapp/screen/selectdayandTraining/trainingExplanation/howWorlModel.dart';
 import 'package:bandapp/screen/selectdayandTraining/trainingExplanation/trainingScreen_controller.dart';
 import 'package:bandapp/utility/sharePrefs/shared_pref_key.dart';
 import 'package:bandapp/utility/sharePrefs/shared_prefs.dart';
@@ -27,12 +26,12 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
   @override
   Widget build(BuildContext context) => GetBuilder<TrainingController>(
       builder: (controller) => Scaffold(
-            body: Column(
+            body:controller.generalData.data==null ?const IgnorePointer() : Column(
               children: [
                 Expanded(
                   child: PageView.builder(
                     controller: controller.pageController,
-                    itemCount: howWorkModel.length,
+                    itemCount: controller.generalData.data!.trainingScreens!.length,
                     onPageChanged: (int index) {
                       controller.courrentIndex = index;
                       controller.update();
@@ -62,18 +61,7 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                                 child:
                                     SvgPicture.asset(AssetsBase.playCircleSvg),
                               )),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: AppDimensions.twenty,
-                            ),
-                            child: Text(howWorkModel[i].name!,
-                                style: TextStyle(
-                                    fontSize: AppDimensions.sixTeen,
-                                    fontFamily: AppFonts.robotoRegular,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 3.0,
-                                    color: AppColors.primaryTextColor)),
-                          ),
+                          
 
                           Container(
                             margin: EdgeInsets.only(
@@ -81,7 +69,7 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                                 top: AppDimensions.ten,
                                 bottom: AppDimensions.twenty),
                             child: Text(
-                              howWorkModel[i].title!,
+                              controller.generalData.data!.trainingScreens![i].title ?? "",
                               style: TextStyle(
                                   fontSize: AppDimensions.twentyTwo,
                                   fontFamily: AppFonts.plusSansBold,
@@ -95,7 +83,7 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                                 left: AppDimensions.twenty,
                                 right: AppDimensions.twenty),
                             child: Text(
-                              howWorkModel[i].des!,
+                              controller.generalData.data!.trainingScreens![i].subtitle??"",
                               style: AppThemeStyle.descriptionText300,
                             ),
                           )
@@ -131,13 +119,13 @@ class _TrainingScreenViewState extends State<TrainingScreenView> {
                       ),
                       Row(
                           children: List.generate(
-                              howWorkModel.length,
+                              controller.generalData.data!.trainingScreens!.length,
                               (index) => controller.buildDot(
                                   index, context, controller))),
                       MaterialButton(
                           onPressed: () {
                             if (controller.courrentIndex ==
-                                howWorkModel.length - 1) {
+                                controller.generalData.data!.trainingScreens!.length - 1) {
                               SharedPrefs.saveStringInPrefs(
                                       SharedPrefKeys.isLoggedIn, "4")
                                   .then((value) {

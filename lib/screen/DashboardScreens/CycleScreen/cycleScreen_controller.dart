@@ -70,4 +70,5 @@ class WeekCycleController extends GetxController {
     }
     update();
   }
+
 }

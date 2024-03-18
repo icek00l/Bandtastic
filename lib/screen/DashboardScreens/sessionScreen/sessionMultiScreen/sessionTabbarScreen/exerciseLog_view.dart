@@ -22,9 +22,16 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ExerciseLogBandView extends StatefulWidget {
-  String? getExerName = '', getNumber = '', getURlHere = '';
+  String? getExerName = '',
+      getNumber = '',
+      getURlHere = '',
+      getImageURlHere = '';
   ExerciseLogBandView(
-      {super.key, this.getExerName, this.getNumber, this.getURlHere});
+      {super.key,
+      this.getExerName,
+      this.getNumber,
+      this.getURlHere,
+      this.getImageURlHere});
 
   @override
   State<ExerciseLogBandView> createState() => _ExerciseLogBandViewState();
@@ -72,6 +79,7 @@ class _ExerciseLogBandViewState extends State<ExerciseLogBandView> {
                             name: widget.getExerName.toString(),
                             number: widget.getNumber.toString(),
                             getVideoLink: widget.getURlHere.toString(),
+                            imageURlHere: widget.getImageURlHere ?? "",
                           ),
                           SizedBox(height: AppDimensions.thirtyfive),
                           LastSessionClass(
@@ -92,9 +100,14 @@ class _ExerciseLogBandViewState extends State<ExerciseLogBandView> {
 }
 
 class ExerciseNameVideo extends StatelessWidget {
-  ExerciseNameVideo({Key? key, required this.name,required this.getVideoLink, required this.number})
+  ExerciseNameVideo(
+      {Key? key,
+      required this.name,
+      required this.getVideoLink,
+      required this.number,
+      required this.imageURlHere})
       : super(key: key);
-  String name, number,getVideoLink;
+  String name, number, getVideoLink, imageURlHere;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -126,23 +139,27 @@ class ExerciseNameVideo extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if(getVideoLink.isNotEmpty) {
-            AppRouteMaps.goToTrainVideoScreen(getVideoLink);
-
-            }else {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                            "Sorry no video available for this exercise."),
-                        behavior: SnackBarBehavior.floating,
-                        backgroundColor: AppColors.errorColor,
-                        duration: Duration(seconds: 1),
-                      ));
-                          }
+            if (getVideoLink.isNotEmpty) {
+              AppRouteMaps.goToTrainVideoScreen(getVideoLink);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Sorry no video available for this exercise."),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.errorColor,
+                duration: Duration(seconds: 1),
+              ));
+            }
           },
           child: Container(
               height: AppDimensions.seventy,
               width: AppDimensions.hunDred,
-              color: AppColors.gradientColor1,
+              decoration: imageURlHere.isEmpty
+                  ? const BoxDecoration(
+                      color: AppColors.gradientColor1,
+                    )
+                  : BoxDecoration(
+                      image:
+                          DecorationImage(image: NetworkImage(imageURlHere),fit: BoxFit.fill)),
               alignment: Alignment.center,
               child: SvgPicture.asset(AssetsBase.playVideoSvgIcon)),
         )

@@ -19,5 +19,6 @@ abstract class AppEndpoints {
   static String MONTHLY_CYCLE_API = 'v2/monthly-weekly-cycle';
   static String UPDATE_PROFILE_API = 'update-profile';
   static String GET_PROFILE_API = 'get-profile';
+  static String getAppDataApi = 'getAppData';
   static String dailycycle = 'v2/daily-cycle';
 }

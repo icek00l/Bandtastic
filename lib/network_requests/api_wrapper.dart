@@ -13,7 +13,8 @@ import 'package:http/io_client.dart';
 
 class ApiWrapper {
   final String _baseUrl =
-      'https://bold-maxwell.65-1-2-185.plesk.page/public/api/';
+      'https://serene-wing.18-132-37-104.plesk.page/public/api/';
+
 
   Future makeRequest(String url, Request request, dynamic data, String urlCheck,
       bool isLoading, Map<String, String>? headers) async {
@@ -30,7 +31,12 @@ class ApiWrapper {
             final httpObj = IOClient(ioc);
             var uri = _baseUrl + url;
             try {
+              if(isLoading == false) {
+
+              } else {
               EasyLoading.show();
+
+              }
 
               final response = await httpObj
                   .get(

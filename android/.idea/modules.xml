@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.iml" filepath="$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/183039809/android.package_info_plus.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.iml" filepath="$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/58010794/android.path_provider_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.iml" filepath="$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1296297528/android.shared_preferences_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.iml" filepath="$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.main.iml" filepath="$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/239829957/android.speech_to_text.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.iml" filepath="$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1876501873/android.url_launcher_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.iml" filepath="$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/77282832/android.video_player_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.iml" filepath="$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1021970745/android.wakelock_plus.unitTest.iml" />
+    </modules>
+  </component>
+</project>

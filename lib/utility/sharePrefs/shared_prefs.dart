@@ -50,7 +50,7 @@ class SharedPrefs {
 
   static Future<String> getString(String key) async {
     prefs = await SharedPreferences.getInstance();
-    return prefs!.getString(key) ?? "0";
+    return prefs!.getString(key) ?? "";
   }
 
   static Future<String> getLoginStatus(String key) async {

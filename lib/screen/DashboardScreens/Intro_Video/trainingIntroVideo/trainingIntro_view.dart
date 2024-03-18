@@ -38,12 +38,15 @@ class TrainIntroView extends StatelessWidget {
                       onTap: () {
                         if (controller.chewieController != null) {
                           controller.chewieController!.pause();
-                          controller.videoController!.pause();
                           controller.chewieController!.dispose();
-                          controller.videoController!.dispose();
+                          Navigator.pop(context);
+
+                          Get.delete<TrainIntroController>();
+                        } else {
+                          Navigator.pop(context);
+
+                          Get.delete<TrainIntroController>();
                         }
-                        Navigator.pop(context);
-                        Get.delete<TrainIntroController>();
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(
